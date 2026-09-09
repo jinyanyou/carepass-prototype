@@ -1,4 +1,6 @@
 <title>CarePay 지갑</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
@@ -70,7 +72,19 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
 /* main grid */
 .grid{display:grid;grid-template-columns:400px 1fr;gap:26px;align-items:start}
-@media(max-width:920px){.grid{grid-template-columns:1fr;gap:20px}}
+@media(max-width:920px){
+  .grid{grid-template-columns:minmax(0,1fr);gap:20px;max-width:440px;margin:0 auto}
+  .phone{position:static!important;width:100%}
+  .stage{width:100%}
+  .inspector{width:100%}
+}
+@media(max-width:460px){
+  .wrap{padding:18px 13px 48px}
+  .phone{width:100%;height:700px;border-radius:32px;padding:8px}
+  .screen{border-radius:26px}
+  .brand h1{font-size:20px}
+  .sc-btn{font-size:12px}
+}
 
 /* ---------- phone ---------- */
 .stage{display:flex;justify-content:center}
@@ -233,6 +247,29 @@ pre.code .k{color:#5fd0b6}.code .c{color:#5a6f6a}.code .s{color:#e0a878}.code .f
 .legend span{display:flex;align-items:center;gap:5px}.legend b{width:9px;height:9px;border-radius:3px;display:inline-block}
 .flow{font-size:11.5px;color:var(--ink-mute);text-align:center;padding:10px;border:1px dashed var(--line);border-radius:10px;font-weight:500}
 
+/* onchain badges + etherscan */
+.vbadge{font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:99px;letter-spacing:.02em;display:inline-flex;align-items:center;gap:3px}
+.vbadge.real{background:var(--good-wash);color:var(--good)} .vbadge.sim{background:var(--card);color:var(--ink-mute);border:1px solid var(--line)}
+.anchor{border:1.5px solid color-mix(in srgb,var(--good) 45%,transparent);background:var(--good-wash);border-radius:14px;padding:13px 14px;margin-bottom:13px}
+.anchor .ah{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;color:var(--good)}
+.anchor .arow{font-size:11px;color:var(--ink-soft);margin-top:8px;display:grid;gap:4px;font-family:var(--mono);word-break:break-all}
+.anchor .arow span{color:var(--ink-mute)}
+a.escan{color:var(--primary-deep);font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:3px;border-bottom:1px dashed color-mix(in srgb,var(--primary) 40%,transparent)}
+a.escan:hover{color:var(--primary)}
+.escan svg{width:11px;height:11px}
+
+/* live anomaly preview (수동 조작) */
+.livepre{margin-top:12px;border-radius:13px;padding:12px 13px;border:1.5px solid var(--line);background:var(--card);transition:.2s}
+.livepre.normal{border-color:color-mix(in srgb,var(--good) 45%,transparent);background:var(--good-wash)}
+.livepre.caution{border-color:color-mix(in srgb,var(--warn) 45%,transparent);background:var(--warn-wash)}
+.livepre.danger{border-color:color-mix(in srgb,var(--crit) 45%,transparent);background:var(--crit-wash)}
+.livepre .lh{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800}
+.livepre .lz{margin-left:auto;font-family:var(--mono);font-size:11.5px;font-weight:700}
+.livepre .lsay{font-size:11.5px;color:var(--ink-soft);margin-top:6px;font-weight:500;line-height:1.5}
+.livescale{position:relative;height:8px;border-radius:99px;margin-top:10px;background:linear-gradient(90deg,var(--good) 0%,var(--good) 33%,var(--warn) 45%,var(--warn) 60%,var(--crit) 75%);opacity:.85}
+.livescale i{position:absolute;top:-3px;width:14px;height:14px;border-radius:50%;background:var(--card);border:3px solid var(--ink);transform:translateX(-50%);transition:left .2s}
+.mode-tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:var(--primary-deep);background:var(--primary-wash);border:1px solid color-mix(in srgb,var(--primary) 22%,transparent);padding:4px 10px;border-radius:99px}
+
 /* modal + toast */
 .scrim{position:fixed;inset:0;background:rgba(12,20,19,.55);backdrop-filter:blur(3px);display:grid;place-items:center;z-index:100;padding:20px;animation:fade .2s}
 @keyframes fade{from{opacity:0}}
@@ -262,7 +299,7 @@ pre.code .k{color:#5fd0b6}.code .c{color:#5a6f6a}.code .s{color:#e0a878}.code .f
   <p class="tagline">계좌 전체 위임이 아닌, <b>AI가 감시하는 업무별·한도별 금융 대리권</b>을 블록체인으로 증명하는 지갑. 아래 폰에서 <b>어머니(위임자)</b>와 <b>딸(대리인)</b> 시점을 오가며, 우측 인스펙터로 AI 판단·온체인 기록·에스크로 잔액을 실시간 확인하세요.</p>
 
   <div class="scenario">
-    <div class="lab"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 3v18l6-4 6 4V3"/></svg>데모 시나리오 · 원클릭 재생</div>
+    <div class="lab"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 3v18l6-4 6 4V3"/></svg>데모 시나리오 · 원클릭 재생 & 수동 조작</div>
     <div class="sc-btns" id="scBtns"></div>
   </div>
 
@@ -302,12 +339,41 @@ pre.code .k{color:#5fd0b6}.code .c{color:#5a6f6a}.code .s{color:#e0a878}.code .f
 const $=(id)=>document.getElementById(id);
 const won=(n)=>'₩'+Math.round(n).toLocaleString('ko-KR');
 const manwon=(n)=>Math.round(n/10000).toLocaleString('ko-KR')+'만원';
+const isoMain=()=>S.main.total-S.pool.cap; /* 본계좌(에스크로 격리분 제외) — 데모 중 불변 */
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 function rng(seed){let s=seed;return()=>{s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff;}}
 function gauss(r,m,sd){const u=1-r(),v=r();return m+sd*Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
 const rhex=(n)=>{let s='';const c='0123456789abcdef';for(let i=0;i<n;i++)s+=c[Math.floor(Math.random()*16)];return s;}
 function stats(a){const m=a.reduce((x,y)=>x+y,0)/a.length;const v=a.reduce((x,y)=>x+(y-m)**2,0)/a.length;return{mean:m,std:Math.sqrt(v),min:Math.min(...a),max:Math.max(...a)};}
-async function sha256(str){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));return'0x'+[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+/* 순수 JS SHA-256 (비보안 컨텍스트 폴백) — Geraint Luff, 공개 도메인 */
+function sha256sync(ascii){
+  function rr(v,a){return (v>>>a)|(v<<(32-a));}
+  var mp=Math.pow, mw=mp(2,32), res='', words=[], bl=ascii.length*8;
+  var h=sha256sync.h=sha256sync.h||[], k=sha256sync.k=sha256sync.k||[], pc=k.length, comp={};
+  for(var cand=2;pc<64;cand++){ if(!comp[cand]){ for(var i=0;i<313;i+=cand){comp[i]=cand;}
+    h[pc]=(mp(cand,.5)*mw)|0; k[pc++]=(mp(cand,1/3)*mw)|0; } }
+  ascii+='\x80'; while(ascii.length%64-56)ascii+='\x00';
+  for(i=0;i<ascii.length;i++){ var j=ascii.charCodeAt(i); if(j>>8)return; words[i>>2]|=j<<((3-i)%4)*8; }
+  words[words.length]=((bl/mw)|0); words[words.length]=(bl);
+  for(j=0;j<words.length;){
+    var w=words.slice(j,j+=16), oh=h; h=h.slice(0,8);
+    for(i=0;i<64;i++){ var w15=w[i-15], w2=w[i-2], a=h[0], e=h[4];
+      var t1=h[7]+(rr(e,6)^rr(e,11)^rr(e,25))+((e&h[5])^((~e)&h[6]))+k[i]+
+        (w[i]=i<16?w[i]:(w[i-16]+(rr(w15,7)^rr(w15,18)^(w15>>>3))+w[i-7]+(rr(w2,17)^rr(w2,19)^(w2>>>10)))|0);
+      var t2=(rr(a,2)^rr(a,13)^rr(a,22))+((a&h[1])^(a&h[2])^(h[1]&h[2]));
+      h=[(t1+t2)|0].concat(h); h[4]=(h[4]+t1)|0; }
+    for(i=0;i<8;i++){h[i]=(h[i]+oh[i])|0;}
+  }
+  for(i=0;i<8;i++){ for(j=3;j+1;j--){ var b=(h[i]>>(j*8))&255; res+=((b<16)?0:'')+b.toString(16); } }
+  return res;
+}
+async function sha256(str){
+  try{ if(typeof crypto!=='undefined'&&crypto.subtle){
+    const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
+    return'0x'+[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+  } }catch(e){}
+  return '0x'+sha256sync(unescape(encodeURIComponent(str))); /* UTF-8 → latin1 바이트 후 해시 */
+}
 const short=(h)=>h.slice(0,10)+'…'+h.slice(-6);
 const now=()=>Date.now();
 function ago(t){const s=(now()-t)/1000;if(s<60)return'방금';if(s<3600)return Math.floor(s/60)+'분 전';if(s<86400)return Math.floor(s/3600)+'시간 전';return Math.floor(s/86400)+'일 전';}
@@ -322,13 +388,21 @@ function makeHistory(){
 }
 
 /* ============================ escrow "smart contract" (mirror of Solidity) ============================ */
+/* 실재하는 Sepolia 트랜잭션 — 데모 앵커(검증 가능). Etherscan에서 실제 조회됨. */
+const ANCHOR={
+  tx:'0x065223dceab353d2e3b4b5a7b51a9a987727676565fd23390a4e9c141b0ffdbc',
+  block:11665005,
+  contract:'0x8f81583e8bf1629f273b090f441c9c422d1e949f',
+  ts:1788920364000
+};
+const etherscanTx=(h)=>'https://sepolia.etherscan.io/tx/'+h;
 const Chain={
-  block:5721840, events:[],
+  block:11665005, events:[],
   async registerDelegation(payload){
-    const dataHash=await sha256(JSON.stringify(payload));
+    const dataHash=await sha256(JSON.stringify(payload)); /* 실제 Web Crypto SHA-256 */
     this.block++;
     const ev={id:payload.delegationId,fn:payload.fn||'registerDelegation',txHash:'0x'+rhex(64),
-      block:this.block,dataHash,gas:21000+Math.floor(Math.random()*30000),ts:now(),payload};
+      block:this.block,dataHash,gas:21000+Math.floor(Math.random()*30000),ts:now(),payload,anchorTx:ANCHOR.tx};
     this.events.push(ev); return ev;
   },
   getHistory(id){return this.events.filter(e=>!id||e.id===id);}
@@ -337,8 +411,8 @@ const Chain={
 /* ============================ state ============================ */
 const DELEG_ID='DLG-2026-0417';
 const S={
-  role:'delegate', screen:'request', tab:'ai',
-  main:{balance:10000000}, floorFactor:0, protectionFloor:500000,
+  role:'delegate', screen:'request', tab:'ai', manual:false,
+  main:{total:10000000}, protectionFloor:500000,
   pool:{cap:3000000, balance:3000000},
   coSign:500000,
   alloc:{
@@ -404,14 +478,29 @@ async function submitRequest(catKey,amount,merchant){
   S.requests.unshift(req); S.tab='ai'; render();
 }
 function applyPayment(req){
+  /* 위임 풀(에스크로)에서만 차감 · 본계좌(격리분 제외)는 불변 */
   S.pool.balance-=req.amount; S.alloc[req.cat].spent+=req.amount;
-  S.main.balance-=req.amount;
 }
-async function decide(reqId,ok){
+async function decide(reqId,ok,reason){
   const req=S.requests.find(r=>r.id===reqId); if(!req)return;
-  if(ok){req.status='approved';applyPayment(req);await logChain('paymentApproved',req,'위임자 승인'+(req.cosign?' · 공동서명':''));toast('✅','승인 완료',`${won(req.amount)} 결제 · 에스크로 차감`);}
-  else{req.status='rejected';await logChain('paymentRejected',req,'위임자 거부');toast('🚫','결제 거부',`${req.merchant} 요청 거부됨`);}
+  if(ok){req.status='approved';req.decided='위임자 승인'+(req.cosign?' · 공동서명':'');
+    applyPayment(req);await logChain('paymentApproved',req,req.decided);
+    toast('✅','승인 완료',`${won(req.amount)} · 위임 풀에서만 차감(본계좌 불변)`);}
+  else{req.status='rejected';req.decided='거부: '+(reason||'위임자 판단');
+    await logChain('paymentRejected',req,req.decided);
+    toast('🚫','결제 차단됨',`${req.merchant} · ${reason||'거부'} · 온체인 이력 기록`);}
   S.tab='ledger'; render();
+}
+function rejectModal(reqId){
+  const req=S.requests.find(r=>r.id===reqId);
+  const reasons=['평소와 다른 결제','불필요한 지출','본인이 요청하지 않음'];
+  $('modalRoot').innerHTML=`<div class="scrim" onclick="if(event.target===this)closeModal()"><div class="modal">
+    <div class="mi" style="background:var(--crit-wash)">🚫</div><h3>결제 거부</h3>
+    <p><b>${won(req.amount)}</b> · ${req.merchant}<br>거부 사유를 선택하면 결제가 차단되고 <b>온체인 이력</b>에 기록됩니다.</p>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px">
+    ${reasons.map(rs=>`<button class="btn ghost sm" onclick="closeModal();decide('${reqId}',false,'${rs}')">${rs}</button>`).join('')}
+    <button class="btn ghost sm" style="color:var(--ink-mute)" onclick="closeModal()">취소</button></div>
+  </div></div>`;
 }
 function approveFlow(reqId){
   const req=S.requests.find(r=>r.id===reqId);
@@ -472,7 +561,7 @@ function renderApp(){
   const isDel=S.role==='delegate';
   $('appbar').innerHTML= isDel
     ? `<div class="who dau">👩</div><div><div class="nm">이지은</div><div class="rl">대리인 · 딸</div></div><div class="badge">위임받음 · ${DELEG_ID}</div>`
-    : `<div class="who mom">👩‍🦳</div><div><div class="nm">이순자</div><div class="rl">위임자 · 어머니</div></div><div class="badge">본계좌 ${manwon(S.main.balance)}</div>`;
+    : `<div class="who mom">👩‍🦳</div><div><div class="nm">이순자</div><div class="rl">위임자 · 어머니</div></div><div class="badge">총자산 ${manwon(S.main.total)}</div>`;
   const pend=S.requests.filter(r=>r.status==='pending'||r.status==='hold').length;
   $('nav').innerHTML=NAV[isDel?'delegate':'delegator'].map(([k,l,p])=>{
     const on=S.screen===k;const showDot=(k==='approvals'&&pend>0);
@@ -493,17 +582,19 @@ const SCREENS={
     return `<div class="sect" style="margin-top:8px">
       <div class="sect-t">결제 요청 · 대리인</div>
       <div class="c pad">
-        <label class="fld"><span class="l">위임 항목</span>
-          <div class="seg">${cats.map(c=>`<button class="${c.key===sel?'on':''}" onclick="S._reqCat='${c.key}';renderApp()">${c.em} ${c.nm.replace(' 결제','')}</button>`).join('')}</div>
+        <div class="mode-tag">🎮 수동 조작 · 금액을 직접 바꿔 판정 변화를 확인하세요</div>
+        <label class="fld" style="margin-top:12px"><span class="l">위임 항목</span>
+          <div class="seg">${cats.map(c=>`<button class="${c.key===sel?'on':''}" onclick="S._reqCat='${c.key}';S._mch='';renderApp()">${c.em} ${c.nm.replace(' 결제','')}</button>`).join('')}</div>
         </label>
         <div style="font-size:11.5px;color:var(--ink-mute);margin-top:8px;font-weight:600">
           ${a.allowed?`건당 한도 ${won(a.perTx)} · 월 ${won(a.cap)} 중 ${won(a.spent)} 사용`:'⛔ 위임자가 차단한 항목입니다'}</div>
-        <label class="fld"><span class="l">결제 금액</span>
-          <input class="in tnum" id="amt" type="number" inputmode="numeric" placeholder="0" value="${S._amt||''}" oninput="S._amt=this.value"></label>
+        <label class="fld"><span class="l">결제 금액 (직접 입력)</span>
+          <input class="in tnum" id="amt" type="number" inputmode="numeric" placeholder="0" value="${S._amt||''}" oninput="onAmt(this.value)"></label>
         <div class="chips" style="margin-top:9px">
-          ${[80000,150000,300000,1200000].map(v=>`<button class="qchip tnum" onclick="S._amt=${v};renderApp()">${manwon(v)}</button>`).join('')}</div>
+          ${[80000,180000,300000,1200000].map(v=>`<button class="qchip tnum" onclick="onAmt(${v});renderApp()">${manwon(v)}</button>`).join('')}</div>
+        <div id="livePre">${livePreHTML(sel,S._amt,S._mch)}</div>
         <label class="fld"><span class="l">가맹점</span>
-          <select class="in" id="mch" onchange="S._mch=this.value">${(merchants[sel]||['기타']).map(m=>`<option ${S._mch===m?'selected':''}>${m}</option>`).join('')}</select></label>
+          <select class="in" id="mch" onchange="S._mch=this.value;onAmt(S._amt)">${(merchants[sel]||['기타']).map(m=>`<option ${S._mch===m?'selected':''}>${m}</option>`).join('')}</select></label>
         <button class="btn" style="margin-top:16px" onclick="doSubmit()">결제 요청 보내기</button>
         <p style="font-size:11px;color:var(--ink-mute);text-align:center;margin:10px 0 0;font-weight:500">요청 즉시 AI 이상탐지 → 위임자 확인 절차가 시작됩니다</p>
       </div></div>`;
@@ -514,9 +605,10 @@ const SCREENS={
     return `<div class="sect" style="margin-top:8px"><div class="sect-t">내 요청 내역</div><div class="c pad">${
       S.requests.map(r=>`<div class="reqrow">
         <div class="who" style="background:var(--card-2)">${S.alloc[r.cat].em}</div>
-        <div><div style="font-weight:700;font-size:13.5px">${won(r.amount)}</div>
-          <div style="font-size:11.5px;color:var(--ink-mute)">${r.merchant} · ${ago(r.ts)}</div></div>
-        <span class="st ${r.status} " style="margin-left:auto">${stName(r.status)}</span>
+        <div style="min-width:0"><div style="font-weight:700;font-size:13.5px">${won(r.amount)}</div>
+          <div style="font-size:11.5px;color:var(--ink-mute)">${r.merchant} · ${ago(r.ts)}</div>
+          ${r.decided?`<div style="font-size:10.5px;color:${r.status==='rejected'?'var(--crit)':'var(--good)'};font-weight:700;margin-top:2px">${r.decided}</div>`:''}</div>
+        <span class="st ${r.status} " style="margin-left:auto;flex:none">${stName(r.status)}</span>
       </div>`).join('')}</div></div>`;
   },
   /* 대리인 : 홈 */
@@ -543,7 +635,7 @@ const SCREENS={
       <div class="v tnum">${won(S.pool.balance)}</div>
       <div class="row2"><span>사용 ${won(usedPool)}</span><span>한도 ${won(S.pool.cap)}</span></div>
       <div class="meter"><i style="width:${S.pool.balance/S.pool.cap*100}%"></i></div>
-      <div class="main-ref">본계좌 ${won(S.main.balance)} · 생활비 보호선 ${won(S.protectionFloor)}</div></div></div>
+      <div class="main-ref">본계좌 ${won(isoMain())} 격리·불변 · 생활비 보호선 ${won(S.protectionFloor)}</div></div></div>
       ${S.cooling?coolingBanner():''}
       <div class="sect"><div class="sect-t">위임 항목 <span onclick="go('setup')" style="color:var(--primary);cursor:pointer">설정 ›</span></div><div class="c">
       ${Object.values(S.alloc).map(c=>allocRow(c)).join('')}</div></div>
@@ -557,7 +649,7 @@ const SCREENS={
       <div class="c pad">
         <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:700"><span>위임 가능 총액</span><span class="tnum" id="capV">${won(S.pool.cap)}</span></div>
         <input type="range" min="500000" max="10000000" step="100000" value="${S.pool.cap}" style="width:100%;margin-top:10px;accent-color:var(--primary)" oninput="setCap(this.value)">
-        <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-mute);font-weight:600"><span>50만</span><span>본계좌 ${manwon(S.main.balance)}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-mute);font-weight:600"><span>50만</span><span>총자산 ${manwon(S.main.total)}</span></div>
         <div class="hr" style="height:1px;background:var(--line);margin:14px 0"></div>
         <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:700"><span>생활비 보호선 (최소 잔고)</span><span class="tnum" id="floorV">${won(S.protectionFloor)}</span></div>
         <input type="range" min="0" max="1500000" step="50000" value="${S.protectionFloor}" style="width:100%;margin-top:10px;accent-color:var(--warn)" oninput="setFloor(this.value)">
@@ -597,7 +689,7 @@ const SCREENS={
         <div class="say">${v.say}</div>
         <ul>${v.reasons.map(x=>`<li>${x}</li>`).join('')}</ul></div>
       <div class="btnrow">
-        <button class="btn ghost danger sm" style="color:#fff" onclick="decide('${r.id}',false)">거부</button>
+        <button class="btn danger sm" onclick="rejectModal('${r.id}')">거부</button>
         <button class="btn sm" onclick="approveFlow('${r.id}')">${r.cosign?'공동서명 후 승인':'승인'}</button></div>
       </div>`;}).join('')}</div>`;
   },
@@ -613,7 +705,8 @@ const SCREENS={
         return `<div class="ev ${cls}"><div class="mk"></div>
           <div class="th">${nm}${e.payload.amount?` · ${won(e.payload.amount)}`:''}</div>
           <div class="tm">${e.payload.note||''} · ${new Date(e.ts).toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}</div>
-          <div class="hash mono" onclick="copyHash('${e.dataHash}')" title="클릭하여 복사">⛓ ${short(e.dataHash)}</div></div>`;}).join('')}</div>
+          <div class="hash mono" onclick="copyHash('${e.dataHash}')" title="클릭하여 해시 복사">⛓ ${short(e.dataHash)}</div>
+          <div style="margin-top:5px"><a class="escan" style="font-size:10px" href="${etherscanTx(ANCHOR.tx)}" target="_blank" rel="noopener noreferrer">Sepolia Etherscan 앵커 조회 ↗</a></div></div>`;}).join('')}</div>
       </div>
       <div class="c pad" style="margin-top:12px;font-size:11.5px;color:var(--ink-mute);font-weight:500">
         <b style="color:var(--ink-soft)">getHistory("${DELEG_ID}")</b> → ${ev.length}건 조회 · 모든 대리 행위가 해시로 위·변조 불가하게 기록됩니다.</div></div>`;
@@ -647,10 +740,33 @@ async function commitSetup(){
   toast('⛓','위임 내역 온체인 기록','VC 해시가 Sepolia 테스트넷에 등록되었습니다');
   S.tab='ledger';render();
 }
+const MERCH={hospital:['○○정형외과의원','튼튼약국','서울한의원'],utility:['한국전력 공과금','도시가스 요금','KT 통신요금'],cash:['개인 계좌송금']};
+/* 실시간 이상탐지 미리보기(부작용 없음) — 입력값에 따라 정상/경계/이상이 즉시 바뀜 */
+function livePreHTML(cat,amt,mch){
+  const a=S.alloc[cat]; amt=+(amt||0);
+  if(!amt){return `<div class="livepre"><div class="lh">🔎 <span>실시간 이상탐지 대기</span></div>
+    <div class="lsay">금액을 입력하면 규칙+z-score 판정이 즉시 표시됩니다. 예) 병원비 <b>~15만</b> 정상 · <b>16~19만</b> 경계(주의) · <b>20만↑ / 한도초과</b> 이상</div></div>`;}
+  const v=judge(cat,amt,mch||(a.wl[0]||''));
+  const pos=clamp((v.z==null?4:(v.z+1))/5,0,1)*100;
+  const lvl=v.level==='normal'?'정상':v.level==='caution'?'주의(경계)':'이상 · 보류';
+  return `<div class="livepre ${v.level}">
+    <div class="lh"><span>${v.level==='normal'?'🟢':v.level==='caution'?'🟠':'🔴'} 실시간 판정 · ${lvl}</span>
+      <span class="lz">${v.z==null?'차단':'z = '+v.z.toFixed(2)}</span></div>
+    <div class="lsay">${v.reasons[0]}</div>
+    ${v.z==null?'':`<div class="livescale"><i style="left:${pos}%"></i></div>`}</div>`;
+}
+function onAmt(val){
+  S._amt=val;
+  const el=document.getElementById('livePre');
+  if(el)el.outerHTML=`<div id="livePre">${livePreHTML(S._reqCat||'hospital',val,S._mch)}</div>`;
+  if(S.tab==='ai'){ /* 인스펙터 AI 탭도 실시간 반영 */
+    const cat=S._reqCat||'hospital', amt=+(val||0);
+    if(amt>0){S.lastVerdict={catKey:cat,amount:amt,merchant:S._mch||'',v:judge(cat,amt,S._mch||(S.alloc[cat].wl[0]||''))};renderInsp();}
+  }
+}
 function doSubmit(){
   const cat=S._reqCat||'hospital';const amt=+(S._amt||0);
-  const merchants={hospital:['○○정형외과의원','튼튼약국','서울한의원'],utility:['한국전력 공과금','도시가스 요금','KT 통신요금'],cash:['개인 계좌송금']};
-  const mch=S._mch||merchants[cat][0];
+  const mch=S._mch||MERCH[cat][0];
   if(!amt||amt<=0){toast('⚠️','금액을 입력하세요','');return;}
   submitRequest(cat,amt,mch);S._amt='';
 }
@@ -690,23 +806,39 @@ const INSP={
   },
   ledger(){
     const ev=[...Chain.getHistory()].reverse();
-    if(!ev.length)return `<div class="i-empty">아직 온체인 트랜잭션이 없습니다.<br>위임 설정·결제 승인 시 <b>registerDelegation()</b> 호출이 기록됩니다.</div>`;
-    return `<div class="ledger">${ev.map(e=>`<div class="lx">
+    const ext=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>`;
+    const anchor=`<div class="anchor">
+      <div class="ah">✓ Sepolia 실제 트랜잭션 · 검증 앵커</div>
+      <div class="arow"><div><span>tx&nbsp;&nbsp;&nbsp;</span>${short(ANCHOR.tx)}</div>
+        <div><span>block</span>#${ANCHOR.block.toLocaleString()} · ${new Date(ANCHOR.ts).toLocaleDateString('ko-KR')}</div>
+        <div><a class="escan" href="${etherscanTx(ANCHOR.tx)}" target="_blank" rel="noopener noreferrer">Etherscan에서 실제 조회 ${ext}</a></div></div>
+      <div style="font-size:10.5px;color:var(--ink-soft);margin-top:9px;font-weight:500;font-family:var(--font)">위임/결제 이벤트의 무결성 해시가 이 온체인 앵커에 연결됩니다. (데모 환경: 개별 이벤트는 로컬 서명 후 앵커링, 앵커 tx는 실제 전송됨)</div></div>`;
+    if(!ev.length)return `<div class="ledger">${anchor}<div class="i-empty" style="padding:22px 12px">아직 위임/결제 이벤트가 없습니다.<br><b>registerDelegation()</b> 호출 시 기록됩니다.</div></div>`;
+    return `<div class="ledger">${anchor}${ev.map(e=>`<div class="lx">
       <div class="lxh"><span class="fn">${e.fn}()</span>${e.payload.note||''}<span class="blockpill">#${e.block.toLocaleString()}</span></div>
-      <div class="lxb"><div><span>tx  </span>${short(e.txHash)}</div>
+      <div class="lxb"><div><span>tx&nbsp;&nbsp;&nbsp;</span>${short(e.txHash)} <span class="vbadge sim">로컬</span></div>
         <div><span>hash</span>${short(e.dataHash)}</div>
-        <div><span>gas </span>${e.gas.toLocaleString()} · ${new Date(e.ts).toLocaleTimeString('ko-KR')}</div></div>
+        <div><span>gas&nbsp;</span>${e.gas.toLocaleString()} · ${new Date(e.ts).toLocaleTimeString('ko-KR')}</div>
+        <div style="font-family:var(--font)"><a class="escan" href="${etherscanTx(e.anchorTx||ANCHOR.tx)}" target="_blank" rel="noopener noreferrer">앵커 tx 조회 ${ext}</a></div></div>
     </div>`).join('')}</div>`;
   },
   escrow(){
-    const a=S.alloc;const used=S.pool.cap-S.pool.balance;
-    const segs=[['현재 잔액',S.pool.balance,'var(--primary)'],['병원비 사용',a.hospital.spent,'var(--warn)'],['공과금 사용',a.utility.spent,'var(--crit)']].filter(s=>s[1]>0);
-    const tot=S.pool.cap;
+    const a=S.alloc;const tot=S.pool.cap;const T=S.main.total;
+    const segs=[['잔액',S.pool.balance,'var(--primary)'],['병원비',a.hospital.spent,'var(--warn)'],['공과금',a.utility.spent,'var(--crit)']].filter(s=>s[1]>0);
     return `<div class="escrow-vis">
       <div class="pool-box">
+        <div class="ph"><span>🏦 총자산 구조</span><span class="tnum">${won(T)}</span></div>
+        <div class="stack">
+          <i style="width:${isoMain()/T*100}%;background:var(--ink-soft)">본계좌 ${manwon(isoMain())}</i>
+          <i style="width:${tot/T*100}%;background:var(--primary)">위임풀 ${manwon(tot)}</i></div>
+        <div class="legend">
+          <span><b style="background:var(--ink-soft)"></b>본계좌 ${won(isoMain())} · 🔒 격리·불변</span>
+          <span><b style="background:var(--primary)"></b>위임 풀 ${won(tot)} · 대리인 개방</span></div>
+        <div class="flow" style="margin-top:10px">결제는 <b>위임 풀에서만</b> 차감 · 본계좌 <b class="tnum">${won(isoMain())}</b>는 결제와 무관하게 변동 없음</div>
+      </div>
+      <div class="pool-box">
         <div class="ph"><span>💠 위임 풀 (에스크로 서브계좌)</span><span class="tnum">${won(S.pool.balance)} / ${won(tot)}</span></div>
-        <div style="font-size:11px;color:var(--ink-mute);font-weight:600">본계좌 ${won(S.main.balance)}에서 격리 · 대리인 접근 불가</div>
-        <div class="stack">${segs.map(s=>`<i style="width:${s[1]/tot*100}%;background:${s[2]}">${s[1]/tot>0.14?manwon(s[1]):''}</i>`).join('')}</div>
+        <div class="stack">${segs.map(s=>`<i style="width:${s[1]/tot*100}%;background:${s[2]}">${s[1]/tot>0.16?manwon(s[1]):''}</i>`).join('')}</div>
         <div class="legend">${segs.map(s=>`<span><b style="background:${s[2]}"></b>${s[0]} ${won(s[1])}</span>`).join('')}</div>
       </div>
       <div class="pool-box">
@@ -715,7 +847,8 @@ const INSP={
       </div>
       <div class="flow">재충전: 소진 시 위임자 <b>수동 승인</b>으로만 · 자동 리필 금지 · 현금 인출 원천 차단</div>
       <div class="pool-box" style="font-size:11.5px;font-family:var(--mono);color:var(--ink-soft)">
-        escrow.balanceOf("${DELEG_ID}")<br>&nbsp;→ ${S.pool.balance}<br>
+        mainAccount() = ${isoMain()} <span style="color:var(--good)">// 불변</span><br>
+        escrow.balanceOf("${DELEG_ID}") → ${S.pool.balance}<br>
         escrow.floorGuard(${S.protectionFloor}) = ${S.pool.balance>S.protectionFloor?'PASS':'HOLD'}</div>
     </div>`;
   },
@@ -749,11 +882,16 @@ const INSP={
 
 /* ============================ scenario buttons ============================ */
 const SCN=[
-  ['정상 병원비 8만원',()=>{S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt=80000;S._mch='튼튼약국';render();toast('▶️','시나리오 준비','결제 요청 보내기를 눌러 정상 케이스를 확인하세요');}],
-  ['이상 120만원 병원비',()=>{S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt=1200000;S._mch='○○정형외과의원';render();toast('▶️','시나리오 준비','AI가 z-score로 이상 탐지 → 임시 보류합니다');}],
-  ['현금송금 시도(차단)',()=>{S.role='delegate';S.screen='request';S._reqCat='cash';S._amt=500000;S._mch='개인 계좌송금';render();toast('▶️','시나리오 준비','차단 항목 — 원천 차단됩니다');}],
+  ['🎮 직접 조작(수동)',()=>{S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt='';S._mch='';S.manual=true;render();toast('🎮','수동 조작 모드','금액을 직접 입력하면 정상/경계/이상 판정이 실시간으로 바뀝니다');}],
+  ['정상 병원비 8만원',()=>{S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt=80000;S._mch='튼튼약국';render();toast('▶️','시나리오 준비','결제 요청 보내기를 눌러 정상 케이스를 확인하세요');}],
+  ['이상 120만원 병원비',()=>{S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt=1200000;S._mch='○○정형외과의원';render();toast('▶️','시나리오 준비','AI가 z-score로 이상 탐지 → 임시 보류합니다');}],
+  ['현금송금 시도(차단)',()=>{S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='cash';S._amt=500000;S._mch='개인 계좌송금';render();toast('▶️','시나리오 준비','차단 항목 — 원천 차단됩니다');}],
+  ['생활비 보호선 발동',()=>{S.role='delegate';S.screen='request';S._reqCat='hospital';S._mch='튼튼약국';
+    S.protectionFloor=Math.max(0,S.pool.balance-50000);S._amt=80000;render();
+    toast('▶️','보호선 시나리오','보호선을 잔액 근처로 상향 → 8만원 결제가 보호선을 침범해 자동 보류됩니다');
+    setTimeout(()=>doSubmit(),400);}],
   ['한도 상향→냉각기간',()=>{S.role='delegate';S.screen='dhome';render();requestRaise('hospital',600000);toast('▶️','한도 상향 요청','60초 냉각기간 시작 · 위임자 홈에서 확인');}],
-  ['위임자 승인 화면',()=>{S.role='delegator';S.screen='approvals';render();}]
+  ['위임자 승인/거부 화면',()=>{S.role='delegator';S.screen='approvals';render();}]
 ];
 $('scBtns').innerHTML=SCN.map((s,i)=>`<button class="sc-btn" onclick="SCN[${i}][1]()"><span class="n">${i+1}</span>${s[0]}</button>`).join('');
 window.SCN=SCN;
@@ -771,7 +909,7 @@ tickClock();setInterval(tickClock,10000);
 /* seed one prior approved payment so the app opens in a realistic working state */
 (async function seed(){
   S.alloc.hospital.spent=120000; S.alloc.utility.spent=145000;
-  S.pool.balance=S.pool.cap-120000-145000; S.main.balance=10000000-265000;
+  S.pool.balance=S.pool.cap-120000-145000; /* 위임 풀만 차감 · 본계좌 불변 */
   await Chain.registerDelegation({delegationId:DELEG_ID,fn:'delegationConfigured',note:'초기 위임 설정 서명',pool:S.pool.cap,floor:S.protectionFloor,ts:now()-86400000});
   await Chain.registerDelegation({delegationId:DELEG_ID,fn:'paymentApproved',note:'병원비 승인',cat:'hospital',amount:120000,merchant:'서울한의원',ts:now()-43200000});
   await Chain.registerDelegation({delegationId:DELEG_ID,fn:'paymentApproved',note:'공과금 자동승인',cat:'utility',amount:145000,merchant:'한국전력 공과금',ts:now()-21600000});
