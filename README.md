@@ -2,6 +2,8 @@
 
 > 2026 AI Blockchain Challenge in Daegu · 해커톤 프로토타입 · **iM뱅크 앱 내장 기능**
 
+### ▶ 라이브 데모 : **https://jinyanyou.github.io/carepass-prototype/**
+
 계좌 전체 위임이 아닌, **AI가 감시하는 업무별·한도별 금융 대리권**을 블록체인으로 증명하는 지갑.
 고령자·장애인 등 금융 대리 관리가 필요한 시민과 그 가족을 위한 서비스로,
 **iM뱅크 앱의 한 기능**으로 통합되는 형태로 디자인했습니다. iM뱅크 홈에서 CarePass로 진입합니다.
