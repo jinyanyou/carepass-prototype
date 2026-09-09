@@ -1,26 +1,27 @@
-<title>CarePay 지갑</title>
+<title>iM뱅크 · CarePass</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <style>
 :root{
-  --paper:#EFEBE3; --card:#FFFFFF; --card-2:#F7F4EE;
-  --ink:#16211F; --ink-soft:#495551; --ink-mute:#7B857F; --line:#E1DBCF; --line-soft:#ECE7DD;
-  --primary:#0E7C6B; --primary-deep:#0A5B4F; --primary-wash:#E2F0EC;
+  --paper:#E8EEEC; --card:#FFFFFF; --card-2:#F1F5F4;
+  --ink:#0E2621; --ink-soft:#48605A; --ink-mute:#7C8C87; --line:#E0E8E5; --line-soft:#EDF2F0;
+  --primary:#00C7A9; --primary-deep:#00A18E; --primary-wash:#DBF4EE; --lime:#9FE24A; --lime-deep:#5FA512;
   --good:#2E9E5F; --good-wash:#E4F3EA;
   --warn:#D9822B; --warn-wash:#FBEEDC;
   --crit:#C6453B; --crit-wash:#F9E5E2;
   --shadow:0 1px 2px rgba(20,33,31,.06),0 12px 28px -12px rgba(20,33,31,.18);
   --shadow-lg:0 30px 70px -30px rgba(10,40,35,.45);
-  --font:"Noto Sans KR",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  --font:"Pretendard Variable","Pretendard","Noto Sans KR",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
 }
 :root:not([data-theme="light"]){
   @media (prefers-color-scheme:dark){
     --paper:#0C1413; --card:#141F1D; --card-2:#0F1817;
     --ink:#E9F0ED; --ink-soft:#AFBDB8; --ink-mute:#78857F; --line:#25322F; --line-soft:#1C2624;
-    --primary:#39B49E; --primary-deep:#2A8D7B; --primary-wash:#153029;
+    --primary:#20D6BC; --primary-deep:#00A990; --primary-wash:#123029; --lime:#B7E85A; --lime-deep:#8FCB3A;
     --good:#4FBE7C; --good-wash:#14291D; --warn:#E39A45; --warn-wash:#2E2313;
     --crit:#E06B60; --crit-wash:#2E1815;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 28px -12px rgba(0,0,0,.6);
@@ -38,7 +39,7 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);line-height:1.5;
-  background-image:radial-gradient(circle at 12% -5%,rgba(14,124,107,.10),transparent 42%),radial-gradient(circle at 92% 0%,rgba(217,130,43,.07),transparent 40%);
+  background-image:radial-gradient(circle at 12% -5%,rgba(0,199,169,.12),transparent 42%),radial-gradient(circle at 92% 0%,rgba(159,226,74,.10),transparent 40%);
   background-attachment:fixed;}
 h1,h2,h3,h4{margin:0;font-weight:800;letter-spacing:-.02em;text-wrap:balance}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
@@ -50,7 +51,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px}
 .brand{display:flex;align-items:center;gap:11px}
 .logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(150deg,var(--primary),var(--primary-deep));
-  display:grid;place-items:center;color:#fff;box-shadow:0 6px 16px -6px rgba(14,124,107,.7);flex:none}
+  display:grid;place-items:center;color:#fff;box-shadow:0 6px 16px -6px rgba(0,199,169,.7);flex:none}
 .logo svg{width:22px;height:22px}
 .brand h1{font-size:22px;line-height:1}
 .brand .sub{font-size:12.5px;color:var(--ink-mute);margin-top:3px;font-weight:500}
@@ -65,6 +66,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .scenario{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px 15px;box-shadow:var(--shadow);margin-bottom:22px}
 .scenario .lab{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:9px;display:flex;align-items:center;gap:7px}
 .sc-btns{display:flex;gap:8px;flex-wrap:wrap}
+.sc-grp{flex-basis:100%;font-size:10px;font-weight:800;color:var(--ink-mute);letter-spacing:.05em;text-transform:uppercase;margin:6px 2px 1px}
+.sc-grp:first-child{margin-top:0}
 .sc-btn{border:1px solid var(--line);background:var(--card-2);border-radius:11px;padding:8px 12px;font-size:12.5px;font-weight:600;color:var(--ink-soft);display:flex;align-items:center;gap:7px;transition:.16s}
 .sc-btn:hover{border-color:var(--primary);color:var(--primary-deep);background:var(--primary-wash);transform:translateY(-1px)}
 .sc-btn .n{width:17px;height:17px;border-radius:6px;background:var(--ink);color:var(--card);font-size:10px;font-weight:800;display:grid;place-items:center;flex:none}
@@ -102,7 +105,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .appbar .rl{font-size:11.5px;color:var(--ink-mute);font-weight:600}
 .appbar .badge{margin-left:auto;font-size:10.5px;font-weight:700;color:var(--primary-deep);background:var(--primary-wash);border:1px solid color-mix(in srgb,var(--primary) 20%,transparent);padding:4px 9px;border-radius:99px}
 
-.view{flex:1;overflow-y:auto;padding:4px 16px 20px;scrollbar-width:thin}
+.view{flex:1;overflow-y:auto;padding:4px 16px 34px;scrollbar-width:thin}
 .view::-webkit-scrollbar{width:5px}.view::-webkit-scrollbar-thumb{background:var(--line);border-radius:9px}
 .view>*{animation:rise .3s ease both}
 @keyframes rise{from{opacity:0;transform:translateY(7px)}}
@@ -119,8 +122,10 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .sect-t{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-mute);margin:0 2px 8px;display:flex;align-items:center;justify-content:space-between}
 .c{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
 .c.pad{padding:15px}
-.balcard{background:linear-gradient(155deg,var(--primary-deep),var(--primary));color:#fff;border:none;padding:17px;border-radius:18px;position:relative;overflow:hidden}
+.balcard{background:linear-gradient(155deg,var(--primary-deep),var(--primary));color:#fff;border:none;padding:17px;border-radius:18px;position:relative;overflow:hidden;box-shadow:0 16px 32px -18px rgba(0,140,120,.85)}
 .balcard:after{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.08)}
+.balcard:before{content:"";position:absolute;right:14px;top:14px;width:46px;height:46px;border-radius:50%;background:var(--lime);opacity:.26;filter:blur(2px)}
+.balcard>*{position:relative}
 .balcard .k{font-size:11.5px;opacity:.85;font-weight:600;display:flex;align-items:center;gap:6px}
 .balcard .v{font-size:30px;font-weight:800;letter-spacing:-.02em;margin-top:3px}
 .balcard .meter{height:7px;border-radius:99px;background:rgba(255,255,255,.22);margin-top:13px;overflow:hidden}
@@ -197,6 +202,79 @@ input.in:focus,select.in:focus{outline:2px solid var(--primary);outline-offset:1
 
 .empty{text-align:center;color:var(--ink-mute);font-size:12.5px;padding:34px 12px}
 .empty svg{width:34px;height:34px;opacity:.4;margin-bottom:8px}
+
+/* ---------- iM뱅크 app shell ---------- */
+.imlogo{font-weight:800;font-size:20px;letter-spacing:-.05em;color:var(--primary-deep);line-height:1}
+.imlogo b{color:var(--lime-deep)}
+.imgreet{font-size:13.5px;font-weight:800;color:var(--ink);line-height:1.15}
+.imgreet small{display:block;font-size:10.5px;color:var(--ink-mute);font-weight:600;margin-top:1px}
+.acctcard{background:linear-gradient(150deg,var(--primary-deep),var(--primary));color:#fff;border-radius:20px;padding:18px;position:relative;overflow:hidden;box-shadow:0 16px 32px -18px rgba(0,140,120,.85)}
+.acctcard:after{content:"";position:absolute;right:-34px;bottom:-54px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.09)}
+.acctcard:before{content:"";position:absolute;right:14px;top:14px;width:46px;height:46px;border-radius:50%;background:var(--lime);opacity:.28;filter:blur(2px)}
+.acctcard .an{font-size:11.5px;opacity:.92;font-weight:600;display:flex;align-items:center;gap:6px}
+.acctcard .av{font-size:28px;font-weight:800;letter-spacing:-.02em;margin-top:7px}
+.acctcard .asub{font-size:11px;opacity:.85;margin-top:5px;font-weight:500}
+.acctcard .arow{display:flex;gap:8px;margin-top:16px;position:relative;z-index:1}
+.acctcard .arow button{flex:1;background:rgba(255,255,255,.17);color:#fff;border-radius:11px;padding:10px;font-size:12.5px;font-weight:700}
+.acctcard .arow button:hover{background:rgba(255,255,255,.27)}
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:15px}
+.quick button{display:flex;flex-direction:column;align-items:center;gap:7px;padding:13px 4px;border-radius:15px;background:var(--card);border:1px solid var(--line);font-size:11px;font-weight:700;color:var(--ink-soft);box-shadow:var(--shadow)}
+.quick button:hover{border-color:var(--primary);color:var(--primary-deep)}
+.quick .qi{width:34px;height:34px;border-radius:11px;background:var(--primary-wash);display:grid;place-items:center;font-size:17px}
+.cpcta{margin-top:17px;border-radius:18px;padding:16px;background:linear-gradient(135deg,var(--primary-wash),color-mix(in srgb,var(--lime) 26%,var(--card)));border:1px solid color-mix(in srgb,var(--primary) 28%,transparent);position:relative;overflow:hidden;cursor:pointer;transition:.16s;width:100%;text-align:left}
+.cpcta:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.cpcta .cph{display:flex;align-items:center;gap:11px}
+.cpcta .cpi{width:44px;height:44px;border-radius:14px;background:linear-gradient(150deg,var(--primary),var(--primary-deep));display:grid;place-items:center;box-shadow:0 8px 18px -8px var(--primary);flex:none;color:#fff}
+.cpcta .cpt{font-weight:800;font-size:15.5px;display:flex;align-items:center;gap:7px;color:var(--ink)}
+.cpcta .cpd{font-size:11.5px;color:var(--ink-soft);margin-top:3px;font-weight:500;line-height:1.5}
+.cpcta .newbdg{font-size:9px;font-weight:800;color:#fff;background:var(--primary);padding:2px 7px;border-radius:99px;letter-spacing:.04em}
+.cpcta .go{margin-left:auto;color:var(--primary-deep);font-size:22px;font-weight:800;align-self:center}
+.cpcta .cpstat{display:flex;gap:14px;margin-top:13px;padding-top:12px;border-top:1px solid color-mix(in srgb,var(--primary) 18%,transparent)}
+.cpcta .cpstat div{font-size:10.5px;color:var(--ink-mute);font-weight:600}
+.cpcta .cpstat b{display:block;font-size:14px;color:var(--primary-deep);font-weight:800;margin-top:2px}
+.mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px}
+.mgrid button{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:15px 6px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:11px;font-weight:700;color:var(--ink-soft);box-shadow:var(--shadow)}
+.mgrid button:hover{border-color:var(--primary);color:var(--primary-deep)}
+.mgrid .mi2{font-size:21px}
+.imcp-tag{position:absolute;top:9px;right:9px;font-size:8.5px;font-weight:800;color:#fff;background:var(--lime-deep);padding:2px 6px;border-radius:99px}
+/* iM뱅크 실제 앱 홈 컴포넌트 */
+.imlogo b{color:var(--ink)}
+.evbanner{display:block;width:100%;text-align:left;border-radius:20px;padding:18px 18px 17px;background:linear-gradient(120deg,var(--primary-wash),color-mix(in srgb,var(--lime) 20%,var(--card)));border:1px solid color-mix(in srgb,var(--primary) 22%,transparent);position:relative;overflow:hidden;cursor:pointer;transition:.18s;margin-top:8px}
+.evbanner:before{content:"";position:absolute;right:-16px;bottom:-30px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--primary) 24%,transparent),transparent 68%)}
+.evbanner:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.evbanner .evtag{font-size:10.5px;font-weight:800;color:var(--primary-deep);letter-spacing:.02em;position:relative}
+.evbanner .evh{font-size:16px;font-weight:800;color:var(--ink);margin-top:5px;line-height:1.35;max-width:72%;position:relative}
+.evbanner .evpill{display:inline-flex;align-items:center;gap:5px;margin-top:14px;background:var(--primary);color:#fff;font-size:12px;font-weight:800;padding:9px 15px;border-radius:99px;position:relative;box-shadow:0 8px 16px -8px var(--primary)}
+.evbanner .evart{position:absolute;right:16px;bottom:16px;width:58px;height:58px;border-radius:19px;background:linear-gradient(150deg,var(--primary),var(--primary-deep));display:grid;place-items:center;color:#fff;box-shadow:0 12px 22px -8px var(--primary);transform:rotate(-6deg)}
+.evbanner .evart svg{width:32px;height:32px}
+.evbanner .evart:after{content:"";position:absolute;top:-9px;left:-9px;width:16px;height:16px;border-radius:50%;background:var(--lime);opacity:.85}
+.evbanner .evnew{position:absolute;top:14px;right:14px;font-size:9px;font-weight:800;color:#fff;background:var(--crit);padding:2px 7px;border-radius:99px;letter-spacing:.04em;z-index:1}
+.qmenu{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:18px}
+.qmenu button{display:flex;flex-direction:column;align-items:center;gap:8px;padding:6px 2px;font-size:11px;font-weight:700;color:var(--ink-soft);background:none;position:relative}
+.qmenu .qic{width:50px;height:50px;border-radius:16px;display:grid;place-items:center;font-size:23px;background:var(--card-2);border:1px solid var(--line-soft);transition:.14s}
+.qmenu button:hover .qic{border-color:var(--primary);transform:translateY(-2px)}
+.qmenu .qnew{position:absolute;top:-4px;right:12px;font-size:8px;font-weight:800;color:#fff;background:var(--crit);padding:1px 5px;border-radius:99px}
+.acctsec{margin-top:24px}
+.acctsec-h{display:flex;align-items:center;justify-content:space-between;font-size:14.5px;font-weight:800;color:var(--ink);margin:0 2px 11px}
+.acctsec-h .hidetog{font-size:11px;font-weight:600;color:var(--ink-mute);display:flex;align-items:center;gap:6px;cursor:pointer}
+.acctsec-h .hidetog.on{color:var(--primary-deep)}
+.acctsec-h .hidetog i{width:30px;height:17px;border-radius:99px;background:var(--line);position:relative;display:inline-block;transition:background .18s}
+.acctsec-h .hidetog.on i{background:var(--primary)}
+.acctsec-h .hidetog i:after{content:"";position:absolute;top:2px;left:2px;width:13px;height:13px;border-radius:50%;background:var(--card);box-shadow:0 1px 2px rgba(0,0,0,.15);transition:left .18s}
+.acctsec-h .hidetog.on i:after{left:15px}
+.arow2{display:flex;align-items:center;gap:11px;padding:14px 15px;border-bottom:1px solid var(--line-soft)}
+.arow2:last-child{border-bottom:none}
+.arow2 .aic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-size:18px;flex:none;background:var(--primary-wash)}
+.arow2 .anm{font-size:12px;color:var(--ink-mute);font-weight:600}
+.arow2 .abal{font-size:16.5px;font-weight:800;color:var(--ink);letter-spacing:-.01em;margin-top:2px}
+.arow2 .asend{margin-left:auto;flex:none;background:var(--card-2);border:1px solid var(--line);color:var(--ink-soft);font-size:12px;font-weight:700;padding:8px 14px;border-radius:10px}
+.arow2 .asend:hover{border-color:var(--primary);color:var(--primary-deep)}
+.arow2.cp{cursor:pointer;background:linear-gradient(120deg,var(--primary-wash),transparent)}
+.arow2.cp .aic{background:linear-gradient(150deg,var(--primary),var(--primary-deep));color:#fff}
+.arow2.cp .go2{margin-left:auto;color:var(--primary-deep);font-size:20px;font-weight:800}
+/* CarePass in-app header (framed inside iM뱅크) */
+.appbar .bk{display:flex;align-items:center;gap:3px;height:34px;padding:0 8px 0 4px;border-radius:10px;color:var(--ink-soft);font-size:11.5px;font-weight:800;flex:none}
+.appbar .bk:hover{color:var(--primary);background:var(--primary-wash)}
 
 /* ---------- inspector ---------- */
 .inspector{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
@@ -284,19 +362,90 @@ a.escan:hover{color:var(--primary)}
 .toast b{display:block;font-size:13px}.toast small{opacity:.75;font-weight:500;font-size:11.5px}
 .foot{margin-top:26px;font-size:11.5px;color:var(--ink-mute);text-align:center;line-height:1.7}
 .foot b{color:var(--ink-soft)}
+
+/* 접근성(고령자) 모드 */
+.icon-btn.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+.a11ytog{display:inline-flex;align-items:center;justify-content:center;gap:1px;height:34px;min-width:42px;padding:0 8px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink-soft);font-weight:800;flex:none;font-family:var(--font);line-height:1}
+.a11ytog:hover{border-color:var(--primary);color:var(--primary-deep)}
+.a11ytog.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+.a11ytog .s{font-size:12px;line-height:1;display:inline-flex;align-items:center}
+.a11ytog .b{font-size:17px;line-height:1;display:inline-flex;align-items:center}
+.phone.big .view{font-size:124%}
+.phone.big .balcard .v,.phone.big .abal,.phone.big .acctcard .av{font-size:1.14em}
+.phone.big .verdict .say{font-size:16.5px;line-height:1.75}
+.phone.big .verdict li{font-size:14px}
+.phone.big .btn{font-size:17px;padding:17px}
+.phone.big .evbanner .evh{font-size:18.5px}
+.phone.big input.in,.phone.big select.in{font-size:17px;padding:14px 13px}
+.phone.big .seg button{font-size:14px;padding:10px}
+.phone.big .speakbtn{font-size:14px;padding:11px 15px}
+.phone.big .nav button{font-size:11.5px}
+.phone.big .qchip{font-size:14px;padding:9px 12px}
+.speakbtn{display:inline-flex;align-items:center;gap:6px;margin-top:11px;background:var(--card);border:1.5px solid var(--primary);color:var(--primary-deep);font-size:12.5px;font-weight:800;padding:9px 13px;border-radius:12px}
+.speakbtn:hover{background:var(--primary-wash)}
+
+/* iM Zero AI 상담 */
+.zerofab{position:absolute;right:12px;bottom:76px;z-index:45;width:46px;height:46px;border-radius:15px;background:linear-gradient(150deg,var(--primary),var(--primary-deep));display:grid;place-items:center;color:#fff;box-shadow:0 12px 24px -8px var(--primary);border:2px solid var(--card)}
+.zerofab svg{width:22px;height:22px}
+.zerofab:hover{transform:translateY(-2px)}
+.zerofab .zdot{position:absolute;top:-3px;right:-3px;width:14px;height:14px;border-radius:50%;background:var(--lime);border:2px solid var(--card)}
+.zsheet{position:absolute;inset:0;z-index:60;background:rgba(12,20,19,.4);backdrop-filter:blur(2px);display:flex;flex-direction:column;justify-content:flex-end;animation:fade .2s}
+.zpanel{background:var(--card);border-radius:22px 22px 0 0;max-height:82%;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);animation:zup .28s}
+@keyframes zup{from{transform:translateY(40px);opacity:.4}}
+.zhead{display:flex;align-items:center;gap:10px;padding:15px 16px 12px;border-bottom:1px solid var(--line-soft)}
+.zhead .zav{width:36px;height:36px;border-radius:11px;background:linear-gradient(150deg,var(--primary),var(--primary-deep));display:grid;place-items:center;color:#fff;flex:none}
+.zhead .znm{font-weight:800;font-size:14px}.zhead .zsub{font-size:10.5px;color:var(--primary-deep);font-weight:700}
+.zhead .zx{margin-left:auto;color:var(--ink-mute);font-size:20px;width:30px;height:30px;border-radius:9px}
+.zbody{overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.zmsg{max-width:84%;font-size:13px;font-weight:500;line-height:1.55;padding:11px 13px;border-radius:14px}
+.zmsg.bot{align-self:flex-start;background:var(--card-2);border:1px solid var(--line-soft);border-bottom-left-radius:5px}
+.zmsg.me{align-self:flex-end;background:var(--primary);color:#fff;border-bottom-right-radius:5px;font-weight:600}
+.zq{display:flex;flex-direction:column;gap:7px;padding:10px 16px 16px;border-top:1px solid var(--line-soft)}
+.zq button{text-align:left;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;font-size:12.5px;font-weight:700;color:var(--ink-soft)}
+.zq button:hover{border-color:var(--primary);color:var(--primary-deep);background:var(--primary-wash)}
+
+/* 보안 센터 · 월간 리포트 · SOS */
+.mgmt{display:flex;gap:10px;margin-top:2px}
+.mgmt button{flex:1;background:var(--card);border:1px solid var(--line);border-radius:15px;padding:14px 12px;display:flex;flex-direction:column;gap:8px;align-items:flex-start;box-shadow:var(--shadow);text-align:left}
+.mgmt button:hover{border-color:var(--primary)}
+.mgmt .mgi{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-size:17px;background:var(--primary-wash)}
+.mgmt .mgt{font-size:13px;font-weight:800}.mgmt .mgd{font-size:10.5px;color:var(--ink-mute);font-weight:600}
+.backlink{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:800;color:var(--ink-soft);margin-bottom:2px}
+.backlink:hover{color:var(--primary)}
+.repcard{background:linear-gradient(150deg,var(--primary-deep),var(--primary));color:#fff;border-radius:18px;padding:17px;position:relative;overflow:hidden;box-shadow:0 16px 32px -18px rgba(0,140,120,.85)}
+.repcard .rk{font-size:11.5px;opacity:.9;font-weight:600}.repcard .rv{font-size:26px;font-weight:800;margin-top:4px}
+.repbar{display:flex;height:12px;border-radius:99px;overflow:hidden;margin-top:12px;border:1px solid var(--line)}
+.repbar i{height:100%}
+.repstat{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+.repstat .rs{background:var(--card-2);border:1px solid var(--line);border-radius:13px;padding:12px}
+.repstat .rs b{display:block;font-size:19px;font-weight:800;margin-top:2px}
+.pinpad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:6px}
+.pinpad button{padding:14px;border-radius:12px;background:var(--card-2);border:1px solid var(--line);font-size:19px;font-weight:800;color:var(--ink)}
+.pinpad button:hover{border-color:var(--primary);color:var(--primary-deep)}
+.pindots{display:flex;gap:9px;justify-content:center;margin:10px 0 14px}
+.pindots i{width:13px;height:13px;border-radius:50%;background:var(--line)}
+.pindots i.f{background:var(--primary)}
+.secrow{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line-soft)}
+.secrow:last-child{border-bottom:none}
+.secrow .si{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;font-size:17px;background:var(--card-2);flex:none}
+.secrow .snm{font-weight:700;font-size:13.5px}.secrow .sd{font-size:11px;color:var(--ink-mute);margin-top:1px}
+.secrow .sbtn{margin-left:auto;flex:none;font-size:12px;font-weight:800;padding:8px 13px;border-radius:10px;border:1.5px solid var(--crit);color:var(--crit)}
+.secrow .sbtn:hover{background:var(--crit-wash)}
+.secrow .sbtn.done{border-color:var(--good);color:var(--good)}
 </style>
 
 <div class="wrap">
   <div class="top">
     <div class="brand">
-      <div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 3 4 7 4c2.5 0 4 2 5 3 1-1 2.5-3 5-3 4 0 6.5 4.5 4.5 8.5"/><path d="M12 12l2 2 3.5-3.5"/></svg></div>
-      <div><h1>CarePay</h1><div class="sub">가족 금융 대리권 지갑 · 프로토타입</div></div>
+      <div class="logo" style="font-weight:800;font-size:16px;letter-spacing:-.04em;font-family:var(--font)">iM</div>
+      <div><h1>iM뱅크 <span style="color:var(--primary)">CarePass</span></h1><div class="sub">iM뱅크 앱 내장 기능 · 가족 금융 대리권 지갑 · 프로토타입</div></div>
     </div>
     <div class="spacer"></div>
+    <span class="chip" style="background:color-mix(in srgb,var(--lime) 30%,transparent);color:var(--lime-deep);border-color:color-mix(in srgb,var(--lime) 45%,transparent)">iM뱅크 통합</span>
     <span class="chip" id="netchip">● Sepolia 테스트넷</span>
     <button class="icon-btn" id="themeBtn" title="테마 전환" aria-label="테마 전환"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
   </div>
-  <p class="tagline">계좌 전체 위임이 아닌, <b>AI가 감시하는 업무별·한도별 금융 대리권</b>을 블록체인으로 증명하는 지갑. 아래 폰에서 <b>어머니(위임자)</b>와 <b>딸(대리인)</b> 시점을 오가며, 우측 인스펙터로 AI 판단·온체인 기록·에스크로 잔액을 실시간 확인하세요.</p>
+  <p class="tagline"><b>iM뱅크 앱 안의 새로운 기능 'CarePass'</b> — 계좌 전체 위임이 아닌, AI가 감시하는 업무별·한도별 금융 대리권을 블록체인으로 증명합니다. 아래 폰에서 iM뱅크 홈 → CarePass로 진입하고, <b>어머니(위임자)</b>와 <b>딸(대리인)</b> 계정을 오가며 우측 인스펙터로 AI 판단·온체인 기록·에스크로 잔액을 실시간 확인하세요.</p>
 
   <div class="scenario">
     <div class="lab"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 3v18l6-4 6 4V3"/></svg>데모 시나리오 · 원클릭 재생 & 수동 조작</div>
@@ -307,10 +456,11 @@ a.escan:hover{color:var(--primary)}
     <div class="stage">
       <div class="phone"><div class="screen">
         <div class="notch"></div>
-        <div class="statusbar"><span id="clock">9:41</span><span class="r">CarePay · <svg width="15" height="11" viewBox="0 0 24 18" fill="currentColor"><rect x="0" y="6" width="4" height="12" rx="1"/><rect x="6" y="3" width="4" height="15" rx="1"/><rect x="12" y="0" width="4" height="18" rx="1" opacity=".4"/></svg></span></div>
+        <div class="statusbar"><span id="clock">9:41</span><span class="r">iM뱅크 · <svg width="15" height="11" viewBox="0 0 24 18" fill="currentColor"><rect x="0" y="6" width="4" height="12" rx="1"/><rect x="6" y="3" width="4" height="15" rx="1"/><rect x="12" y="0" width="4" height="18" rx="1" opacity=".4"/></svg></span></div>
         <div class="appbar" id="appbar"></div>
         <div class="view" id="view"></div>
         <div class="nav" id="nav"></div>
+        <div id="zeroRoot"></div>
       </div></div>
     </div>
 
@@ -339,6 +489,15 @@ a.escan:hover{color:var(--primary)}
 const $=(id)=>document.getElementById(id);
 const won=(n)=>'₩'+Math.round(n).toLocaleString('ko-KR');
 const manwon=(n)=>Math.round(n/10000).toLocaleString('ko-KR')+'만원';
+/* 받침 여부로 한글 조사 자동 선택. pair: '은는','이가','을를','과와','으로' */
+function josa(word,pair){
+  const w=String(word).trim();if(!w)return pair==='으로'?'로':(({'은는':'는','이가':'가','을를':'를','과와':'와'})[pair]||'');
+  const c=w.charCodeAt(w.length-1);let batchim=false,jong=0;
+  if(c>=0xAC00&&c<=0xD7A3){jong=(c-0xAC00)%28;batchim=jong!==0;}
+  if(pair==='으로')return(!batchim||jong===8)?'로':'으로';
+  const P={'은는':['은','는'],'이가':['이','가'],'을를':['을','를'],'과와':['과','와']}[pair];
+  return P?(batchim?P[0]:P[1]):'';
+}
 const isoMain=()=>S.main.total-S.pool.cap; /* 본계좌(에스크로 격리분 제외) — 데모 중 불변 */
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 function rng(seed){let s=seed;return()=>{s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff;}}
@@ -411,7 +570,7 @@ const Chain={
 /* ============================ state ============================ */
 const DELEG_ID='DLG-2026-0417';
 const S={
-  role:'delegate', screen:'request', tab:'ai', manual:false,
+  app:'imbank', role:'delegate', screen:'request', tab:'ai', manual:false,
   main:{total:10000000}, protectionFloor:500000,
   pool:{cap:3000000, balance:3000000},
   coSign:500000,
@@ -422,7 +581,8 @@ const S={
   },
   hist:makeHistory(),
   requests:[], cooling:null, lastVerdict:null,
-  trustee:'김민서 (사회복지사)'
+  trustee:'김민서 (사회복지사)',
+  a11y:false, revoked:false, sosSent:false, sosPin:'1122', zero:false, hideAmt:false
 };
 
 /* ============================ AI judge : rule + z-score ============================ */
@@ -430,7 +590,7 @@ function judge(catKey,amount,merchant){
   const a=S.alloc[catKey], reasons=[]; let level='normal', action='approve', cosign=false;
   if(!a.allowed){
     return{level:'danger',action:'hold',cosign:false,z:null,mean:0,std:0,
-      say:`'${a.nm}'은(는) 위임자가 <b>차단</b>한 항목입니다. 현금 인출·송금은 원천 차단되어 결제가 진행되지 않습니다.`,
+      say:`'${a.nm}'${josa(a.nm,'은는')} 위임자가 <b>차단</b>한 항목입니다. 현금 인출·송금은 원천 차단되어 결제가 진행되지 않습니다.`,
       reasons:['위임 항목 권한 = 차단','사용처 화이트리스트 없음']};
   }
   const h=S.hist[catKey]||[]; const st=h.length?stats(h):{mean:amount,std:1,min:amount,max:amount};
@@ -449,20 +609,22 @@ function judge(catKey,amount,merchant){
   if(overMonth){reasons.push(`월 누적 한도 ${won(a.cap)} 초과 (기사용 ${won(a.spent)})`);if(level!=='danger'){level='danger';action='hold';}}
   if(z>=3){reasons.push(`평소 패턴 대비 매우 큰 편차 (z=${z.toFixed(1)}, μ=${won(st.mean)})`);if(level==='normal'){level='danger';action='hold';}}
   else if(z>=2){reasons.push(`평소 패턴을 벗어난 금액 (z=${z.toFixed(1)})`);if(level==='normal'){level='caution';action='confirm';}}
-  if(level==='normal'&&cosign){reasons.push(`고액 구간(≥${won(S.coSign)}) — 공동서명 권장`);level='caution';action='confirm';}
+  if(level==='normal'&&cosign){reasons.push(`고액 구간(≥${won(S.coSign)}) — 추가 인증 권장`);level='caution';action='confirm';}
   if(reasons.length===0)reasons.push(`규칙 위반 없음 · z=${z.toFixed(2)} (정상 범위)`);
   if(cosign&&level!=='normal')cosign=true; else if(!cosign)cosign=false;
 
   const lo=Math.max(st.min,st.mean-st.std), hi=st.mean+st.std;
+  const nm=a.nm.replace(' 결제',''), nmJ=josa(nm,'은는');
   let say;
-  if(level==='normal')say=`평소 ${a.nm.replace(' 결제','')}은 <b>${manwon(lo)}~${manwon(hi)}</b> 수준이고 이번 <b>${won(amount)}</b>은 정상 범위입니다. 단순 승인 가능합니다.`;
-  else if(action==='hold')say=`평소 ${a.nm.replace(' 결제','')}은 <b>${manwon(lo)}~${manwon(hi)}</b>인데 이번 요청은 <b>${won(amount)}</b>입니다. 규칙에 걸려 <b>결제를 임시 보류</b>하고 본인 확인을 요청합니다.`;
-  else say=`평소 ${a.nm.replace(' 결제','')}은 <b>${manwon(lo)}~${manwon(hi)}</b>인데 이번 요청은 <b>${won(amount)}</b>입니다. 위임자 확인 후 승인 여부를 결정하세요.`;
+  if(level==='normal')say=`평소 ${nm}${nmJ} <b>${manwon(lo)}~${manwon(hi)}</b> 수준이고 이번 <b>${won(amount)}</b>은 정상 범위입니다. 바로 승인하셔도 됩니다.`;
+  else if(action==='hold')say=`평소 ${nm}${nmJ} <b>${manwon(lo)}~${manwon(hi)}</b>인데 이번 요청은 <b>${won(amount)}</b>입니다. 규칙에 걸려 <b>결제를 임시 보류</b>하고 본인 확인을 요청합니다.`;
+  else say=`평소 ${nm}${nmJ} <b>${manwon(lo)}~${manwon(hi)}</b>인데 이번 요청은 <b>${won(amount)}</b>입니다. 위임자 확인 후 승인 여부를 결정하세요.`;
   return{level,action,cosign,z,mean:st.mean,std:st.std,min:st.min,max:st.max,say,reasons,hist:h};
 }
 
 /* ============================ actions ============================ */
 async function submitRequest(catKey,amount,merchant){
+  if(S.revoked){toast('⛔','위임 정지됨','위임자가 대리권을 정지했습니다. 결제할 수 없습니다');return;}
   const v=judge(catKey,amount,merchant); S.lastVerdict={catKey,amount,merchant,v};
   const req={id:'REQ-'+rhex(4).toUpperCase(),cat:catKey,amount,merchant,v,
     status:v.action==='hold'?'hold':(v.action==='confirm'?'pending':'pending'),ts:now(),cosign:v.cosign};
@@ -483,7 +645,7 @@ function applyPayment(req){
 }
 async function decide(reqId,ok,reason){
   const req=S.requests.find(r=>r.id===reqId); if(!req)return;
-  if(ok){req.status='approved';req.decided='위임자 승인'+(req.cosign?' · 공동서명':'');
+  if(ok){req.status='approved';req.decided='위임자 승인'+(req.cosign?' · 추가 인증':'');
     applyPayment(req);await logChain('paymentApproved',req,req.decided);
     toast('✅','승인 완료',`${won(req.amount)} · 위임 풀에서만 차감(본계좌 불변)`);}
   else{req.status='rejected';req.decided='거부: '+(reason||'위임자 판단');
@@ -502,10 +664,7 @@ function rejectModal(reqId){
     <button class="btn ghost sm" style="color:var(--ink-mute)" onclick="closeModal()">취소</button></div>
   </div></div>`;
 }
-function approveFlow(reqId){
-  const req=S.requests.find(r=>r.id===reqId);
-  if(req&&req.cosign){cosignModal(reqId);}else{decide(reqId,true);}
-}
+function approveFlow(reqId){ openApprovePin(reqId); }
 async function logChain(fn,req,note){
   await Chain.registerDelegation({delegationId:DELEG_ID,fn,note,
     reqId:req.id||null,cat:req.cat||null,amount:req.amount||0,merchant:req.merchant||null,
@@ -539,18 +698,9 @@ function toast(icon,title,sub){
   $('toaster').appendChild(t);setTimeout(()=>{t.style.transition='.4s';t.style.opacity='0';t.style.transform='translateY(10px)';setTimeout(()=>t.remove(),400);},3800);
 }
 function closeModal(){$('modalRoot').innerHTML='';}
-function cosignModal(reqId){
-  const req=S.requests.find(r=>r.id===reqId);
-  $('modalRoot').innerHTML=`<div class="scrim" onclick="if(event.target===this)closeModal()"><div class="modal">
-    <div class="mi">🔐</div><h3>고액 결제 · 공동서명</h3>
-    <p><b>${won(req.amount)}</b> 결제는 고액 구간(≥${won(S.coSign)})입니다.<br>위임자 생체키 + 2차 확인이 필요합니다.</p>
-    <div class="btnrow"><button class="btn ghost sm" onclick="closeModal()">취소</button>
-    <button class="btn sm" onclick="closeModal();decide('${reqId}',true)">🫆 생체 서명 후 승인</button></div>
-  </div></div>`;
-}
 
 /* ============================ RENDER ============================ */
-function render(){renderApp();renderInsp();$('netchip').textContent='● Sepolia · block '+Chain.block.toLocaleString();}
+function render(){renderApp();renderInsp();renderZero();$('netchip').textContent='● Sepolia · block '+Chain.block.toLocaleString();}
 
 /* ---- roles / nav ---- */
 const NAV={
@@ -558,10 +708,72 @@ const NAV={
   delegator:[['home','홈','M3 11l9-8 9 8 M5 10v10h14V10'],['setup','위임설정','M12 15a3 3 0 100-6 3 3 0 000 6z M19 12a7 7 0 00-.1-1l2-1.5-2-3.4-2.3 1a7 7 0 00-1.7-1L14.5 3h-4l-.4 2.6a7 7 0 00-1.7 1l-2.3-1-2 3.4L4 11a7 7 0 000 2l-2 1.5 2 3.4 2.3-1a7 7 0 001.7 1l.4 2.6h4l.4-2.6a7 7 0 001.7-1l2.3 1 2-3.4-2-1.5a7 7 0 00.1-1z'],['approvals','승인','M9 11l3 3 8-8 M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11'],['history','위임이력','M12 8v4l3 2 M3 12a9 9 0 109-9 9 9 0 00-9 9z M3 12H1']]
 };
 function renderApp(){
+  if(S.app==='imbank'){ renderImbank(); return; }
+  renderCarePassApp();
+}
+/* ---- iM뱅크 앱 홈 (CarePass를 내장 기능으로 노출) ---- */
+function renderImbank(){
   const isDel=S.role==='delegate';
-  $('appbar').innerHTML= isDel
-    ? `<div class="who dau">👩</div><div><div class="nm">이지은</div><div class="rl">대리인 · 딸</div></div><div class="badge">위임받음 · ${DELEG_ID}</div>`
-    : `<div class="who mom">👩‍🦳</div><div><div class="nm">이순자</div><div class="rl">위임자 · 어머니</div></div><div class="badge">총자산 ${manwon(S.main.total)}</div>`;
+  const u=isDel?{nm:'이지은',rl:'딸'}:{nm:'이순자',rl:'어머니'};
+  $('appbar').innerHTML=`
+    <div class="imlogo" style="font-size:19px">iM<b>Bank</b></div>
+    <div style="margin-left:auto;display:flex;gap:5px;align-items:center">
+      ${a11yTog()}
+      <button class="icon-btn" title="검색" style="width:34px;height:34px;border-radius:10px" onclick="toast('ℹ️','검색','데모 범위 밖 기능입니다')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button>
+      <button class="icon-btn" title="알림" style="width:34px;height:34px;border-radius:10px;position:relative" onclick="toast('ℹ️','알림','데모 범위 밖 기능입니다')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg><span style="position:absolute;top:6px;right:7px;width:6px;height:6px;background:var(--crit);border-radius:99px"></span></button>
+    </div>`;
+  $('view').innerHTML=imbankHome(u,isDel);
+  const IMNAV=[['홈','M3 11l9-8 9 8 M5 10v10h14V10',true],['상품','M6 8h12l-1 12H7L6 8z M9 8V6a3 3 0 016 0v2',false],
+    ['혜택','M20 12v9H4v-9 M2 7h20v5H2z M12 22V7 M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z',false],['전체','M4 6h16M4 12h16M4 18h16',false]];
+  $('nav').innerHTML=IMNAV.map(([l,p,on])=>`<button class="${on?'on':''}" onclick="${on?'render()':`toast('ℹ️','${l}','데모 범위 밖 · CarePass 기능에 집중해 주세요')`}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${p}"/></svg>${l}</button>`).join('');
+}
+function imbankHome(u,isDel){
+  const cta=isDel
+    ? {h:'어머니께 위임받은 대리권으로<br>병원비·공과금을 대신 결제하세요',pill:'CarePass 열기'}
+    : {h:'딸에게 위임한 금융 대리권을<br>AI·블록체인으로 안전하게 관리',pill:'CarePass 관리'};
+  const qmenu=[['💸','이체',0],['📄','조회',0],['🛍️','상품몰',0],['🪪','CarePass',1]];
+  const accts=isDel
+    ? [['💳','iM 입출금통장 3214',3240000,'send'],['🪪','CarePass 위임받은 한도',S.pool.balance,'cp'],['🏠','주택청약종합저축 8801',1120000,'send']]
+    : [['💳','iM 주거래통장 1123',isoMain(),'send'],['🪪','CarePass 위임 풀 · 에스크로',S.pool.balance,'cp']];
+  const menu=[['🏦','입출금'],['💰','예적금'],['🌐','외환'],['🏠','대출'],['💳','카드'],['🪪','CarePass',1]];
+  return `
+    <button class="evbanner" onclick="openCarePass()">
+      <span class="evnew">NEW</span>
+      <div class="evtag">iM뱅크 신규 · 가족 금융 대리권</div>
+      <div class="evh">${cta.h}</div>
+      <span class="evpill">${cta.pill} ›</span>
+      <span class="evart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 3 4 7 4c2.5 0 4 2 5 3 1-1 2.5-3 5-3 4 0 6.5 4.5 4.5 8.5"/><path d="M12 12l2 2 3.5-3.5"/></svg></span>
+    </button>
+    <div class="qmenu">${qmenu.map(([e,l,nw])=>`<button onclick="${l==='CarePass'?'openCarePass()':`toast('ℹ️','${l}','데모 범위 밖 기능입니다')`}">${nw?'<span class="qnew">NEW</span>':''}<span class="qic">${e}</span>${l}</button>`).join('')}</div>
+    <div class="acctsec">
+      <div class="acctsec-h">내 계좌 <span class="hidetog ${S.hideAmt?'on':''}" onclick="toggleHideAmt()">금액숨김 <i></i></span></div>
+      <div class="c">${accts.map(([e,nm,bal,act])=>`<div class="arow2 ${act==='cp'?'cp':''}" ${act==='cp'?'onclick="openCarePass()"':''}>
+        <div class="aic">${e}</div>
+        <div style="min-width:0"><div class="anm">${nm}</div><div class="abal tnum">${S.hideAmt?'•••••••':won(bal)}</div></div>
+        ${act==='cp'?'<span class="go2">›</span>':`<button class="asend" onclick="toast('ℹ️','이체','데모 범위 밖 기능입니다')">이체</button>`}
+      </div>`).join('')}</div>
+    </div>
+    <div class="sect-t" style="margin:24px 2px 0">전체 메뉴</div>
+    <div class="mgrid">${menu.map(([e,l,cp])=>`<button onclick="${cp?'openCarePass()':`toast('ℹ️','${l}','데모 범위 밖 기능입니다')`}" style="${cp?'border-color:color-mix(in srgb,var(--primary) 40%,transparent);background:var(--primary-wash)':''}">
+      <span class="mi2">${e}</span><span style="${cp?'color:var(--primary-deep)':''}">${l}</span></button>`).join('')}</div>
+    <div class="foot" style="margin-top:20px;font-size:10.5px">CarePass는 iM뱅크 앱에 통합된 가족 금융 대리권 서비스입니다.</div>`;
+}
+function toggleHideAmt(){S.hideAmt=!S.hideAmt;render();}
+function openCarePass(){S.app='carepass';S.screen=S.role==='delegate'?'request':'home';S.tab='ai';render();
+  toast('🪪','CarePass','iM뱅크 앱 안에서 가족 금융 대리권 기능이 열렸습니다');}
+function exitCarePass(){S.app='imbank';render();}
+/* ---- CarePass 기능 화면 (iM뱅크 프레임 내부) ---- */
+function renderCarePassApp(){
+  const isDel=S.role==='delegate';
+  $('appbar').innerHTML=`
+    <button class="bk" onclick="exitCarePass()" title="iM뱅크 홈으로">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>iM뱅크</button>
+    <div style="min-width:0;margin-left:3px;flex:1">
+      <div style="font-weight:800;font-size:15.5px;line-height:1.1">CarePass</div>
+      <div style="font-size:11px;color:var(--ink-mute);font-weight:600;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${isDel?'대리인 · 딸':'위임자 · 어머니'}</div></div>
+    ${a11yTog()}
+    <div class="badge" style="white-space:nowrap;flex:none">${isDel?DELEG_ID:'총자산 '+manwon(S.main.total)}</div>`;
   const pend=S.requests.filter(r=>r.status==='pending'||r.status==='hold').length;
   $('nav').innerHTML=NAV[isDel?'delegate':'delegator'].map(([k,l,p])=>{
     const on=S.screen===k;const showDot=(k==='approvals'&&pend>0);
@@ -570,7 +782,7 @@ function renderApp(){
   $('view').innerHTML=SCREENS[S.screen]?SCREENS[S.screen]():'<div class="empty">화면 준비 중</div>';
 }
 function go(s){S.screen=s;renderApp();}
-function switchRole(r){S.role=r;S.screen=r==='delegate'?'request':'approvals';render();}
+function switchRole(r){S.role=r;if(S.app==='imbank'){render();return;}S.screen=r==='delegate'?'request':'approvals';render();}
 
 /* ---- phone screens ---- */
 const SCREENS={
@@ -582,8 +794,7 @@ const SCREENS={
     return `<div class="sect" style="margin-top:8px">
       <div class="sect-t">결제 요청 · 대리인</div>
       <div class="c pad">
-        <div class="mode-tag">🎮 수동 조작 · 금액을 직접 바꿔 판정 변화를 확인하세요</div>
-        <label class="fld" style="margin-top:12px"><span class="l">위임 항목</span>
+        <label class="fld" style="margin-top:2px"><span class="l">위임 항목</span>
           <div class="seg">${cats.map(c=>`<button class="${c.key===sel?'on':''}" onclick="S._reqCat='${c.key}';S._mch='';renderApp()">${c.em} ${c.nm.replace(' 결제','')}</button>`).join('')}</div>
         </label>
         <div style="font-size:11.5px;color:var(--ink-mute);margin-top:8px;font-weight:600">
@@ -641,7 +852,11 @@ const SCREENS={
       ${Object.values(S.alloc).map(c=>allocRow(c)).join('')}</div></div>
       <div class="sect"><div class="sect-t">위임 대상 · 신뢰인</div><div class="c pad" style="display:flex;gap:11px;align-items:center">
         <div class="who dau">👩</div><div><div style="font-weight:700;font-size:13.5px">이지은 · 딸</div>
-        <div style="font-size:11.5px;color:var(--ink-mute)">제3자 알림 → ${S.trustee}</div></div></div></div>`;
+        <div style="font-size:11.5px;color:var(--ink-mute)">제3자 알림 → ${S.trustee}</div></div></div></div>
+      <div class="sect"><div class="sect-t">관리</div><div class="mgmt">
+        <button onclick="go('report')"><span class="mgi">📊</span><span class="mgt">월간 리포트</span><span class="mgd">대리결제 감사 · B2G</span></button>
+        <button onclick="go('security')"><span class="mgi">🛡️</span><span class="mgt">보안 센터</span><span class="mgd">위임 정지·후견인 전환</span></button>
+      </div></div>`;
   },
   /* 위임자 : 위임 설정 */
   setup(){
@@ -682,15 +897,16 @@ const SCREENS={
         <div class="who" style="background:var(--card-2)">${S.alloc[r.cat].em}</div>
         <div><div style="font-weight:800;font-size:16px" class="tnum">${won(r.amount)}</div>
           <div style="font-size:11.5px;color:var(--ink-mute)">${r.merchant} · 딸 요청 · ${ago(r.ts)}</div></div>
-        ${r.cosign?`<span class="tag" style="margin-left:auto;background:var(--warn-wash);color:var(--warn)">🔐 공동서명</span>`:''}</div>
+        ${r.cosign?`<span class="tag" style="margin-left:auto;background:var(--warn-wash);color:var(--warn)">🔐 추가 인증</span>`:''}</div>
       <div class="verdict ${v.level}">
         <div class="vh"><span class="vlvl">${v.level==='normal'?'정상':v.level==='caution'?'주의':'위험 · 보류'}</span>
           <span>AI 이상행동 탐지</span></div>
         <div class="say">${v.say}</div>
-        <ul>${v.reasons.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+        <ul>${v.reasons.map(x=>userReason(x)).filter(Boolean).map(x=>`<li>${x}</li>`).join('')}</ul>
+        <button class="speakbtn" onclick="speakVerdict('${r.id}')">🔊 음성으로 듣기</button></div>
       <div class="btnrow">
         <button class="btn danger sm" onclick="rejectModal('${r.id}')">거부</button>
-        <button class="btn sm" onclick="approveFlow('${r.id}')">${r.cosign?'공동서명 후 승인':'승인'}</button></div>
+        <button class="btn sm" onclick="approveFlow('${r.id}')">${r.cosign?'추가 인증 후 승인':'승인'}</button></div>
       </div>`;}).join('')}</div>`;
   },
   /* 위임자 : 위임 이력 타임라인 */
@@ -699,7 +915,9 @@ const SCREENS={
     if(!ev.length)return emptyView('아직 기록된 이력이 없습니다','');
     const fnMap={registerDelegation:['setup','위임 등록'],delegationConfigured:['setup','위임 내역 서명'],
       paymentRequested:['','결제 요청'],paymentApproved:['approve','결제 승인'],paymentRejected:['reject','결제 거부'],
-      limitRaiseRequested:['','한도 상향 요청'],limitRaiseApplied:['approve','한도 발효'],limitRaiseCancelled:['reject','상향 취소']};
+      limitRaiseRequested:['','한도 상향 요청'],limitRaiseApplied:['approve','한도 발효'],limitRaiseCancelled:['reject','상향 취소'],
+      delegationRevoked:['reject','위임 정지 · VC 폐기'],delegationRestored:['setup','위임 재개'],
+      guardianTransfer:['setup','법정후견인 전환'],sosAlert:['reject','🆘 은닉 SOS 신고']};
     return `<div class="sect" style="margin-top:8px"><div class="sect-t">위임 이력 · 온체인 타임라인</div>
       <div class="c pad"><div class="tl">${ev.map(e=>{const[cls,nm]=fnMap[e.fn]||['','기록'];
         return `<div class="ev ${cls}"><div class="mk"></div>
@@ -744,16 +962,17 @@ const MERCH={hospital:['○○정형외과의원','튼튼약국','서울한의�
 /* 실시간 이상탐지 미리보기(부작용 없음) — 입력값에 따라 정상/경계/이상이 즉시 바뀜 */
 function livePreHTML(cat,amt,mch){
   const a=S.alloc[cat]; amt=+(amt||0);
-  if(!amt){return `<div class="livepre"><div class="lh">🔎 <span>실시간 이상탐지 대기</span></div>
-    <div class="lsay">금액을 입력하면 규칙+z-score 판정이 즉시 표시됩니다. 예) 병원비 <b>~15만</b> 정상 · <b>16~19만</b> 경계(주의) · <b>20만↑ / 한도초과</b> 이상</div></div>`;}
+  if(!amt){return `<div class="livepre"><div class="lh">🔎 <span>결제 전 안전 확인 대기</span></div>
+    <div class="lsay">금액을 입력하면 <b>안전 / 주의 / 확인 필요</b>가 바로 표시됩니다. 평소보다 큰 금액이거나 한도를 넘으면 어머니께 확인을 요청해요.</div></div>`;}
   const v=judge(cat,amt,mch||(a.wl[0]||''));
   const pos=clamp((v.z==null?4:(v.z+1))/5,0,1)*100;
-  const lvl=v.level==='normal'?'정상':v.level==='caution'?'주의(경계)':'이상 · 보류';
+  const lvl=v.level==='normal'?'정상':v.level==='caution'?'주의':'확인 필요';
   return `<div class="livepre ${v.level}">
-    <div class="lh"><span>${v.level==='normal'?'🟢':v.level==='caution'?'🟠':'🔴'} 실시간 판정 · ${lvl}</span>
-      <span class="lz">${v.z==null?'차단':'z = '+v.z.toFixed(2)}</span></div>
-    <div class="lsay">${v.reasons[0]}</div>
-    ${v.z==null?'':`<div class="livescale"><i style="left:${pos}%"></i></div>`}</div>`;
+    <div class="lh"><span>${v.level==='normal'?'🟢':v.level==='caution'?'🟠':'🔴'} 결제 전 안전 확인 · ${lvl}</span>
+      <span class="lz">${v.level==='normal'?'안전':v.level==='caution'?'주의':'확인 필요'}</span></div>
+    <div class="lsay">${userReason(v.reasons[0])}</div>
+    ${v.z==null?'':`<div class="livescale"><i style="left:${pos}%"></i></div>`}
+    <button class="speakbtn" style="margin-top:9px;padding:6px 11px;font-size:11px" onclick="speakLive()">🔊 듣기</button></div>`;
 }
 function onAmt(val){
   S._amt=val;
@@ -771,6 +990,177 @@ function doSubmit(){
   submitRequest(cat,amt,mch);S._amt='';
 }
 function copyHash(h){navigator.clipboard&&navigator.clipboard.writeText(h);toast('📋','해시 복사됨',short(h));}
+
+/* ============================ ① 고령자 접근성 · 음성 안내(TTS) ============================ */
+function stripTags(s){return String(s).replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();}
+/* 음성 낭독용 텍스트 정제 — 기호를 자연스러운 말로 치환 */
+function voiceText(s){
+  return String(s)
+    .replace(/<[^>]+>/g,' ')                 // 태그 제거
+    .replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}\u{20E3}]/gu,' ') // 이모지 제거
+    .replace(/[—–−]/g,' ')                   // 대시 제거
+    .replace(/[~〜～∼]/g,' 에서 ')            // 물결표(범위) → "에서"
+    .replace(/₩\s*([\d,]+)/g,'$1원')          // ₩120,000 → 120,000원
+    .replace(/\bz\s*=\s*/gi,'이상점수 ')       // z= → 이상점수
+    .replace(/μ\s*=?/g,'평균 ').replace(/σ\s*=?/g,'표준편차 ')
+    .replace(/≥/g,' 이상 ').replace(/≤/g,' 이하 ')
+    .replace(/(^|\s)-(?=[\d.])/g,'$1마이너스 ') // -0.53 → 마이너스 0.53
+    .replace(/[=]/g,' ')
+    .replace(/%/g,' 퍼센트 ')
+    .replace(/[·∙・ㆍ]/g,' ')                  // 가운뎃점 → 공백
+    .replace(/[()\[\]{}]/g,' ')               // 괄호 제거(내용 유지)
+    .replace(/[→←↑↓↗↘↖↙⇒•|/]/g,' ')
+    .replace(/\s+/g,' ').trim();
+}
+function speak(text){try{if(!('speechSynthesis'in window))return;speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(voiceText(text));u.lang='ko-KR';u.rate=.96;speechSynthesis.speak(u);}catch(e){}}
+/* 폰(사용자 화면)용 — z-score·μ 등 기술 지표 제거. 인스펙터(심사용)에는 원문 유지 */
+function userReason(t){
+  return String(t)
+    .replace(/\(?\s*z\s*=\s*-?\d+(?:\.\d+)?(?:\s*,\s*μ\s*=\s*[^)]*)?\)?/gi,'') // (z=.., μ=..) / z=..
+    .replace(/≥\s*(₩?[\d,]+)/g,'$1 이상').replace(/≤\s*(₩?[\d,]+)/g,'$1 이하') // 부등호 → 말
+    .replace(/\s*·\s*(?=\(|$)/g,' ')     // 지표 제거 후 남는 가운뎃점 정리
+    .replace(/\(\s*\)/g,'')              // 빈 괄호 제거
+    .replace(/\s{2,}/g,' ').replace(/\s+([.,)])/g,'$1').trim();
+}
+function toggleA11y(){
+  S.a11y=!S.a11y;
+  const ph=document.querySelector('.phone');if(ph)ph.classList.toggle('big',S.a11y);
+  const b=$('a11yBtn');if(b)b.classList.toggle('on',S.a11y);
+  if(S.a11y){toast('🔎','큰 글씨 모드 켜짐','음성 안내는 각 화면의 🔊 버튼을 눌러 들으세요');}
+  else{try{speechSynthesis.cancel()}catch(e){}toast('🔎','큰 글씨 모드 꺼짐','');}
+  render();
+}
+function speakVerdict(reqId){const r=S.requests.find(x=>x.id===reqId);if(r)speak(r.v.say+'. '+r.v.reasons.map(userReason).filter(Boolean).join('. '));}
+/* 앱 안에서 켜는 큰 글씨 토글 (iM뱅크 홈·CarePass 헤더 공용) */
+function a11yTog(){return `<button class="a11ytog ${S.a11y?'on':''}" onclick="toggleA11y()" title="큰 글씨 모드" aria-label="큰 글씨 모드"><span class="s">가</span><span class="b">가</span></button>`;}
+function speakLive(){const el=document.querySelector('#livePre');if(!el)return;const a=el.querySelector('.lh span')?.textContent||'';const b=el.querySelector('.lsay')?.textContent||'';speak(a+'. '+b);}
+
+/* ============================ ② iM Zero AI 상담 (쉬운 말 안내) ============================ */
+let ZMSG=[];
+function zeroReply(k){
+  const a=S.alloc,hosRem=Math.max(0,a.hospital.cap-a.hospital.spent),utiRem=Math.max(0,a.utility.cap-a.utility.spent);
+  return{
+    balance:`지금 위임 풀에 ${won(S.pool.balance)}이 남아 있어요. 병원비는 이번 달 ${won(hosRem)}, 공과금은 ${won(utiRem)}까지 더 쓸 수 있어요.`,
+    why:(S.lastVerdict&&S.lastVerdict.v.level!=='normal')?`방금 결제는요, ${stripTags(S.lastVerdict.v.reasons[0])}. 그래서 안전을 위해 잠시 멈추고 어머니께 확인을 부탁드렸어요.`:`최근에 막히거나 보류된 결제는 없어요. 안심하셔도 돼요.`,
+    what:`위임은 '가족에게 결제를 대신 맡기는 것'이에요. 통장 전체를 넘기지 않고, 병원비·공과금처럼 정해둔 항목만, 정해둔 금액 안에서만 맡겨요. 언제든 멈출 수 있고요.`,
+    safe:`네, 안전해요. 모든 결제 요청과 승인은 블록체인에 기록으로 남아 나중에 바꾸거나 지울 수 없어요. AI가 평소와 다른 결제를 먼저 찾아 확인해 드려요.`
+  }[k]||'';
+}
+function askZero(k){
+  const q={balance:'지금 얼마까지 쓸 수 있나요?',why:'방금 결제가 왜 멈췄나요?',what:'위임이 뭔가요?',safe:'이거 안전한가요?'}[k];
+  ZMSG.push({me:q});const ans=zeroReply(k);ZMSG.push({bot:ans});renderZero();
+  if(S.a11y)speak(ans);
+  setTimeout(()=>{const b=document.querySelector('.zbody');if(b)b.scrollTop=b.scrollHeight;},30);
+}
+function toggleZero(){S.zero=!S.zero;if(!S.zero){/*keep log*/}renderZero();}
+function zeroSheet(){
+  if(!ZMSG.length)ZMSG.push({bot:'안녕하세요, iM Zero예요. 궁금한 걸 눌러보시면 쉽게 알려드릴게요.'});
+  const spark=`<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 2l1.8 4.7L18.5 8l-3.6 3 1 4.9L12 13.7 8.1 15.9l1-4.9L5.5 8l4.7-1.3z"/></svg>`;
+  return `<div class="zsheet" onclick="if(event.target===this)toggleZero()"><div class="zpanel">
+    <div class="zhead"><div class="zav">${spark}</div><div><div class="znm">iM Zero</div><div class="zsub">AI 금융 도우미 · CarePass</div></div><button class="zx" onclick="toggleZero()">×</button></div>
+    <div class="zbody">${ZMSG.map(m=>`<div class="zmsg ${m.me?'me':'bot'}">${m.me||m.bot}</div>`).join('')}</div>
+    <div class="zq">
+      <button onclick="askZero('balance')">💰 지금 얼마까지 쓸 수 있나요?</button>
+      <button onclick="askZero('why')">🛑 방금 결제가 왜 멈췄나요?</button>
+      <button onclick="askZero('what')">🤝 위임이 뭔가요?</button>
+      <button onclick="askZero('safe')">🔒 이거 안전한가요?</button>
+    </div></div></div>`;
+}
+function renderZero(){
+  const root=$('zeroRoot');if(!root)return;
+  let h='';
+  if(S.app==='carepass')h+=`<button class="zerofab" onclick="toggleZero()" title="iM Zero AI 상담"><span class="zdot"></span><svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 2l1.8 4.7L18.5 8l-3.6 3 1 4.9L12 13.7 8.1 15.9l1-4.9L5.5 8l4.7-1.3z"/></svg></button>`;
+  if(S.zero&&S.app==='carepass')h+=zeroSheet();
+  root.innerHTML=h;
+}
+
+/* ============================ ③ 은닉형 SOS · 승인 PIN 패드 ============================ */
+let PIN='';
+function openApprovePin(reqId){PIN='';renderPin(reqId);}
+function renderPin(reqId){
+  const req=S.requests.find(r=>r.id===reqId);if(!req)return;
+  $('modalRoot').innerHTML=`<div class="scrim" onclick="if(event.target===this)closeModal()"><div class="modal">
+    <div class="mi">🔒</div><h3>승인 PIN 입력</h3>
+    <p><b>${won(req.amount)}</b> · ${req.merchant}<br>${req.cosign?'고액 결제 — ':''}승인하려면 PIN 4자리를 입력하세요.</p>
+    <div class="pindots">${[0,1,2,3].map(i=>`<i class="${i<PIN.length?'f':''}"></i>`).join('')}</div>
+    <div class="pinpad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button onclick="pinPush('${reqId}',${n})">${n}</button>`).join('')}
+      <button onclick="pinBack('${reqId}')">←</button><button onclick="pinPush('${reqId}',0)">0</button><button onclick="closeModal()" style="font-size:12px">취소</button></div>
+    <p style="font-size:10px;color:var(--ink-mute);margin-top:12px;line-height:1.6">데모 안내 · 일반 승인 PIN <b>1234</b> · 강압 상황용 <b>은닉 SOS PIN ${S.sosPin}</b> (겉으론 정상 승인, 지정기관에 비공개 신고)</p>
+  </div></div>`;
+}
+function pinPush(reqId,n){
+  if(PIN.length>=4)return;PIN+=String(n);
+  if(PIN.length===4){const p=PIN;PIN='';
+    if(p===S.sosPin){triggerSos(reqId);}
+    else{closeModal();decide(reqId,true);}
+  }else renderPin(reqId);
+}
+function pinBack(reqId){PIN=PIN.slice(0,-1);renderPin(reqId);}
+async function triggerSos(reqId){
+  closeModal();const req=S.requests.find(r=>r.id===reqId);if(!req)return;
+  req.status='approved';req.decided='위임자 승인';applyPayment(req);
+  await logChain('paymentApproved',req,'정상 승인(표면)');
+  await logChain('sosAlert',{id:req.id,cat:req.cat,amount:req.amount},'은닉 SOS · 지정기관 비공개 통보');
+  S.sosSent=true;S.tab='ledger';
+  toast('✅','승인 완료',`${won(req.amount)} · ${req.merchant}`);
+  render();
+}
+
+/* ============================ ⑤ 보안 대응 · 원격 폐기/후견인 전환 ============================ */
+function revokeDelegation(){S.revoked=true;logChain('delegationRevoked',{},'대리인 단말 위험 · VC 즉시 폐기');S.tab='ledger';
+  toast('⛔','위임 정지 · VC 폐기','대리인의 모든 결제 권한이 즉시 차단되고 온체인 기록되었습니다');render();}
+function restoreDelegation(){S.revoked=false;logChain('delegationRestored',{},'위임 재개');
+  toast('✅','위임 재개','대리인이 다시 결제를 요청할 수 있습니다');render();}
+function guardianTransfer(){logChain('guardianTransfer',{},'법정후견인 지정 · 권한 체계 자동 전환');S.tab='ledger';
+  toast('⚖️','후견인 전환 기록','법정후견인 권한 체계로 전환되고 온체인에 기록되었습니다');render();}
+
+/* ============================ ④ 월간 대리결제 리포트 (B2G) + 보안 센터 화면 ============================ */
+SCREENS.report=()=>{
+  const a=S.alloc,used=S.pool.cap-S.pool.balance,hos=a.hospital.spent,uti=a.utility.spent,reqs=S.requests;
+  const blocked=reqs.filter(r=>r.status==='rejected'||r.status==='hold').length;
+  const flagged=reqs.filter(r=>r.v&&r.v.level!=='normal').length;
+  const approved=reqs.filter(r=>r.status==='approved').length;
+  const summary=`이번 달 딸 이지은님은 위임 풀에서 총 ${won(used)}을 사용했습니다. 병원비 ${won(hos)}, 공과금 ${won(uti)}이며, AI가 평소와 다른 결제 ${flagged}건을 감지해 확인 절차를 거쳤고 ${blocked}건이 보류·차단되었습니다. 어머니 본계좌 ${won(isoMain())}은 한 번도 접근되지 않았습니다.`;
+  return `<div class="sect" style="margin-top:8px">
+    <a class="backlink" onclick="go('home')">‹ 홈</a>
+    <div class="sect-t">월간 대리결제 리포트 · 2026.09</div>
+    <div class="repcard"><div class="rk">이번 달 대리결제 총액</div><div class="rv tnum">${won(used)}</div>
+      <div class="repbar"><i style="width:${hos/S.pool.cap*100}%;background:var(--warn)"></i><i style="width:${uti/S.pool.cap*100}%;background:var(--lime)"></i><i style="flex:1;background:rgba(255,255,255,.28)"></i></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;margin-top:8px;opacity:.94;font-weight:500"><span>🏥 병원비 ${won(hos)}</span><span>🧾 공과금 ${won(uti)}</span></div></div>
+    <div class="repstat">
+      <div class="rs">AI 이상 감지<b class="tnum" style="color:var(--warn)">${flagged}건</b></div>
+      <div class="rs">보류·차단<b class="tnum" style="color:var(--crit)">${blocked}건</b></div>
+      <div class="rs">정상 승인<b class="tnum" style="color:var(--good)">${approved}건</b></div>
+      <div class="rs">본계좌 접근<b class="tnum" style="color:var(--good)">0회</b></div>
+    </div>
+    <div class="c pad" style="margin-top:13px"><div style="font-size:11px;font-weight:800;color:var(--ink-mute);margin-bottom:7px">AI 자연어 요약</div>
+      <div style="font-size:12.5px;color:var(--ink-soft);line-height:1.65;font-weight:500">${summary}</div>
+      <button class="speakbtn" onclick="speak(this.previousElementSibling.textContent)">🔊 음성으로 듣기</button></div>
+    <div class="c pad" style="margin-top:12px;background:var(--primary-wash);border-color:color-mix(in srgb,var(--primary) 25%,transparent)">
+      <div style="font-size:12px;font-weight:800;color:var(--primary-deep)">🏛️ B2G 확장 — 감사 리포트</div>
+      <div style="font-size:11.5px;color:var(--ink-soft);margin-top:5px;font-weight:500;line-height:1.6">지자체·요양기관이 대리결제 내역을 온체인 근거와 함께 감사할 수 있는 리포트로 내보낼 수 있습니다.</div>
+      <button class="btn sm" style="margin-top:11px" onclick="toast('📄','감사 리포트 생성','온체인 근거 포함 PDF를 생성했습니다 (데모)')">감사 리포트 내보내기</button></div>`;
+};
+SCREENS.security=()=>{
+  const rev=S.revoked;
+  return `<div class="sect" style="margin-top:8px">
+    <a class="backlink" onclick="go('home')">‹ 홈</a>
+    <div class="sect-t">보안 센터</div>
+    <div class="c pad" style="${rev?'background:var(--crit-wash);border-color:color-mix(in srgb,var(--crit) 40%,transparent)':''}">
+      <div style="display:flex;align-items:center;gap:11px">
+        <div class="si" style="width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:19px;background:var(--crit-wash)">${rev?'⛔':'📵'}</div>
+        <div><div style="font-weight:800;font-size:14px">${rev?'위임 정지됨':'대리인 단말 분실·위험 시'}</div>
+          <div style="font-size:11.5px;color:var(--ink-mute)">${rev?'대리인은 결제할 수 없습니다.':'위임 VC를 즉시 폐기(revoke)하고 온체인에 기록합니다.'}</div></div></div>
+      <button class="btn ${rev?'':'danger'}" style="margin-top:13px;${rev?'background:var(--good)':''}" onclick="${rev?'restoreDelegation()':'revokeDelegation()'}">${rev?'위임 다시 시작':'위임 즉시 정지 · VC 폐기'}</button>
+    </div>
+    <div class="sect"><div class="c">
+      <div class="secrow"><div class="si">🧬</div><div><div class="snm">한도 변경 강화 인증</div><div class="sd">생체 + 영상 확인 (설정됨)</div></div><span class="sbtn done">활성</span></div>
+      <div class="secrow"><div class="si">📱</div><div><div class="snm">등록 단말</div><div class="sd">딸 갤럭시 · 최근 접속 방금</div></div><button class="sbtn" style="border-color:var(--line);color:var(--ink-soft)" onclick="toast('ℹ️','단말 관리','데모 범위 밖 기능입니다')">관리</button></div>
+      <div class="secrow"><div class="si">⚖️</div><div><div class="snm">법정후견인 전환</div><div class="sd">인지능력 상실 시 권한 자동 전환</div></div><button class="sbtn" style="border-color:var(--primary);color:var(--primary-deep)" onclick="guardianTransfer()">전환</button></div>
+    </div></div>
+    <div class="c pad" style="margin-top:12px;font-size:11px;color:var(--ink-mute);font-weight:500;line-height:1.6">위임 정지·후견인 전환·강화 인증은 모두 <b style="color:var(--ink-soft)">결제보다 강한 인증</b>과 <b style="color:var(--ink-soft)">온체인 기록</b>을 거칩니다.</div>`;
+};
 
 /* ============================ INSPECTOR ============================ */
 const TABS=[['ai','AI 판단'],['ledger','블록체인 원장'],['escrow','에스크로'],['contract','컨트랙트']];
@@ -813,8 +1203,11 @@ const INSP={
         <div><span>block</span>#${ANCHOR.block.toLocaleString()} · ${new Date(ANCHOR.ts).toLocaleDateString('ko-KR')}</div>
         <div><a class="escan" href="${etherscanTx(ANCHOR.tx)}" target="_blank" rel="noopener noreferrer">Etherscan에서 실제 조회 ${ext}</a></div></div>
       <div style="font-size:10.5px;color:var(--ink-soft);margin-top:9px;font-weight:500;font-family:var(--font)">위임/결제 이벤트의 무결성 해시가 이 온체인 앵커에 연결됩니다. (데모 환경: 개별 이벤트는 로컬 서명 후 앵커링, 앵커 tx는 실제 전송됨)</div></div>`;
-    if(!ev.length)return `<div class="ledger">${anchor}<div class="i-empty" style="padding:22px 12px">아직 위임/결제 이벤트가 없습니다.<br><b>registerDelegation()</b> 호출 시 기록됩니다.</div></div>`;
-    return `<div class="ledger">${anchor}${ev.map(e=>`<div class="lx">
+    const sos=S.sosSent?`<div class="anchor" style="background:var(--crit-wash);border-color:color-mix(in srgb,var(--crit) 50%,transparent)">
+      <div class="ah" style="color:var(--crit)">🆘 은닉형 SOS 발신 감지</div>
+      <div style="font-size:11px;color:var(--ink-soft);margin-top:7px;font-weight:500;font-family:var(--font);line-height:1.6">위임자가 승인 화면에서 <b>은닉 SOS PIN</b>을 입력했습니다. 대리인·주변에는 <b>정상 승인</b>으로 보였지만, 지정기관(사회복지사·경찰)에 <b>비공개 알림</b>이 발송되고 <b>sosAlert</b> 이벤트가 온체인에 은밀히 기록되었습니다. — <b>강압적 위임</b> 정면 대응</div></div>`:'';
+    if(!ev.length)return `<div class="ledger">${anchor}${sos}<div class="i-empty" style="padding:22px 12px">아직 위임/결제 이벤트가 없습니다.<br><b>registerDelegation()</b> 호출 시 기록됩니다.</div></div>`;
+    return `<div class="ledger">${anchor}${sos}${ev.map(e=>`<div class="lx">
       <div class="lxh"><span class="fn">${e.fn}()</span>${e.payload.note||''}<span class="blockpill">#${e.block.toLocaleString()}</span></div>
       <div class="lxb"><div><span>tx&nbsp;&nbsp;&nbsp;</span>${short(e.txHash)} <span class="vbadge sim">로컬</span></div>
         <div><span>hash</span>${short(e.dataHash)}</div>
@@ -853,10 +1246,10 @@ const INSP={
     </div>`;
   },
   contract(){
-    return `<pre class="code"><span class="c">// CarePayRegistry.sol · Sepolia 테스트넷 배포</span>
+    return `<pre class="code"><span class="c">// CarePassRegistry.sol · Sepolia 테스트넷 배포</span>
 <span class="k">pragma solidity</span> ^0.8.20;
 
-<span class="k">contract</span> <span class="f">CarePayRegistry</span> {
+<span class="k">contract</span> <span class="f">CarePassRegistry</span> {
   <span class="k">struct</span> Record { bytes32 dataHash; uint256 ts; string fn; }
   <span class="k">mapping</span>(bytes32 =&gt; Record[]) <span class="k">private</span> _history;
 
@@ -882,18 +1275,27 @@ const INSP={
 
 /* ============================ scenario buttons ============================ */
 const SCN=[
-  ['🎮 직접 조작(수동)',()=>{S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt='';S._mch='';S.manual=true;render();toast('🎮','수동 조작 모드','금액을 직접 입력하면 정상/경계/이상 판정이 실시간으로 바뀝니다');}],
-  ['정상 병원비 8만원',()=>{S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt=80000;S._mch='튼튼약국';render();toast('▶️','시나리오 준비','결제 요청 보내기를 눌러 정상 케이스를 확인하세요');}],
-  ['이상 120만원 병원비',()=>{S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt=1200000;S._mch='○○정형외과의원';render();toast('▶️','시나리오 준비','AI가 z-score로 이상 탐지 → 임시 보류합니다');}],
-  ['현금송금 시도(차단)',()=>{S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='cash';S._amt=500000;S._mch='개인 계좌송금';render();toast('▶️','시나리오 준비','차단 항목 — 원천 차단됩니다');}],
-  ['생활비 보호선 발동',()=>{S.role='delegate';S.screen='request';S._reqCat='hospital';S._mch='튼튼약국';
+  ['🏠 iM뱅크 홈',()=>{S.app='imbank';render();toast('🏠','iM뱅크 앱 홈','CarePass가 iM뱅크 앱의 한 기능으로 들어가 있습니다. 카드나 하단 탭에서 진입하세요');}],
+  ['🎮 직접 조작(수동)',()=>{S.app='carepass';S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt='';S._mch='';S.manual=true;render();toast('🎮','수동 조작 모드','금액을 직접 입력하면 안전/주의/확인 필요 판정이 실시간으로 바뀝니다');}],
+  ['정상 병원비 8만원',()=>{S.app='carepass';S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt=80000;S._mch='튼튼약국';render();toast('▶️','시나리오 준비','결제 요청 보내기를 눌러 정상 케이스를 확인하세요');}],
+  ['이상 120만원 병원비',()=>{S.app='carepass';S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt=1200000;S._mch='○○정형외과의원';render();toast('▶️','시나리오 준비','AI가 평소와 다른 큰 금액을 감지 → 임시 보류합니다');}],
+  ['현금송금 시도(차단)',()=>{S.app='carepass';S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='cash';S._amt=500000;S._mch='개인 계좌송금';render();toast('▶️','시나리오 준비','차단 항목 — 원천 차단됩니다');}],
+  ['생활비 보호선 발동',()=>{S.app='carepass';S.role='delegate';S.screen='request';S._reqCat='hospital';S._mch='튼튼약국';
     S.protectionFloor=Math.max(0,S.pool.balance-50000);S._amt=80000;render();
     toast('▶️','보호선 시나리오','보호선을 잔액 근처로 상향 → 8만원 결제가 보호선을 침범해 자동 보류됩니다');
     setTimeout(()=>doSubmit(),400);}],
-  ['한도 상향→냉각기간',()=>{S.role='delegate';S.screen='dhome';render();requestRaise('hospital',600000);toast('▶️','한도 상향 요청','60초 냉각기간 시작 · 위임자 홈에서 확인');}],
-  ['위임자 승인/거부 화면',()=>{S.role='delegator';S.screen='approvals';render();}]
+  ['한도 상향→냉각기간',()=>{S.app='carepass';S.role='delegate';S.screen='dhome';render();requestRaise('hospital',600000);toast('▶️','한도 상향 요청','60초 냉각기간 시작 · 위임자 홈에서 확인');}],
+  ['위임자 승인/거부 화면',()=>{S.app='carepass';S.role='delegator';S.screen='approvals';render();}],
+  ['♿ 접근성·음성 안내',()=>{S.app='carepass';S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt=250000;S._mch='○○정형외과의원';render();if(!S.a11y)toggleA11y();toast('♿','접근성 모드','실시간 판정의 🔊 듣기로 음성 안내를 확인하세요');}],
+  ['🆘 은닉 SOS 시연',()=>{S.app='carepass';S.role='delegate';S.screen='request';S._reqCat='hospital';S._mch='○○정형외과의원';render();
+    submitRequest('hospital',250000,'○○정형외과의원').then(()=>{S.role='delegator';S.screen='approvals';render();
+      toast('🆘','은닉 SOS 시연','승인 → PIN에 1122 입력. 겉으론 정상 승인, 실제론 지정기관 비공개 신고 + 온체인 기록');});}],
+  ['🤖 iM Zero 상담',()=>{S.app='carepass';S.role='delegate';S.screen='dhome';S.zero=true;render();}]
 ];
-$('scBtns').innerHTML=SCN.map((s,i)=>`<button class="sc-btn" onclick="SCN[${i}][1]()"><span class="n">${i+1}</span>${s[0]}</button>`).join('');
+$('scBtns').innerHTML=`<div class="sc-grp">기본 흐름</div>`+SCN.map((s,i)=>{
+  const sep=(i===8)?`<div class="sc-grp">추가 기능</div>`:'';
+  return sep+`<button class="sc-btn" onclick="SCN[${i}][1]()"><span class="n">${i+1}</span>${s[0]}</button>`;
+}).join('');
 window.SCN=SCN;
 
 /* role toggle chips inside scenario? add a role switch control above phone */
@@ -919,8 +1321,9 @@ tickClock();setInterval(tickClock,10000);
 /* role switch UI — inject a compact segmented control above the phone stage */
 (function(){
   const bar=document.createElement('div');
-  bar.style.cssText='display:flex;justify-content:center;margin-bottom:14px;width:100%';
-  bar.innerHTML=`<div class="seg" style="width:320px;max-width:100%;box-shadow:var(--shadow)">
+  bar.style.cssText='display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:14px;width:100%';
+  bar.innerHTML=`<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-mute)">iM뱅크 로그인 계정</div>
+    <div class="seg" style="width:320px;max-width:100%;box-shadow:var(--shadow)">
     <button id="rD" onclick="switchRole('delegator')">👩‍🦳 어머니(위임자)</button>
     <button id="rE" onclick="switchRole('delegate')">👩 딸(대리인)</button></div>`;
   const stage=document.querySelector('.stage');
