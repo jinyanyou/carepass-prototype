@@ -394,9 +394,25 @@ a.escan:hover{color:var(--primary)}
 .zmsg{max-width:84%;font-size:13px;font-weight:500;line-height:1.55;padding:11px 13px;border-radius:var(--r-md)}
 .zmsg.bot{align-self:flex-start;background:var(--card-2);border:1px solid var(--line-soft);border-bottom-left-radius:5px}
 .zmsg.me{align-self:flex-end;background:var(--primary);color:#fff;border-bottom-right-radius:5px;font-weight:600}
-.zq{display:flex;flex-direction:column;gap:7px;padding:10px 16px 16px;border-top:1px solid var(--line-soft)}
-.zq button{text-align:left;background:var(--card);border:1px solid var(--line);border-radius:var(--r-sm);padding:11px 13px;font-size:12.5px;font-weight:700;color:var(--ink-soft)}
+.zmsg.wait{color:var(--ink-mute)}
+.zq{display:flex;gap:6px;overflow-x:auto;padding:10px 14px 2px;border-top:1px solid var(--line-soft);scrollbar-width:none}
+.zq::-webkit-scrollbar{display:none}
+.zq button{flex:none;white-space:nowrap;display:flex;align-items:center;gap:5px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-pill);padding:8px 12px;font-size:12px;font-weight:700;color:var(--ink-soft)}
 .zq button:hover{border-color:var(--primary);color:var(--primary-deep);background:var(--primary-wash)}
+.zq button:disabled{opacity:.5}
+.zin{display:flex;align-items:center;gap:6px;padding:10px 14px 14px}
+.zin input{flex:1;min-width:0;height:42px;border:1px solid var(--line);border-radius:var(--r-pill);padding:0 15px;font:inherit;font-size:13px;background:var(--card-2);color:var(--ink);outline:none}
+.zin input:focus{border-color:var(--primary)}
+.zin button{flex:none;width:42px;height:42px;border-radius:var(--r-pill);display:grid;place-items:center;border:1px solid var(--line);background:var(--card);color:var(--ink-soft)}
+.zin button svg{width:19px;height:19px}
+.zin button:disabled{opacity:.45}
+.zin .zsend{background:var(--primary);border-color:var(--primary);color:#fff}
+.zin .zmic.on{background:var(--primary-wash);border-color:var(--primary);color:var(--primary-deep);animation:zpulse 1.2s ease-in-out infinite}
+@keyframes zpulse{50%{box-shadow:0 0 0 5px var(--primary-wash)}}
+.zlisten{padding:0 16px;font-size:11px;font-weight:700;color:var(--primary-deep)}
+.phone.big .zmsg{font-size:16px}
+.phone.big .zin input{font-size:16px;height:48px}
+.phone.big .zin button{width:48px;height:48px}
 
 /* 보안 센터 · 월간 리포트 · SOS */
 .mgmt{display:flex;gap:10px;margin-top:2px}
@@ -521,6 +537,8 @@ const ICON={
   users:'<circle cx="9" cy="8" r="3.4"/><path d="M2.5 20c.4-3.4 3.2-5 6.5-5s6.1 1.6 6.5 5"/><path d="M16 5a3.4 3.4 0 010 6.6M17 15c2.4.4 4 1.9 4.3 5"/>',
   sliders:'<path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h7M15 18h5"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="13" cy="18" r="2"/>',
   volume:'<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 8.5a4 4 0 010 7M18.5 6a8 8 0 010 12"/>',
+  mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21"/>',
+  send:'<path d="M12 19V5M6 11l6-6 6 6"/>',
   user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/>',
   undo:'<path d="M9 14l-4-4 4-4"/><path d="M5 10h10a4 4 0 010 8h-3"/>',
   play:{fill:'<path d="M7 4l13 8-13 8z"/>'},
@@ -1087,41 +1105,123 @@ function a11yTog(){return `<button class="a11ytog ${S.a11y?'on':''}" onclick="to
 function speakLive(){const el=document.querySelector('#livePre');if(!el)return;const a=el.querySelector('.lh span')?.textContent||'';const b=el.querySelector('.lsay')?.textContent||'';speak(a+'. '+b);}
 
 /* ============================ ② iM Zero AI 상담 (쉬운 말 안내) ============================ */
-let ZMSG=[];
+/* 데모용 — 외부 LLM 호출 없이 현재 위임 상태로 쉬운 말 답변을 만든다 (실서비스는 iM뱅크 iM Zero 연계) */
+let ZMSG=[],ZBUSY=false,ZREC=null;
+const ZQ={balance:'지금 얼마까지 쓸 수 있나요?',why:'방금 결제가 왜 멈췄나요?',what:'위임이 뭔가요?',safe:'이거 안전한가요?'};
 function zeroReply(k){
   const a=S.alloc,hosRem=Math.max(0,a.hospital.cap-a.hospital.spent),utiRem=Math.max(0,a.utility.cap-a.utility.spent);
   return{
     balance:`지금 위임 풀에 ${won(S.pool.balance)}이 남아 있어요. 병원비는 이번 달 ${won(hosRem)}, 공과금은 ${won(utiRem)}까지 더 쓸 수 있어요.`,
-    why:(S.lastVerdict&&S.lastVerdict.v.level!=='normal')?`방금 결제는요, ${stripTags(S.lastVerdict.v.reasons[0])}. 그래서 안전을 위해 잠시 멈추고 어머니께 확인을 부탁드렸어요.`:`최근에 막히거나 보류된 결제는 없어요. 안심하셔도 돼요.`,
+    why:(S.lastVerdict&&S.lastVerdict.v.level!=='normal')?`방금 결제는요, ${userReason(stripTags(S.lastVerdict.v.reasons[0]))}. 그래서 안전을 위해 잠시 멈추고 어머니께 확인을 부탁드렸어요.`:`최근에 막히거나 보류된 결제는 없어요. 안심하셔도 돼요.`,
     what:`위임은 '가족에게 결제를 대신 맡기는 것'이에요. 통장 전체를 넘기지 않고, 병원비·공과금처럼 정해둔 항목만, 정해둔 금액 안에서만 맡겨요. 언제든 멈출 수 있고요.`,
     safe:`네, 안전해요. 모든 결제 요청과 승인은 블록체인에 기록으로 남아 나중에 바꾸거나 지울 수 없어요. AI가 평소와 다른 결제를 먼저 찾아 확인해 드려요.`
   }[k]||'';
 }
-function askZero(k){
-  const q={balance:'지금 얼마까지 쓸 수 있나요?',why:'방금 결제가 왜 멈췄나요?',what:'위임이 뭔가요?',safe:'이거 안전한가요?'}[k];
-  ZMSG.push({me:q});const ans=zeroReply(k);ZMSG.push({bot:ans});renderZero();
-  if(S.a11y)speak(ans);
-  setTimeout(()=>{const b=document.querySelector('.zbody');if(b)b.scrollTop=b.scrollHeight;},30);
+/* 자유 질문(입력·음성) — 의도 키워드로 답변 선택. 은닉 SOS는 절대 언급하지 않음 */
+function zeroAnswer(q){
+  const a=S.alloc, rem=x=>won(Math.max(0,x.cap-x.spent)), tn=S.trustee.replace(/\s*\((.*)\)/,' $1');
+  if(/비밀번호|비번|PIN|핀번호|인증번호/i.test(q))return '비밀번호나 PIN은 누구에게도 알려주지 마세요. iM뱅크와 iM Zero는 절대 묻지 않아요. 누가 물어보면 사기일 수 있으니 바로 고객센터 1566-5050으로 연락해 주세요.';
+  if(/보호선|생활비/.test(q))return `생활비 보호선은 ${won(S.protectionFloor)}이에요. 결제하고 나서 위임 풀에 이보다 적게 남으면 결제가 자동으로 멈춰요. 어머니 생활비를 지키기 위한 장치예요.`;
+  if(/한도/.test(q)&&/올리|올려|늘리|늘려|높이|높여|상향/.test(q))
+    return (S.cooling?`지금 ${S.alloc[S.cooling.cat].nm.replace(' 결제','')} 1회 한도를 ${won(S.cooling.to)}으로 올리는 중이에요. `:'')+`한도를 올리면 안전을 위해 바로 바뀌지 않고 대기 시간이 지난 뒤 적용돼요. 그 사이 언제든 취소할 수 있고, 신뢰인 ${tn}님께도 알림이 가요.`;
+  if(/정지|멈추고 싶|멈출|그만|해지|끊/.test(q))
+    return S.revoked?'지금은 어머니가 위임을 정지하셔서 대리 결제를 할 수 없어요. 다시 쓰시려면 어머니가 새로 위임해 주셔야 해요.'
+      :'위임은 어머니가 보안 센터에서 언제든 바로 멈출 수 있어요. 멈추면 대리 결제가 즉시 막히고, 그 기록도 블록체인에 남아요.';
+  if(/왜|멈췄|멈춘|보류|막혔|막힌|거절|안 돼|안돼/.test(q))return zeroReply('why');
+  if(/신뢰인|알림|사회복지사/.test(q))return `신뢰인은 ${tn}님이에요. 위임을 새로 만들거나 한도를 바꾸면 신뢰인께 자동으로 알림이 가서, 혹시 모를 강요를 막아요.`;
+  if(/현금|송금|인출|이체/.test(q))return a.cash.allowed?`현금 송금은 한 번에 ${won(a.cash.perTx)}까지 맡겨져 있어요.`:'현금 송금과 인출은 막혀 있어요. 병원비와 공과금처럼 정해둔 곳에서만 결제할 수 있어요.';
+  if(/공과금|전기|가스|수도|통신/.test(q))return `공과금은 한 번에 ${won(a.utility.perTx)}까지, 이번 달 ${rem(a.utility)} 더 낼 수 있어요. 평소 수준의 요금은 자동으로 승인돼요.`;
+  if(/병원|약국|의원|진료|약값/.test(q))return `병원비는 한 번에 ${won(a.hospital.perTx)}까지, 이번 달 ${rem(a.hospital)} 더 낼 수 있어요. 병원, 약국, 의원, 한의원에서만 쓸 수 있어요.`;
+  if(/최근|내역|기록 보|결제했|요청했/.test(q)){
+    const r=S.requests[0];if(!r)return '아직 결제 요청이 없어요.';
+    const st={hold:'잠시 보류돼 확인을 기다리는',pending:'어머니 확인을 기다리는',approved:'승인된',rejected:'거절된'}[r.status]||'처리 중인';
+    return `가장 최근 요청은 ${r.merchant}에서 ${won(r.amount)} 결제예요. 지금 ${st} 상태예요.`;
+  }
+  if(/얼마|잔액|남은|남아|한도|쓸 수/.test(q))return zeroReply('balance');
+  if(/블록체인|기록|증명|위조|조작/.test(q))return '결제 요청, 승인, 거절, 위임 변경이 모두 블록체인에 기록돼요. 나중에 바꾸거나 지울 수 없어서, 다툼이 생겨도 바로 확인할 수 있어요.';
+  if(/안전|해킹|사기|믿/.test(q))return zeroReply('safe');
+  if(/위임|대리|뭐예요|뭔가요/.test(q))return zeroReply('what');
+  if(/고마|감사/.test(q))return '천만에요. 궁금한 게 생기면 언제든 불러주세요.';
+  if(/안녕|반가|누구/.test(q))return '안녕하세요, iM Zero예요. 쓸 수 있는 금액이나 결제가 멈춘 이유 같은 걸 편하게 물어봐 주세요.';
+  return '그 질문은 아직 제가 답하기 어려워요. 쓸 수 있는 금액, 결제가 멈춘 이유, 위임 정지 방법 같은 걸 물어봐 주세요. 자세한 상담은 iM뱅크 고객센터 1566-5050으로 연락 주세요.';
 }
-function toggleZero(){S.zero=!S.zero;if(!S.zero){/*keep log*/}renderZero();}
+function zesc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);}
+function zeroScroll(){setTimeout(()=>{const b=document.querySelector('.zbody');if(b)b.scrollTop=b.scrollHeight;},20);}
+function askZero(k){sendZero(ZQ[k],false,zeroReply(k));}
+function zeroSubmit(){if(ZBUSY)return;const i=$('zInput');if(!i)return;const t=i.value;i.value='';sendZero(t);}
+function sendZero(text,viaVoice,fixed){
+  text=String(text||'').trim();if(!text||ZBUSY)return;
+  zeroStopMic();
+  ZMSG.push({me:text});const bot={bot:'',wait:true};ZMSG.push(bot);ZBUSY=true;renderZero();zeroScroll();
+  setTimeout(()=>{
+    bot.bot=fixed||zeroAnswer(text);bot.wait=false;ZBUSY=false;renderZero();zeroScroll();
+    if(S.a11y||viaVoice)speak(bot.bot);
+  },650);
+}
+/* 음성 인식(STT) — 브라우저 Web Speech API, 한국어. 말이 끝나면 자동 전송하고 답변을 소리로 읽어줌 */
+const ZSR=window.SpeechRecognition||window.webkitSpeechRecognition;
+function zeroMic(){
+  if(ZREC){ZREC.stop();return;}
+  if(ZBUSY)return;
+  if(!ZSR){toast(ic('mic'),'이 브라우저는 음성 인식을 지원하지 않아요','크롬·엣지·사파리에서 이용해 주세요');return;}
+  try{speechSynthesis.cancel()}catch(e){}
+  const r=new ZSR();r.lang='ko-KR';r.interimResults=true;r.continuous=false;r.maxAlternatives=1;
+  let fin='';
+  r.onresult=e=>{
+    let interim='';
+    for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;if(e.results[i].isFinal)fin+=t;else interim+=t;}
+    const inp=$('zInput');if(inp)inp.value=(fin+interim).trim();
+  };
+  r.onerror=e=>{
+    if(e.error==='not-allowed'||e.error==='service-not-allowed')toast(ic('mic'),'마이크 사용 허용이 필요해요','주소창 옆 마이크 권한을 허용해 주세요');
+    else if(e.error==='no-speech')toast(ic('mic'),'말씀이 들리지 않았어요','마이크 버튼을 누르고 다시 말씀해 주세요');
+    else if(e.error!=='aborted')toast(ic('mic'),'음성 인식에 실패했어요','인터넷 연결을 확인하고 다시 시도해 주세요');
+  };
+  r.onend=()=>{ZREC=null;zeroMicUI();const t=fin.trim();if(t){const inp=$('zInput');if(inp)inp.value='';sendZero(t,true);}};
+  ZREC=r;
+  try{r.start();}catch(e){ZREC=null;}
+  zeroMicUI();
+}
+function zeroStopMic(){if(!ZREC)return;const r=ZREC;ZREC=null;r.onend=null;try{r.abort()}catch(e){}zeroMicUI();}
+function zeroMicUI(){
+  const m=document.querySelector('.zin .zmic');if(m){m.classList.toggle('on',!!ZREC);m.disabled=ZBUSY&&!ZREC;}
+  const l=document.querySelector('.zlisten');if(l)l.hidden=!ZREC;
+}
+function toggleZero(){S.zero=!S.zero;if(!S.zero)zeroStopMic();renderZero();}
+function zeroBubbles(){
+  return ZMSG.map(m=>`<div class="zmsg ${m.me?'me':'bot'}${m.wait?' wait':''}">${m.wait?'답변을 준비하고 있어요…':zesc(m.me||m.bot)}</div>`).join('');
+}
 function zeroSheet(){
-  if(!ZMSG.length)ZMSG.push({bot:'안녕하세요, iM Zero예요. 궁금한 걸 눌러보시면 쉽게 알려드릴게요.'});
+  if(!ZMSG.length)ZMSG.push({bot:'안녕하세요, iM Zero예요. 궁금한 걸 말씀하시거나 적어주세요. 아래 질문을 눌러도 돼요.'});
   const spark=`<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 2l1.8 4.7L18.5 8l-3.6 3 1 4.9L12 13.7 8.1 15.9l1-4.9L5.5 8l4.7-1.3z"/></svg>`;
+  const d=ZBUSY?'disabled':'';
   return `<div class="zsheet" onclick="if(event.target===this)toggleZero()"><div class="zpanel">
-    <div class="zhead"><div class="zav">${spark}</div><div><div class="znm">iM Zero</div><div class="zsub">AI 금융 도우미 · CarePass</div></div><button class="zx" onclick="toggleZero()">×</button></div>
-    <div class="zbody">${ZMSG.map(m=>`<div class="zmsg ${m.me?'me':'bot'}">${m.me||m.bot}</div>`).join('')}</div>
+    <div class="zhead"><div class="zav">${spark}</div><div><div class="znm">iM Zero</div><div class="zsub">AI 금융 도우미 · CarePass</div></div><button class="zx" onclick="toggleZero()" aria-label="닫기">×</button></div>
+    <div class="zbody">${zeroBubbles()}</div>
     <div class="zq">
-      <button onclick="askZero('balance')">${ic('wallet')} 지금 얼마까지 쓸 수 있나요?</button>
-      <button onclick="askZero('why')">${ic('stop')} 방금 결제가 왜 멈췄나요?</button>
-      <button onclick="askZero('what')">${ic('users')} 위임이 뭔가요?</button>
-      <button onclick="askZero('safe')">${ic('lock')} 이거 안전한가요?</button>
-    </div></div></div>`;
+      <button ${d} onclick="askZero('balance')">${ic('wallet')} 얼마까지 쓸 수 있나요?</button>
+      <button ${d} onclick="askZero('why')">${ic('stop')} 결제가 왜 멈췄나요?</button>
+      <button ${d} onclick="askZero('what')">${ic('users')} 위임이 뭔가요?</button>
+      <button ${d} onclick="askZero('safe')">${ic('lock')} 안전한가요?</button>
+    </div>
+    <div class="zlisten" ${ZREC?'':'hidden'}>듣고 있어요. 말씀을 마치면 자동으로 보내드려요.</div>
+    <form class="zin" onsubmit="event.preventDefault();zeroSubmit()">
+      <button type="button" class="zmic${ZREC?' on':''}" onclick="zeroMic()" aria-label="음성으로 질문하기" title="음성으로 질문하기">${ic('mic')}</button>
+      <input id="zInput" type="text" placeholder="iM Zero에게 물어보세요" autocomplete="off" maxlength="300" aria-label="질문 입력">
+      <button type="submit" class="zsend" ${d} aria-label="보내기">${ic('send')}</button>
+    </form></div></div>`;
 }
 function renderZero(){
   const root=$('zeroRoot');if(!root)return;
+  const open=S.zero&&S.app==='carepass', sheet=root.querySelector('.zsheet');
+  if(open&&sheet){ /* 열린 시트는 다시 만들지 않음 — 입력 중인 글자·포커스·등장 애니메이션 유지 */
+    sheet.querySelector('.zbody').innerHTML=zeroBubbles();
+    sheet.querySelectorAll('.zq button,.zin .zsend').forEach(b=>b.disabled=ZBUSY);
+    zeroMicUI();return;
+  }
   let h='';
   if(S.app==='carepass')h+=`<button class="zerofab" onclick="toggleZero()" title="iM Zero AI 상담"><span class="zdot"></span><svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 2l1.8 4.7L18.5 8l-3.6 3 1 4.9L12 13.7 8.1 15.9l1-4.9L5.5 8l4.7-1.3z"/></svg></button>`;
-  if(S.zero&&S.app==='carepass')h+=zeroSheet();
+  if(open)h+=zeroSheet();
   root.innerHTML=h;
 }
 
