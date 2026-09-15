@@ -16,7 +16,7 @@
       "note": "병원비 승인",
       "cat": "hospital",
       "amount": 120000,
-      "merchant": "○○한의원",
+      "merchant": "대구의료원",
       "ts": 1789437600000,
       "salt": "5e0b9d61a4c83f27"
     },
