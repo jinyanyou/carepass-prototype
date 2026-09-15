@@ -1,0 +1,23 @@
+{
+  "name": "carepass-contracts",
+  "version": "1.0.0",
+  "description": "CarePassRegistry — 가족 금융 대리권 이벤트 해시 기록 컨트랙트",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:local": "hardhat run scripts/deploy-and-seed.js --network localhost",
+    "deploy:sepolia": "hardhat run scripts/deploy-and-seed.js --network sepolia",
+    "verify:sepolia": "node scripts/verify.js"
+  },
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.2",
+    "dotenv": "^17.4.2",
+    "hardhat": "^2.29.1"
+  },
+  "private": true
+}
