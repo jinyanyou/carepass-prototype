@@ -56,18 +56,31 @@ CarePass 앱 화면(고령자·가족이 보는 뷰)에는 **쉬운 말만** 노
 ### Won't (설계 발표 · 실제 연동 필요)
 - 실제 은행 코어 API 연동, 생체인증, 다중서명
 
-## 스마트컨트랙트 · 온체인 검증
+## 스마트컨트랙트 · 블록체인 기록
 
 `registerDelegation` / `getHistory` 두 함수만 구현. 위임 내용(VC)은 오프체인에 두고 **해시만 온체인**에 기록해 프라이버시를 보호합니다. 계약 원본은 앱 내 `컨트랙트` 탭 참고.
 
-- **검증 앵커**: 인스펙터 `블록체인 원장` 탭에 **실재하는 Sepolia 트랜잭션**을 앵커로 표시하고 Etherscan 링크를 겁니다. 클릭 시 외부 익스플로러에서 실제 조회됩니다.
-  `0x065223dceab353d2e3b4b5a7b51a9a987727676565fd23390a4e9c141b0ffdbc` (block 11,665,005)
-- 개별 위임/결제 이벤트의 무결성 해시는 브라우저 **Web Crypto SHA-256**으로 계산하며, 비보안 컨텍스트(file://)에서는 순수 JS SHA-256으로 폴백합니다.
+- **데모 범위**: 인스펙터 `블록체인 원장`은 브라우저 안에서 동작하는 **로컬 체인 시뮬레이션**입니다. 컨트랙트는 Sepolia 테스트넷 배포를 전제로 설계했으며, 데모에서는 실제 네트워크로 트랜잭션을 전송하지 않습니다.
+- 개별 위임/결제 이벤트의 무결성 해시는 브라우저 **Web Crypto SHA-256**으로 실제 계산하며, 비보안 컨텍스트(file://)에서는 순수 JS SHA-256으로 폴백합니다.
+- 화면에 나오는 가맹점명(○○정형외과의원·○○약국·○○한의원)은 가상의 이름입니다.
 
 ## 기술
 
-- 단일 HTML 파일 · 바닐라 JS · 외부 프레임워크 없음 (폰트만 CDN: Pretendard)
+- 단일 HTML 파일 · 바닐라 JS · 외부 프레임워크 없음 (폰트만 CDN: Pretendard · Noto Sans KR · JetBrains Mono)
 - iM뱅크 공식 브랜드 컬러(민트 `#00c7a9`) 반영 · Pretendard 폰트
 - 실제 `crypto.subtle` SHA-256 해싱 (비보안 컨텍스트는 순수 JS SHA-256 폴백)
 - 라이트/다크 테마 대응 · 반응형
 - 접근성: 큰 글씨 모드 + 음성 안내(TTS)로 디지털 소외계층 대응
+
+## 사용한 외부 리소스 · 라이선스
+
+| 리소스 | 용도 | 라이선스 |
+|---|---|---|
+| [Pretendard](https://github.com/orioncactus/pretendard) v1.3.9 | 본문 폰트 (jsDelivr CDN) | SIL Open Font License 1.1 |
+| [Noto Sans KR](https://fonts.google.com/noto/specimen/Noto+Sans+KR) | 대체 폰트 (Google Fonts) | SIL Open Font License 1.1 |
+| [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) | 해시·코드 표시 (Google Fonts) | SIL Open Font License 1.1 |
+| Web Speech API · Web Crypto API | 음성 안내·음성 인식, SHA-256 해시 | 브라우저 내장 표준 API |
+
+- 폰트 파일은 저장소에 포함하지 않고 CDN에서 불러옵니다.
+- 이상탐지 학습 데이터(병원비·공과금 결제 이력)는 직접 만든 합성 데이터이며, 실제 개인정보는 포함하지 않습니다.
+- iM뱅크 브랜드 컬러는 주최사 공모전 출품용으로만 사용했으며, iM 캐릭터(마스코트) 이미지는 사용하지 않았습니다.
