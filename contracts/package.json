@@ -10,7 +10,8 @@
     "test": "hardhat test",
     "deploy:local": "hardhat run scripts/deploy-and-seed.js --network localhost",
     "deploy:sepolia": "hardhat run scripts/deploy-and-seed.js --network sepolia",
-    "verify:sepolia": "node scripts/verify.js"
+    "verify:sepolia": "node scripts/verify.js",
+    "check:sepolia": "hardhat run scripts/check-balance.js --network sepolia"
   },
   "license": "MIT",
   "type": "commonjs",

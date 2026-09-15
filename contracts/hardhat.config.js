@@ -1,7 +1,10 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config({ quiet: true });
 
-const { PRIVATE_KEY, SEPOLIA_RPC_URL, ETHERSCAN_API_KEY } = process.env;
+const { SEPOLIA_RPC_URL, ETHERSCAN_API_KEY } = process.env;
+// MetaMask에서 복사한 키는 0x가 없으므로 붙여 준다
+const rawKey = (process.env.PRIVATE_KEY || "").trim();
+const PRIVATE_KEY = rawKey && (rawKey.startsWith("0x") ? rawKey : "0x" + rawKey);
 
 module.exports = {
   solidity: {
