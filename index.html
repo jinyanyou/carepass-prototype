@@ -275,8 +275,8 @@ input.in:focus,select.in:focus{outline:2px solid var(--primary);outline-offset:1
 .insp-head{padding:15px 18px 0}
 .insp-head h3{font-size:15px;display:flex;align-items:center;gap:8px}
 .insp-head p{font-size:12px;color:var(--ink-mute);margin:4px 0 12px;font-weight:500}
-.tabs{display:flex;gap:3px;border-bottom:1px solid var(--line);padding:0 10px}
-.tabs button{padding:10px 13px;font-size:12.5px;font-weight:700;color:var(--ink-mute);border-bottom:2.5px solid transparent;margin-bottom:-1px}
+.tabs{display:flex;flex-wrap:wrap;gap:3px;border-bottom:1px solid var(--line);padding:0 10px}
+.tabs button{padding:10px 11px;font-size:12.5px;font-weight:700;color:var(--ink-mute);border-bottom:2.5px solid transparent;margin-bottom:-1px}
 .tabs button.on{color:var(--primary);border-color:var(--primary)}
 .insp-body{padding:18px}
 .i-empty{color:var(--ink-mute);font-size:13px;text-align:center;padding:40px 20px;line-height:1.7}
@@ -299,6 +299,17 @@ input.in:focus,select.in:focus{outline:2px solid var(--primary);outline-offset:1
 .spark i{flex:1;background:var(--primary);opacity:.35;border-radius:2px 2px 0 0;min-height:2px}
 .spark i.hi{background:var(--crit);opacity:1}
 
+/* 인스펙터 : 기관 인증 */
+.cst{font-size:12.5px;font-weight:800;color:var(--ink-soft);display:flex;align-items:center;gap:7px}
+.certlist{display:flex;flex-direction:column;gap:9px}
+.certrow{border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 13px;background:var(--card-2)}
+.certrow.off{background:var(--crit-wash);border-color:color-mix(in srgb,var(--crit) 32%,transparent)}
+.certrow .ch{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;flex-wrap:wrap}
+.certrow .ch span{font-size:11px;font-weight:600;color:var(--ink-mute)}
+.certrow .cb{font-size:11px;color:var(--ink-soft);margin-top:8px;display:grid;gap:4px;font-family:var(--mono);word-break:break-all}
+.certrow .cb span{color:var(--ink-mute);display:inline-block;min-width:74px;margin-right:8px}
+.certrow .cact{display:flex;gap:7px;margin-top:10px}
+.certrow .cact .btn{width:auto;padding:7px 11px}
 .ledger .lx{border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 13px;margin-bottom:10px;background:var(--card-2)}
 .ledger .lx:last-child{margin-bottom:0}
 .ledger .lxh{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800}
@@ -347,6 +358,31 @@ a.escan:hover{color:var(--primary)}
 .mchcard .mn span{font-size:11px;font-weight:600;color:var(--ink-mute);margin-left:4px}
 .mchcard .ma{font-size:11px;color:var(--ink-soft);margin-top:3px;line-height:1.5;font-weight:500}
 .mchsrc{font-size:10px;color:var(--ink-mute);margin-top:6px;font-weight:500}
+.mchcard.crit{border-color:color-mix(in srgb,var(--crit) 50%,transparent);background:var(--crit-wash)}
+.mchcard.crit .mt{color:var(--crit)}
+/* 청구서 QR 스캔 · 서명 검증 카드 */
+.qrscan{display:flex;align-items:center;gap:10px;width:100%;margin-top:13px;padding:11px 13px;text-align:left;
+  border:1.5px dashed color-mix(in srgb,var(--primary) 50%,transparent);border-radius:var(--r-sm);
+  background:var(--primary-wash);color:var(--primary-deep)}
+.qrscan:hover{border-style:solid}
+.qrscan svg{width:20px;height:20px;flex:none}
+.qrscan b{display:block;font-size:12.5px;font-weight:800}
+.qrscan small{display:block;font-size:10.5px;color:var(--ink-mute);font-weight:500;margin-top:2px}
+.qrmodal{max-width:360px;text-align:left}
+.qrmodal .mi,.qrmodal h3,.qrmodal>p:first-of-type{text-align:center}
+.qrmodal .mi{margin-left:auto;margin-right:auto}
+.qrlist{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.qrlist button{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:11px 12px;
+  border:1px solid var(--line);border-radius:var(--r-sm);background:var(--card-2);color:var(--ink)}
+.qrlist button:hover{border-color:var(--primary);background:var(--primary-wash)}
+.qrlist .qi{width:34px;height:34px;flex:none;border-radius:var(--r-xs);background:var(--card);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink-soft)}
+.qrlist .qi svg{width:19px;height:19px}
+.qrlist .qt b{display:block;font-size:12.5px;font-weight:800}
+.qrlist .qt small{display:block;font-size:10.5px;color:var(--ink-mute);font-weight:500;margin-top:2px}
+.invcard .invmeta{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);
+  font-size:10.5px;color:var(--ink-mute);font-weight:600;align-items:center}
+.invcard .invmeta svg{width:12px;height:12px;vertical-align:-2px}
+.phone.big .qrscan b{font-size:15px} .phone.big .qrscan small,.phone.big .invcard .invmeta{font-size:13px}
 .phone.big .mchcard .mn{font-size:16px} .phone.big .mchcard .ma,.phone.big .mchlist button{font-size:14px}
 .livepre{margin-top:12px;border-radius:var(--r-sm);padding:12px 13px;border:1.5px solid var(--line);background:var(--card);transition:.2s}
 .livepre.normal{border-color:color-mix(in srgb,var(--good) 45%,transparent);background:var(--good-wash)}
@@ -561,6 +597,10 @@ const ICON={
   send:'<path d="M12 19V5M6 11l6-6 6 6"/>',
   user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/>',
   undo:'<path d="M9 14l-4-4 4-4"/><path d="M5 10h10a4 4 0 010 8h-3"/>',
+  qr:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14h1M14 20h3.5M20.5 17.5v3.5"/>',
+  cert:'<rect x="3" y="4" width="18" height="11" rx="2"/><path d="M7 8h7M7 11h4"/><circle cx="16.5" cy="17" r="2.6"/><path d="M14.7 19.2L13.6 22l2.9-1.1 2.9 1.1-1.1-2.8"/>',
+  key:'<circle cx="8" cy="12" r="3.6"/><path d="M11.6 12H21M17.5 12v3M20 12v2.2"/>',
+  pen:'<path d="M4 20h3.6L20 7.6a2 2 0 00-2.8-2.8L4.8 17.2z"/><path d="M15.4 5.6l3 3"/>',
   play:{fill:'<path d="M7 4l13 8-13 8z"/>'},
   dotGood:{dot:'var(--good)'}, dotWarn:{dot:'var(--warn)'}, dotCrit:{dot:'var(--crit)'}
 };
@@ -634,7 +674,8 @@ function makeHistory(){
 /* ============================ escrow "smart contract" (mirror of Solidity) ============================ */
 /* ONCHAIN:BEGIN — contracts/scripts/sync-frontend.js 가 자동 생성. 직접 고치지 마세요 */
 const DEMO_EVENTS={"delegationId":"DLG-2026-0914","events":[{"delegationId":"DLG-2026-0914","fn":"delegationConfigured","note":"초기 위임 설정 서명","pool":3000000,"floor":500000,"ts":1789347600000,"salt":"c1a7e0f3b92d4a58"},{"delegationId":"DLG-2026-0914","fn":"paymentApproved","note":"병원비 승인","cat":"hospital","amount":120000,"merchant":"대구의료원","ts":1789437600000,"salt":"5e0b9d61a4c83f27"},{"delegationId":"DLG-2026-0914","fn":"paymentApproved","note":"공과금 자동승인","cat":"utility","amount":145000,"merchant":"한국전력 공과금","ts":1789452000000,"salt":"93f2c8a06d17b4e5"}]};
-const ONCHAIN={"network":"sepolia","chainId":11155111,"address":"0x9fDa394DfeF9a7B8AF637c9620c5ce8ad8751A1a","recorder":"0x0E00cB50396Bf3a3cdC80efab74bEaDeE501001F","deployTx":"0x34d209c77772a2dc73c137f44350628a335fa460ac91fd33509c62364a57a00c","deployBlock":11711495,"delegationKey":"0x21a510880cdada101f448d00fffba4a1fe24ef86034cfe75fc019f0bcd974576","explorer":"https://sepolia.etherscan.io","rpc":["https://ethereum-sepolia-rpc.publicnode.com","https://sepolia.drpc.org"],"events":[{"fn":"delegationConfigured","dataHash":"0x7f76f3c8fad5fdef6cb4df308623992a15d9cfc621c9173a4ab02a32f2e06313","txHash":"0x41b7565802478b9120acb7a69a0732ebcdd9e3d525f63d8b5bd6c97610c25056","block":11711497},{"fn":"paymentApproved","dataHash":"0xddf735d45a47d517068c1ca39db018b0b2b87c0fe58aa67ff66589d380a8fa40","txHash":"0x5ca6c2d7c72331391ea375d1e8799ed78013ec40003133852087ee3282ca4fee","block":11711499},{"fn":"paymentApproved","dataHash":"0xecc2cfd18c530026e634fee2b41b64856c5e495d0bac13c63925c12102d70336","txHash":"0x22787b75c85f5c5e693729a5353a3c6c7c5f1e46730c636555e574bf861f7761","block":11711501}]};
+const ONCHAIN={"network":"sepolia","chainId":11155111,"address":"0x760394Add857d89C35FaC3220E21c1C61f0ef6A9","recorder":"0x0E00cB50396Bf3a3cdC80efab74bEaDeE501001F","deployTx":"0x32285a432d5aac50e0ad3a745128589133af2ecf5e4baf201d09ba6c17a782c2","deployBlock":11724062,"delegationKey":"0x21a510880cdada101f448d00fffba4a1fe24ef86034cfe75fc019f0bcd974576","explorer":"https://sepolia.etherscan.io","rpc":["https://ethereum-sepolia-rpc.publicnode.com","https://sepolia.gateway.tenderly.co"],"events":[{"fn":"delegationConfigured","dataHash":"0x7f76f3c8fad5fdef6cb4df308623992a15d9cfc621c9173a4ab02a32f2e06313","txHash":"0xcb7686a03e669409215c95e9630303e6af16080fee6f379575bad2bb5ad8754f","block":11724072},{"fn":"paymentApproved","dataHash":"0xddf735d45a47d517068c1ca39db018b0b2b87c0fe58aa67ff66589d380a8fa40","txHash":"0x65485aaf2bc87cf5c277288757ef0abc393bbf39fb4e71b2be52719687090c66","block":11724074},{"fn":"paymentApproved","dataHash":"0xecc2cfd18c530026e634fee2b41b64856c5e495d0bac13c63925c12102d70336","txHash":"0xf87a765305e54c279942ab6c39eb18edd3519fcd9e5ff09498742f66923d320f","block":11724076}],"institutions":[{"name":"대구의료원","instId":"0x5f0ea8f8533d47fa107b6a13a85fa57454f2ae4446ca12dc7dc36308a9116197","status":"certified","certifyTx":"0x0d2cf2f914b71e6a3c440bdf494361ed169ee9a932aa3a41f4cf70dd41ab4598","certifyBlock":11724064},{"name":"경북대학교병원","instId":"0xdea5a9dd0a4bd05eb24e3bd489a8e23d87c331724f9d7176c69994d4c992a0a5","status":"certified","certifyTx":"0xc7234a405fa3b994d5c6a51a964ed17821fb401571f86b78f19ab562d8263c20","certifyBlock":11724066},{"name":"○○재활요양병원","instId":"0x5c253cc0b5cbdf47377b3aa01c9da031e279c0128ff262a69de3a0aa47691090","status":"revoked","certifyTx":"0x6d2bd134d56e8594b796810939235b0ee098d695408653fb961c532e1994c107","certifyBlock":11724068,"revokeReason":"폐업 신고 · 요양기관 자격 정지","revokeTx":"0xf33d936af0fe248b00e61a9d8cf8169f8deafc90ba460e0a9bc494fe6ba78915","revokeBlock":11724070}]};
+const CERT={"curve":"P-256 (ECDSA, SHA-256)","source":"건강보험심사평가원 「전국 병의원 및 약국 현황」","basis":"2026.6.","note":"시연용 의료기관 서명키(ECDSA P-256). 브라우저에서 '병원 단말이 청구서에 전자서명'하는 과정을 실제 WebCrypto로 보여 주기 위한 데모 키이며 보호하는 자산이 없습니다. 실서비스에서는 기관 단말의 보안영역(HSM/Secure Enclave)에 보관하고 앱에 내려보내지 않습니다.","institutions":[{"name":"대구의료원","type":"종합병원","gu":"서구","addr":"평리로 157, (중리동)","tel":"053-560-7575","fictional":false,"status":"certified","revokeReason":null,"instId":"0x5f0ea8f8533d47fa107b6a13a85fa57454f2ae4446ca12dc7dc36308a9116197","proof":{"src":"건강보험심사평가원 「전국 병의원 및 약국 현황」","basis":"2026.6.","name":"대구의료원","type":"종합병원","gu":"서구","addr":"평리로 157, (중리동)","tel":"053-560-7575"},"proofHash":"0x8ad1c3e4a2965ffdb9a3f05e86bad955c834f82c1c402204e623de18fc2de6cc","keyX":"0x266ca931106cfc6a6315695ca8a1c8e23da29e49a92b8552e8ffbfd2de0ade7a","keyY":"0xb2dad8d2b23a8d0fc650f4185f27982ae0f02acf64bd312ce9dde3ff3f2c0ad6","jwk":{"kty":"EC","crv":"P-256","x":"JmypMRBs_GpjFWlcqKHI4j2inkmpK4VS6P-_0t4K3no","y":"strY0rI6jQ_GUPQYXyeYKuDwKs9kvTEs6d3j_z8sCtY","d":"pST16svBQYpffs7nxFCmBM2PvTkRdF9b6dyRLJW24gI"},"certifyTx":"0x0d2cf2f914b71e6a3c440bdf494361ed169ee9a932aa3a41f4cf70dd41ab4598","certifyBlock":11724064,"revokeTx":null,"revokeBlock":null},{"name":"경북대학교병원","type":"상급종합","gu":"중구","addr":"동덕로 130, (삼덕동2가, 경북대학교병원)","tel":"053-200-5114","fictional":false,"status":"certified","revokeReason":null,"instId":"0xdea5a9dd0a4bd05eb24e3bd489a8e23d87c331724f9d7176c69994d4c992a0a5","proof":{"src":"건강보험심사평가원 「전국 병의원 및 약국 현황」","basis":"2026.6.","name":"경북대학교병원","type":"상급종합","gu":"중구","addr":"동덕로 130, (삼덕동2가, 경북대학교병원)","tel":"053-200-5114"},"proofHash":"0x99454e83b6ada78e8a6f9574517910b18bb3835c2a9b4fd58d6aa20d8b1e227b","keyX":"0x4da93e591611bfa1321dd649734a9a0dc4a26a967ed89dcd3498d56ca7eed73a","keyY":"0xcdb3bfc2ba420ca1515d06721424d046215944e027066f16d6dbc0d072026ccc","jwk":{"kty":"EC","crv":"P-256","x":"Tak-WRYRv6EyHdZJc0qaDcSiapZ-2J3NNJjVbKfu1zo","y":"zbO_wrpCDKFRXQZyFCTQRiFZROAnBm8W1tvA0HICbMw","d":"IZDyeX9Q9vzNEkv2Vaq9RGYQzW29LnagnLLY9eeULTM"},"certifyTx":"0xc7234a405fa3b994d5c6a51a964ed17821fb401571f86b78f19ab562d8263c20","certifyBlock":11724066,"revokeTx":null,"revokeBlock":null},{"name":"○○재활요양병원","type":"요양병원","gu":"시연용","addr":"—","tel":"—","fictional":true,"status":"revoked","revokeReason":"폐업 신고 · 요양기관 자격 정지","instId":"0x5c253cc0b5cbdf47377b3aa01c9da031e279c0128ff262a69de3a0aa47691090","proof":{"src":"시연용 가상 기관 (인증 취소 이력 시연)","basis":"2026.6.","name":"○○재활요양병원","type":"요양병원","gu":"시연용","addr":"—","tel":"—"},"proofHash":"0xe958c2bb098abc742b83a3fb8bedab252aadc9e040b7327daba92dcff08cc8a2","keyX":"0xd5af0b96c588d195ffcb0a605f848a3adb6513ad44508b88523389149cff0898","keyY":"0xfa6b7e173c1b479de7f8755d1c8ad0dac4ce48e2f0b6c4af168e60b2667c2fab","jwk":{"kty":"EC","crv":"P-256","x":"1a8LlsWI0ZX_ywpgX4SKOttlE61EUIuIUjOJFJz_CJg","y":"-mt-FzwbR53n-HVdHIrQ2sTOSOLwtsSvFo5gsmZ8L6s","d":"5MYcpEGRyerb2i625qLQ7uar3iY4Rr-5d5Q8zcMe3iw"},"certifyTx":"0x6d2bd134d56e8594b796810939235b0ee098d695408653fb961c532e1994c107","certifyBlock":11724068,"revokeTx":"0xf33d936af0fe248b00e61a9d8cf8169f8deafc90ba460e0a9bc494fe6ba78915","revokeBlock":11724070}]};
 /* ONCHAIN:END */
 /* 초기 이력(DEMO_EVENTS)은 Sepolia에 실제로 기록돼 있어 공개 노드에서 getHistory로 읽어 해시를 대조한다.
    시연 중 새로 생기는 이벤트는 브라우저 로컬에만 기록 (실서비스는 은행 기록 서버가 전송) */
@@ -707,6 +748,129 @@ const Medical={
 const explorerTx=h=>ONCHAIN&&ONCHAIN.explorer?`${ONCHAIN.explorer}/tx/${h}`:null;
 const explorerAddr=a=>ONCHAIN&&ONCHAIN.explorer?`${ONCHAIN.explorer}/address/${a}#code`:null;
 
+/* ================= 의료기관 인증 · 청구서 전자서명 (사칭 방지) =================
+   이름만 대조하면 사기범이 결제처 이름을 "대구의료원"으로 적어도 통과한다.
+   그래서 ① 병원이 최초 1회 요양기관 목록으로 실재를 확인받고 인증(서명 공개키)을 발급받고,
+        ② 발행하는 청구서(QR)마다 기관 서명키로 전자서명하고,
+        ③ 앱이 온체인 인증 목록에서 읽은 공개키로 그 서명을 검증한다.
+   사칭 방지의 핵심은 전자서명이고, 블록체인의 역할은 여러 은행·결제대행사·지자체가 함께
+   조회하는 "인증 기관 목록과 취소 이력의 공개 장부"다. 서명·검증은 브라우저 WebCrypto
+   ECDSA P-256 으로 실제 계산한다. */
+const INST_SEL='0x81322425'; /* institutionKey(bytes32) → (keyX, keyY, issuedAt, revokedAt) */
+const ZERO32='0x'+'0'.repeat(64);
+const hexBytes=(h)=>{const s=String(h).replace(/^0x/,'');const o=new Uint8Array(s.length>>1);
+  for(let i=0;i<o.length;i++)o[i]=parseInt(s.substr(i*2,2),16);return o;};
+const b64=(buf)=>{const u=new Uint8Array(buf);let s='';for(const c of u)s+=String.fromCharCode(c);return btoa(s);};
+const b64bytes=(s)=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const b64short=(s)=>String(s).slice(0,14)+'…'+String(s).slice(-8);
+/* 서명 대상 원문 — 키 순서가 서명·검증 양쪽에서 같아야 한다 (sig 는 제외) */
+const invoiceText=(i)=>JSON.stringify({v:i.v,invNo:i.invNo,instId:i.instId,inst:i.inst,type:i.type,gu:i.gu,
+  cat:i.cat,amount:i.amount,items:i.items,issuedAt:i.issuedAt,nonce:i.nonce});
+
+const Cert={
+  /* 온체인 조회 상태: checking | onchain | offline | none */
+  status:'none', rpcUsed:null, chain:{}, local:[], lastVerify:null,
+  enabled(){return typeof CERT!=='undefined'&&!!CERT&&!!CERT.institutions.length;},
+  list(){return (this.enabled()?CERT.institutions:[]).concat(this.local);},
+  byId(id){return this.list().find(i=>i.instId===id)||null;},
+  byName(n){const k=normName(n);return this.list().find(i=>normName(i.name)===k)||null;},
+  /* 기관 식별자·인증 근거 — contracts/scripts/hash.js 와 같은 규칙 */
+  instId(name,type,gu){return sha256(`${normName(name)}|${type}|${gu}`);},
+  proof(name,type,gu,addr,tel,src){return{src:src||MEDICAL.source,basis:MEDICAL.basis,name,type,gu,addr,tel};},
+  certified(inst){const c=this.chain[inst.instId];
+    if(c)return c.issuedAt>0&&c.revokedAt===0;
+    return inst.status!=='revoked';},
+  /* 검증에 쓸 공개키 — 온체인 조회분이 있으면 그것을, 없으면 앱 내장 인증 목록을 쓴다 */
+  keyOf(inst){const c=this.chain[inst.instId];
+    if(c&&c.keyX!==ZERO32)return{keyX:c.keyX,keyY:c.keyY,issuedAt:c.issuedAt,revokedAt:c.revokedAt,src:'onchain'};
+    return{keyX:inst.keyX,keyY:inst.keyY,issuedAt:inst.status==='none'?0:1,
+      revokedAt:inst.status==='revoked'?1:0,src:inst.localIssued?'local':'builtin'};},
+
+  /* 공개 노드에서 인증 목록을 읽어 앱에 내장된 공개키와 대조 */
+  async loadChain(){
+    if(!ONCHAIN||!this.enabled())return;
+    this.status='checking';
+    const ids=CERT.institutions.map(i=>i.instId);
+    for(const url of ONCHAIN.rpc){
+      try{
+        const ctl=new AbortController();const t=setTimeout(()=>ctl.abort(),7000);
+        const res=await fetch(url,{method:'POST',headers:{'content-type':'application/json'},signal:ctl.signal,
+          body:JSON.stringify(ids.map((id,k)=>({jsonrpc:'2.0',id:k+1,method:'eth_call',
+            params:[{to:ONCHAIN.address,data:INST_SEL+id.slice(2)},'latest']})))});
+        clearTimeout(t);
+        const arr=await res.json();
+        if(!Array.isArray(arr))throw new Error('batch 미지원');
+        const out={};
+        for(const r of arr){
+          if(!r.result||r.result==='0x')throw new Error(r.error?r.error.message:'empty');
+          const w=k=>'0x'+r.result.slice(2+k*64,2+(k+1)*64);
+          out[ids[r.id-1]]={keyX:w(0),keyY:w(1),issuedAt:parseInt(w(2),16),revokedAt:parseInt(w(3),16)};
+        }
+        this.chain=out;this.rpcUsed=url;this.status='onchain';return;
+      }catch(e){}
+    }
+    this.status='offline';
+  },
+
+  /* WebCrypto ECDSA P-256 — 기관 단말의 서명 / 등록 공개키로의 검증 */
+  async importPriv(jwk){return crypto.subtle.importKey('jwk',
+    {kty:jwk.kty,crv:jwk.crv,x:jwk.x,y:jwk.y,d:jwk.d},{name:'ECDSA',namedCurve:'P-256'},false,['sign']);},
+  async importPub(keyX,keyY){const raw=new Uint8Array(65);raw[0]=4;
+    raw.set(hexBytes(keyX),1);raw.set(hexBytes(keyY),33);
+    return crypto.subtle.importKey('raw',raw,{name:'ECDSA',namedCurve:'P-256'},false,['verify']);},
+  async sign(inv,key){const k=key.type?key:await this.importPriv(key);
+    return b64(await crypto.subtle.sign({name:'ECDSA',hash:'SHA-256'},k,new TextEncoder().encode(invoiceText(inv))));},
+  async verifySig(inv,keyX,keyY,sig){
+    return crypto.subtle.verify({name:'ECDSA',hash:'SHA-256'},await this.importPub(keyX,keyY),
+      b64bytes(sig),new TextEncoder().encode(invoiceText(inv)));},
+
+  /* 청구서 한 장 검증 → chk: ok | sigFail | revoked | uncertified */
+  async verify(inv){
+    const inst=this.byId(inv.instId);
+    const at=now();
+    if(!inst)return{chk:'uncertified',src:this.status==='onchain'?'onchain':'builtin',instRec:null,at};
+    const k=this.keyOf(inst);
+    if(!k.issuedAt||!k.keyX||k.keyX===ZERO32)return{chk:'uncertified',src:k.src,instRec:inst,at};
+    let ok=false,err=null;
+    try{ok=await this.verifySig(inv,k.keyX,k.keyY,inv.sig);}catch(e){err=e.message||String(e);}
+    const base={src:k.src,instRec:inst,keyX:k.keyX,keyY:k.keyY,revokedAt:k.revokedAt,err,at};
+    if(!ok)return{chk:'sigFail',...base};
+    if(k.revokedAt)return{chk:'revoked',...base};
+    return{chk:'ok',...base};
+  }
+};
+
+/* 시연용 청구서 3종 — 병원 단말이 발행한 서명 청구서를 QR 로 받는 상황 */
+let INVOICES=[];
+async function buildInvoices(){
+  if(!Cert.enabled())return;
+  const pick=n=>CERT.institutions.find(i=>normName(i.name)===normName(n));
+  const mk=(inst,amount,items,invNo)=>({v:1,invNo,instId:inst.instId,inst:inst.name,type:inst.type,gu:inst.gu,
+    cat:'hospital',amount,items,issuedAt:now()-1000*60*18,nonce:rhex(16)});
+  const out=[];
+  const real=pick('대구의료원');
+  if(real){
+    const inv=mk(real,120000,'외래 진료비 · 혈액검사','INV-2026-0917-0148');
+    inv.sig=await Cert.sign(inv,real.jwk);
+    out.push({key:'real',icon:'qr',title:'외래 진료비 청구서',sub:'대구의료원 수납 창구 QR',
+      hint:'인증 기관이 서명한 청구서',inv});
+    /* 사칭 — 기관명은 그대로 베끼고 사기범 키로 서명한 청구서 */
+    const fake=mk(real,95000,'입원 보증금 (선납)','INV-2026-0917-8802');
+    const pair=await crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'},false,['sign','verify']);
+    fake.sig=await Cert.sign(fake,pair.privateKey);
+    out.push({key:'fake',icon:'qr',title:'입원 보증금 청구서',sub:'문자로 받은 QR · 대구의료원',
+      hint:'같은 기관명, 다른 서명키',inv:fake});
+  }
+  const rev=CERT.institutions.find(i=>i.status==='revoked');
+  if(rev){
+    const inv=mk(rev,150000,'요양 간병비','INV-2026-0917-0031');
+    inv.sig=await Cert.sign(inv,rev.jwk);
+    out.push({key:'revoked',icon:'qr',title:'요양 간병비 청구서',sub:`${rev.name} 발행`,
+      hint:'인증이 취소된 기관',inv});
+  }
+  INVOICES=out;
+}
+
 /* ============================ state ============================ */
 /* 위임 ID — 위임 생성(최초 설정 서명) 시점에 자동 발번. 형식: DLG-연도-월일(+일련) */
 function genDelegId(ts){const d=ts?new Date(ts):new Date();const p=n=>String(n).padStart(2,'0');
@@ -740,13 +904,20 @@ function judge(catKey,amount,merchant){
   const z=st.std>0?(amount-st.mean)/st.std:0;
   const merchantOk=a.wl.length?a.wl.some(w=>merchant.includes(w)):true;
   const reg=a.registry&&merchant?Medical.find(merchant):null; /* 공공데이터 결제처 확인 */
-  const unregistered=!!reg&&!reg.length;
+  /* 스캔한 청구서 — 기관 전자서명 검증 결과 (이름 대조보다 강한 확인) */
+  const inv=(S._inv&&S._inv.cat===catKey&&normName(S._inv.inst)===normName(merchant))?S._inv:null;
+  const signedOk=!!inv&&inv.chk==='ok'&&inv.amount===amount;
+  const unregistered=!!reg&&!reg.length&&!signedOk&&!inv;
   const overTx=amount>a.perTx;
   const overMonth=(a.spent+amount)>a.cap;
   const floorBreach=(S.pool.balance-amount)<S.protectionFloor;
   const overPool=amount>S.pool.balance;
   cosign=amount>=S.coSign;
 
+  if(inv&&inv.chk==='sigFail'){reasons.push(`청구서 전자서명 불일치 — '${inv.inst}' 인증 기관의 등록 공개키로 검증 실패 (기관 사칭 의심)`);level='danger';action='hold';}
+  else if(inv&&inv.chk==='revoked'){reasons.push(`인증이 취소된 기관의 청구서 — 온체인 인증 목록에서 폐기(revoke)됨`);level='danger';action='hold';}
+  else if(inv&&inv.chk==='ok'&&inv.amount!==amount){reasons.push(`청구서 금액 ${won(inv.amount)}과 요청 금액 ${won(amount)}이 다름`);level='danger';action='hold';}
+  else if(inv&&inv.chk==='uncertified'){reasons.push(`미인증 기관 청구서 — 서명을 검증할 공개키가 온체인 인증 목록에 없음`);if(level==='normal'){level='caution';action='confirm';}}
   if(unregistered){reasons.push(`등록되지 않은 의료기관 — 건강보험심사평가원 요양기관 목록(대구)에 없는 결제처`);level='danger';action='hold';}
   if(!merchantOk){reasons.push(`사용처 화이트리스트 위반 — 허용: ${a.wl.join('·')}`);level='danger';action='hold';}
   if(overPool){reasons.push(`위임 풀 잔액(${won(S.pool.balance)}) 초과`);level='danger';action='hold';}
@@ -757,17 +928,22 @@ function judge(catKey,amount,merchant){
   else if(z>=2){reasons.push(`평소 패턴을 벗어난 금액 (z=${z.toFixed(1)})`);if(level==='normal'){level='caution';action='confirm';}}
   if(level==='normal'&&cosign){reasons.push(`고액 구간(≥${won(S.coSign)}) — 추가 인증 권장`);level='caution';action='confirm';}
   if(reasons.length===0)reasons.push(`규칙 위반 없음 · z=${z.toFixed(2)} (정상 범위)`);
+  if(signedOk)reasons.push(`청구서 전자서명 검증 완료 — ${inv.inst}의 ${inv.src==='onchain'?'온체인 등록':'인증 목록'} 공개키와 일치 (ECDSA P-256)`);
   if(reg&&reg.length)reasons.push(`결제처 확인 — ${reg[0][0]}: 건강보험심사평가원 등록 ${Medical.label(reg[0])}`);
   if(cosign&&level!=='normal')cosign=true; else if(!cosign)cosign=false;
 
   const lo=Math.max(st.min,st.mean-st.std), hi=st.mean+st.std;
   const nm=a.nm.replace(' 결제',''), nmJ=josa(nm,'은는');
   let say;
-  if(unregistered)say=`<b>${zesc(merchant)}</b>${josa(merchant,'은는')} 건강보험에 등록된 의료기관 목록에서 찾을 수 없어요. 병원을 사칭한 결제일 수 있어 <b>결제를 임시 보류</b>하고 본인 확인을 요청합니다.`;
+  if(inv&&inv.chk==='sigFail')say=`이 청구서는 <b>${zesc(inv.inst)}</b>${josa(inv.inst,'이가')} 발행한 것이 아닙니다. 이름은 같지만 병원이 등록한 <b>전자서명과 맞지 않습니다</b>. 병원을 사칭한 청구서일 수 있어 <b>결제를 임시 보류</b>하고 본인 확인을 요청합니다.`;
+  else if(inv&&inv.chk==='revoked')say=`<b>${zesc(inv.inst)}</b>${josa(inv.inst,'은는')} 인증이 <b>취소된 기관</b>입니다. 폐업·자격정지 기관의 청구서일 수 있어 <b>결제를 임시 보류</b>합니다.`;
+  else if(inv&&inv.chk==='ok'&&inv.amount!==amount)say=`병원 청구서에 적힌 금액은 <b>${won(inv.amount)}</b>인데 요청은 <b>${won(amount)}</b>입니다. 청구서와 금액이 달라 <b>결제를 임시 보류</b>하고 본인 확인을 요청합니다.`;
+  else if(unregistered)say=`<b>${zesc(merchant)}</b>${josa(merchant,'은는')} 건강보험에 등록된 의료기관 목록에서 찾을 수 없어요. 병원을 사칭한 결제일 수 있어 <b>결제를 임시 보류</b>하고 본인 확인을 요청합니다.`;
+  else if(level==='normal'&&signedOk)say=`<b>${zesc(inv.inst)}</b>${josa(inv.inst,'이가')} 서명한 청구서가 확인되었고, 이번 <b>${won(amount)}</b>도 평소 ${nm} <b>${manwon(lo)}~${manwon(hi)}</b> 범위입니다. 바로 승인하셔도 됩니다.`;
   else if(level==='normal')say=`평소 ${nm}${nmJ} <b>${manwon(lo)}~${manwon(hi)}</b> 수준이고 이번 <b>${won(amount)}</b>은 정상 범위입니다. 바로 승인하셔도 됩니다.`;
   else if(action==='hold')say=`평소 ${nm}${nmJ} <b>${manwon(lo)}~${manwon(hi)}</b>인데 이번 요청은 <b>${won(amount)}</b>입니다. 규칙에 걸려 <b>결제를 임시 보류</b>하고 본인 확인을 요청합니다.`;
   else say=`평소 ${nm}${nmJ} <b>${manwon(lo)}~${manwon(hi)}</b>인데 이번 요청은 <b>${won(amount)}</b>입니다. 위임자 확인 후 승인 여부를 결정하세요.`;
-  return{level,action,cosign,z,mean:st.mean,std:st.std,min:st.min,max:st.max,say,reasons,hist:h,reg};
+  return{level,action,cosign,z,mean:st.mean,std:st.std,min:st.min,max:st.max,say,reasons,hist:h,reg,inv,signedOk};
 }
 
 /* ============================ actions ============================ */
@@ -814,9 +990,13 @@ function rejectModal(reqId){
 }
 function approveFlow(reqId){ openApprovePin(reqId); }
 async function logChain(fn,req,note){
+  /* 스캔한 청구서가 있으면 청구서 번호·기관 ID·서명 검증 결과까지 해시에 함께 넣는다 */
+  const v=req.v&&req.v.inv?req.v.inv:null;
   await Chain.registerDelegation({delegationId:DELEG_ID,fn,note,
     reqId:req.id||null,cat:req.cat||null,amount:req.amount||0,merchant:req.merchant||null,
-    status:req.status||null,ts:now()});
+    status:req.status||null,
+    ...(v?{invoice:{invNo:v.invNo,instId:v.instId,sigCheck:v.chk,keySource:v.src}}:{}),
+    ts:now()});
 }
 
 /* 냉각기간 (한도 상향) */
@@ -947,7 +1127,7 @@ const SCREENS={
       <div class="sect-t">결제 요청 · 대리인</div>
       <div class="c pad">
         <label class="fld" style="margin-top:2px"><span class="l">위임 항목</span>
-          <div class="seg">${cats.map(c=>`<button class="${c.key===sel?'on':''}" onclick="S._reqCat='${c.key}';S._mch='';renderApp()">${c.em} ${c.nm.replace(' 결제','')}</button>`).join('')}</div>
+          <div class="seg">${cats.map(c=>`<button class="${c.key===sel?'on':''}" onclick="S._reqCat='${c.key}';S._mch='';S._inv=null;renderApp()">${c.em} ${c.nm.replace(' 결제','')}</button>`).join('')}</div>
         </label>
         <div style="font-size:11.5px;color:var(--ink-mute);margin-top:8px;font-weight:600">
           ${a.allowed?`건당 한도 ${won(a.perTx)} · 월 ${won(a.cap)} 중 ${won(a.spent)} 사용`:`${ic('ban')} 위임자가 차단한 항목입니다`}</div>
@@ -956,9 +1136,12 @@ const SCREENS={
         <div class="chips" style="margin-top:9px">
           ${[80000,180000,300000,1200000].map(v=>`<button class="qchip tnum" onclick="onAmt(${v});renderApp()">${manwon(v)}</button>`).join('')}</div>
         <div id="livePre">${livePreHTML(sel,S._amt,S._mch)}</div>
-        ${a.registry?`<label class="fld"><span class="l">결제처 · 의료기관 검색</span>
+        ${a.registry?(S._inv?`<div id="invBox">${invBoxHTML()}</div>`
+        :`${INVOICES.length?`<button type="button" class="qrscan" onclick="openScan()">${ic('qr')}
+            <span><b>병원 청구서 QR 스캔</b><small>병원이 서명한 청구서면 사칭을 걸러냅니다</small></span></button>`:''}
+        <label class="fld"><span class="l">결제처 · 의료기관 검색</span>
           <input class="in" id="mch" type="search" autocomplete="off" placeholder="병원·의원·약국 이름 (예: 대구의료원)" value="${zesc(S._mch||'')}" oninput="onMch(this.value)"></label>
-        <div id="mchBox">${mchBoxHTML(S._mch)}</div>`
+        <div id="mchBox">${mchBoxHTML(S._mch)}</div>`)
         :`<label class="fld"><span class="l">가맹점</span>
           <select class="in" id="mch" onchange="S._mch=this.value;onAmt(S._amt)">${(merchants[sel]||['기타']).map(m=>`<option ${S._mch===m?'selected':''}>${m}</option>`).join('')}</select></label>`}
         <button class="btn" style="margin-top:16px" onclick="doSubmit()">결제 요청 보내기</button>
@@ -1140,6 +1323,64 @@ function pickMch(name){
   const inp=document.getElementById('mch');if(inp)inp.value=name;
   onMch(name);
 }
+/* ───────── 청구서 QR 스캔 · 서명 검증 결과 카드 ───────── */
+function openScan(){
+  const items=INVOICES.map((x,i)=>`<button type="button" onclick="scanInvoice(${i})">
+    <span class="qi">${ic('qr')}</span>
+    <span class="qt"><b>${x.title}</b><small>${x.sub} · ${won(x.inv.amount)}</small></span></button>`).join('');
+  $('modalRoot').innerHTML=`<div class="scrim" onclick="if(event.target===this)closeModal()"><div class="modal qrmodal">
+    <div class="mi">${ic('qr')}</div><h3>청구서 QR 스캔</h3>
+    <p>병원이 발행한 청구서를 스캔하면 <b>병원의 전자서명</b>을 확인합니다.</p>
+    <div class="qrlist">${items||`<div class="i-empty" style="padding:20px">시연용 청구서가 준비되지 않았습니다</div>`}</div>
+    <p style="font-size:10px;color:var(--ink-mute);margin-top:12px;line-height:1.6;font-weight:500">데모 안내 · 카메라 대신 시연용 청구서 ${INVOICES.length}장을 준비했습니다. 스캔하면 온체인 인증 목록의 공개키로 서명을 즉시 검증합니다.</p>
+    <button class="btn ghost sm" style="margin-top:12px" onclick="closeModal()">닫기</button>
+  </div></div>`;
+}
+async function scanInvoice(i){
+  const item=INVOICES[i];if(!item)return;
+  closeModal();
+  const inv={...item.inv};
+  const r=await Cert.verify(inv);
+  S._inv={...inv,...r,demoKey:item.key,demoHint:item.hint};
+  Cert.lastVerify=S._inv;
+  S._reqCat='hospital';S._mch=inv.inst;S._amt=inv.amount;
+  S.lastVerdict={catKey:'hospital',amount:inv.amount,merchant:inv.inst,v:judge('hospital',inv.amount,inv.inst)};
+  render();
+  const t={
+    ok:[ic('check'),'청구서 서명 확인',`${inv.inst}의 전자서명이 확인되었습니다`],
+    sigFail:[ic('warn'),'청구서 서명이 맞지 않습니다','기관 등록 공개키로 검증 실패 — 사칭 의심'],
+    revoked:[ic('warn'),'인증이 취소된 기관','온체인 인증 목록에서 폐기된 기관의 청구서입니다'],
+    uncertified:[ic('info'),'미인증 기관 청구서','서명을 검증할 수 없어 위임자 확인이 필요합니다']
+  }[r.chk]||[ic('info'),'청구서 확인',''];
+  toast(t[0],t[1],t[2]);
+}
+function clearInvoice(){S._inv=null;S._mch='';S._amt='';S.lastVerdict=null;render();}
+function invBoxHTML(){
+  const v=S._inv;if(!v)return '';
+  const meta=`${zesc(v.type)}${v.gu==='시연용'?'':` · 대구 ${zesc(v.gu)}`}`;
+  const amt=+(S._amt||0), diff=v.chk==='ok'&&amt&&amt!==v.amount;
+  const srcTxt={onchain:'온체인 인증 목록에서 병원 공개키를 조회했습니다',
+    builtin:'노드에 연결하지 못해 앱에 내장된 인증 목록으로 확인했습니다',
+    local:'이 단말에서 발급한 인증으로 확인했습니다'}[v.src]||'';
+  const detail=`<div class="invmeta"><span>${ic('file')} ${zesc(v.invNo)}</span><span class="tnum">${won(v.amount)}</span><span>${zesc(v.items)}</span></div>`;
+  const head={ok:['ok',ic('check'),'병원이 서명한 청구서 확인'],
+    sigFail:['crit',ic('warn'),'병원 서명이 맞지 않는 청구서'],
+    revoked:['no',ic('warn'),'인증이 취소된 기관의 청구서'],
+    uncertified:['no',ic('info'),'서명을 확인할 수 없는 청구서']}[v.chk]||['no',ic('info'),'청구서'];
+  const body={
+    ok:`이 청구서는 <b>${zesc(v.inst)}</b>${josa(v.inst,'이가')} 직접 발행한 것이 맞아요.${diff?` 다만 청구서 금액은 <b>${won(v.amount)}</b>인데 요청 금액이 <b>${won(amt)}</b>이라 확인이 필요해요.`:''}`,
+    sigFail:`이름은 <b>${zesc(v.inst)}</b>${josa(v.inst,'이가')}지만, 병원이 등록한 서명과 맞지 않아요. 병원을 사칭한 청구서일 수 있어 그대로 요청하면 결제가 보류됩니다.`,
+    revoked:`<b>${zesc(v.inst)}</b>${josa(v.inst,'은는')} 인증이 <b>취소된 기관</b>이에요. 폐업·자격정지 기관의 청구서일 수 있어 결제가 보류됩니다.`,
+    uncertified:`아직 CarePass 인증을 받지 않은 기관이라 서명을 확인할 수 없어요. 어머니 확인을 거쳐야 결제됩니다.`
+  }[v.chk]||'';
+  return `<label class="fld"><span class="l">결제처 · 스캔한 청구서</span></label>
+  <div class="mchcard ${head[0]} invcard">
+    <div class="mt">${head[1]} ${head[2]}</div>
+    <div class="mn">${zesc(v.inst)} <span>${meta}</span></div>
+    <div class="ma">${body}</div>${detail}</div>
+  <div class="mchsrc">${srcTxt}</div>
+  <button type="button" class="btn ghost sm" style="margin-top:9px" onclick="clearInvoice()">청구서 지우고 직접 입력</button>`;
+}
 const MERCH={hospital:['대구의료원'],utility:['한국전력 공과금','도시가스 요금','KT 통신요금'],cash:['개인 계좌송금']};
 /* 실시간 이상탐지 미리보기(부작용 없음) — 입력값에 따라 정상/경계/이상이 즉시 바뀜 */
 function livePreHTML(cat,amt,mch){
@@ -1169,7 +1410,7 @@ function doSubmit(){
   const cat=S._reqCat||'hospital';const amt=+(S._amt||0);
   const mch=S._mch||MERCH[cat][0];
   if(!amt||amt<=0){toast(ic('warn'),'금액을 입력하세요','');return;}
-  if(S.alloc[cat].registry&&!normName(S._mch)){toast(ic('search'),'결제처를 입력하세요','병원·의원·약국 이름을 검색해 고르세요');return;}
+  if(S.alloc[cat].registry&&!normName(S._mch)){toast(ic('search'),'결제처를 입력하세요','청구서 QR을 스캔하거나 병원 이름을 검색해 고르세요');return;}
   submitRequest(cat,amt,mch);S._amt='';
 }
 function copyHash(h){navigator.clipboard&&navigator.clipboard.writeText(h);toast(ic('clip'),'해시 복사됨',short(h));}
@@ -1473,7 +1714,7 @@ SCREENS.security=()=>{
 };
 
 /* ============================ INSPECTOR ============================ */
-const TABS=[['ai','AI 판단'],['ledger','블록체인 원장'],['escrow','에스크로'],['contract','컨트랙트']];
+const TABS=[['ai','AI 판단'],['cert','기관 인증'],['ledger','블록체인 원장'],['escrow','에스크로'],['contract','컨트랙트']];
 function renderInsp(){
   $('tabs').innerHTML=TABS.map(([k,l])=>`<button class="${S.tab===k?'on':''}" onclick="S.tab='${k}';renderInsp()">${l}</button>`).join('');
   $('insp').innerHTML=INSP[S.tab]();
@@ -1503,6 +1744,59 @@ const INSP={
     <div style="font-size:11.5px;font-weight:700;color:var(--ink-soft);margin-bottom:7px">규칙 엔진 결과</div>
     <ul style="margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:6px">
       ${v.reasons.map(x=>`<li style="font-size:12px;color:var(--ink-soft);display:flex;gap:7px"><span style="color:${v.level==='normal'?'var(--good)':'var(--warn)'}">▸</span>${x}</li>`).join('')}</ul>`;
+  },
+  /* 의료기관 인증 — 온체인 인증 목록 · 청구서 서명 검증 · 최초 등록(발급) 화면 */
+  cert(){
+    if(!Cert.enabled())return `<div class="i-empty">기관 인증 목록이 준비되지 않았습니다.<br><span style="font-size:12px">contracts/scripts/gen-institutions.js → deploy-and-seed.js → sync-frontend.js</span></div>`;
+    const st={onchain:['real',`${ic('check')} 온체인 조회`],checking:['sim','조회 중…'],
+      offline:['sim','노드 연결 실패 · 내장 목록'],none:['sim','로컬 인증 목록']}[Cert.status]||['sim','—'];
+    const rows=Cert.list().map(i=>{
+      const k=Cert.keyOf(i), on=Cert.certified(i);
+      const match=Cert.chain[i.instId]?(Cert.chain[i.instId].keyX===i.keyX?'일치':'불일치'):null;
+      return `<div class="certrow ${on?'':'off'}">
+        <div class="ch"><b>${zesc(i.name)}</b><span>${zesc(i.type)}${i.gu==='시연용'?'':` · 대구 ${zesc(i.gu)}`}</span>
+          <span class="vbadge ${on?'real':'sim'}" style="margin-left:auto">${on?`${ic('check')} 인증 유효`:'인증 취소'}</span></div>
+        <div class="cb"><div><span>instId</span>${short(i.instId)}</div>
+          <div><span>pubkey X</span>${short(k.keyX)}${match?` <span class="vbadge ${match==='일치'?'real':'sim'}">내장 목록과 ${match}</span>`:''}</div>
+          <div><span>근거 해시</span>${short(i.proofHash)}</div>
+          ${i.certifyTx?`<div style="font-family:var(--font)"><a class="escan" href="${explorerTx(i.certifyTx)}" target="_blank" rel="noopener noreferrer">발급 tx (#${i.certifyBlock&&i.certifyBlock.toLocaleString()})</a>${i.revokeTx?` · <a class="escan" href="${explorerTx(i.revokeTx)}" target="_blank" rel="noopener noreferrer">취소 tx (#${i.revokeBlock&&i.revokeBlock.toLocaleString()})</a>`:''}</div>`
+          :`<div><span>기록</span>${i.localIssued?'이 단말에서 발급 (온체인 미전송)':'온체인 전송 전 (v2 재배포 필요)'}</div>`}
+          ${!on&&i.revokeReason?`<div><span>취소 사유</span>${zesc(i.revokeReason)}</div>`:''}</div>
+        ${i.localIssued?`<div class="cact"><button class="btn ghost sm" onclick="certIssueInvoice('${i.instId}')">이 기관 청구서 발행·검증</button>
+          ${on?`<button class="btn ghost sm" onclick="certRevokeLocal('${i.instId}')">인증 취소</button>`:''}</div>`:''}
+      </div>`;}).join('');
+
+    const v=Cert.lastVerify;
+    const verify=v?(()=>{
+      const r={ok:['real',`${ic('check')} 서명 검증 통과`],sigFail:['sim',`${ic('warn')} 서명 불일치 — 사칭 의심`],
+        revoked:['sim',`${ic('warn')} 인증 취소된 기관`],uncertified:['sim','미인증 기관 — 검증 불가']}[v.chk]||['sim','—'];
+      return `<div class="hr"></div>
+      <div class="cst">청구서 전자서명 검증 <span class="vbadge ${r[0]}">${r[1]}</span></div>
+      <div class="calc" style="margin-top:9px">
+        <div class="step"><span>알고리즘</span><b>ECDSA P-256 / SHA-256</b></div>
+        <div class="step"><span>청구서</span><b>${zesc(v.invNo)}</b></div>
+        <div class="step"><span>발행 기관</span><b>${zesc(v.inst)}</b></div>
+        <div class="step"><span>공개키 출처</span><b>${{onchain:'온체인 institutionKey()',builtin:'앱 내장 인증 목록',local:'이 단말 발급'}[v.src]||'—'}</b></div>
+        <div class="step"><span>pubkey X</span><b>${v.keyX?short(v.keyX):'없음'}</b></div>
+        <div class="step"><span>signature</span><b>${b64short(v.sig)}</b></div>
+        <div class="step"><span>verify()</span><b style="color:${v.chk==='ok'?'var(--good)':'var(--crit)'}">${v.chk==='ok'?'true':'false'}</b></div>
+      </div>
+      <div style="font-size:11px;color:var(--ink-mute);font-weight:700;margin-top:14px">서명 대상 원문 (이 문자열이 한 글자만 달라도 검증 실패)</div>
+      <pre class="code" style="margin-top:7px;white-space:pre-wrap">${zesc(invoiceText(v))}</pre>`;})()
+      :`<div class="hr"></div><div class="cst">청구서 전자서명 검증</div>
+        <div style="font-size:12px;color:var(--ink-mute);margin-top:7px;font-weight:500;line-height:1.7">대리인 화면에서 <b>청구서 QR 스캔</b>을 누르면 서명 원문·공개키·검증 결과가 여기 표시됩니다.</div>`;
+
+    return `<div class="anchor" style="border-color:color-mix(in srgb,var(--primary) 45%,transparent);background:var(--primary-wash)">
+      <div class="ah" style="color:var(--primary-deep)">${ic('cert')} 인증 기관 목록 <span class="vbadge ${st[0]}" style="margin-left:6px">${st[1]}</span></div>
+      <div style="font-size:10.5px;color:var(--ink-soft);margin-top:7px;font-weight:500;line-height:1.6">병원이 최초 1회 <b>요양기관 목록</b>으로 실재를 확인받고 서명 공개키를 등록한다. 앱은 이 목록에서 공개키를 읽어 청구서 서명을 검증한다.
+      블록체인의 역할은 <b>여러 은행·결제대행사·지자체가 함께 쓰는 인증 목록과 취소 이력의 공개 장부</b>다.</div></div>
+    <div class="certlist">${rows}</div>
+    ${verify}
+    <div class="hr"></div>
+    <div class="cst">기관 인증 발급 (최초 등록)</div>
+    <div style="font-size:11.5px;color:var(--ink-mute);margin-top:6px;font-weight:500;line-height:1.6">기관명을 요양기관 목록과 대조해 통과하면 서명키를 만들고 공개키를 인증 목록에 등록합니다. 아래 발급분은 이 단말에만 기록됩니다(실서비스는 은행 인증 서버가 온체인 전송).</div>
+    <input class="in" id="certQ" type="search" autocomplete="off" placeholder="인증할 기관명 (예: 계명대학교동산병원)" value="${zesc(CERT_Q)}" oninput="certIssueInput(this.value)" style="margin-top:10px">
+    <div id="certIssueBox">${certIssueBoxHTML()}</div>`;
   },
   ledger(){
     const ev=[...Chain.getHistory()].reverse();
@@ -1572,55 +1866,137 @@ ${k('pragma solidity')} ^0.8.20;
 
 ${k('contract')} ${f('CarePassRegistry')} {
   ${k('struct')} Record { bytes32 dataHash; uint256 ts; string fn; }
-  ${k('address public immutable')} recorder;   ${c('// 기록 권한 계정 (은행)')}
+  ${c('// 인증된 의료기관 — 청구서 서명을 검증할 공개키를 여기서 읽는다')}
+  ${k('struct')} Institution { bytes32 keyX; bytes32 keyY; bytes32 proofHash;
+                     uint64 issuedAt; uint64 revokedAt; string name; }
+
+  ${k('address public immutable')} recorder;   ${c('// 기록·인증 권한 계정 (은행)')}
   ${k('mapping')}(bytes32 =&gt; Record[]) ${k('private')} _history;
+  ${k('mapping')}(bytes32 =&gt; Institution) ${k('private')} _institutions;
 
   ${k('event')} ${f('DelegationLogged')}(bytes32 ${k('indexed')} id, bytes32 ${k('indexed')} dataHash, string fn, uint256 index);
+  ${k('event')} ${f('InstitutionCertified')}(bytes32 ${k('indexed')} instId, bytes32 keyX, bytes32 keyY, bytes32 proofHash, string name);
+  ${k('event')} ${f('InstitutionRevoked')}(bytes32 ${k('indexed')} instId, string reason);
   ${k('error')} NotRecorder();
 
   ${k('constructor')}() { recorder = msg.sender; }
 
-  ${c('// 위임/결제 이벤트 해시를 체인에 기록 — 기록 계정만 가능')}
-  ${k('function')} ${f('registerDelegation')}(bytes32 id, bytes32 dataHash, string calldata fn) ${k('external')} {
-    ${k('if')} (msg.sender != recorder) ${k('revert')} NotRecorder();
+  ${c('// ① 위임/결제 이벤트 해시를 체인에 기록 — 기록 계정만 가능')}
+  ${k('function')} ${f('registerDelegation')}(bytes32 id, bytes32 dataHash, string calldata fn) ${k('external')} onlyRecorder {
     _history[id].push(Record(dataHash, block.timestamp, fn));
     ${k('emit')} DelegationLogged(id, dataHash, fn, _history[id].length - 1);
   }
+  ${k('function')} ${f('getHistory')}(bytes32 id) ${k('external view returns')} (Record[] ${k('memory')}) { ${k('return')} _history[id]; }
 
-  ${c('// 위임 ID의 전체 이력 조회 → 누구나 조회·검증')}
-  ${k('function')} ${f('getHistory')}(bytes32 id) ${k('external view returns')} (Record[] ${k('memory')}) {
-    ${k('return')} _history[id];
-  }
+  ${c('// ② 요양기관 목록으로 실재가 확인된 기관에 인증 발급 (서명 공개키 공개)')}
+  ${k('function')} ${f('certifyInstitution')}(bytes32 instId, bytes32 keyX, bytes32 keyY,
+      bytes32 proofHash, string calldata name) ${k('external')} onlyRecorder { … }
+
+  ${c('// 폐업·자격정지·서명키 유출 시 인증 취소 — 취소 이력도 체인에 남는다')}
+  ${k('function')} ${f('revokeInstitution')}(bytes32 instId, string calldata reason) ${k('external')} onlyRecorder { … }
+
+  ${c('// 앱이 청구서 서명을 검증할 때 읽는 공개키')}
+  ${k('function')} ${f('institutionKey')}(bytes32 instId) ${k('external view returns')}
+      (bytes32 keyX, bytes32 keyY, uint64 issuedAt, uint64 revokedAt) { … }
 }</pre>
     <div style="font-size:11.5px;color:var(--ink-mute);margin-top:12px;font-weight:500;line-height:1.7">
       ${ONCHAIN?`이 컨트랙트는 Sepolia 테스트넷 <b>${short(ONCHAIN.address)}</b>에 배포돼 있고, 소스는 Etherscan에서 공개 검증됩니다. `:''}
-      <b>dataHash</b>는 이벤트 원문(JSON)의 <b>SHA-256</b>, 위임 ID도 SHA-256으로 바꿔 기록합니다. 위임 내용(VC)은 오프체인에 두고 <b>해시만 온체인</b> 기록 → 프라이버시 보호.
-      Hardhat 자동 테스트 6건(기록 권한·순서·위·변조 탐지 등)은 <b>contracts/test</b>에 있습니다.</div>`;
+      <b>dataHash</b>는 이벤트 원문(JSON)의 <b>SHA-256</b>, 위임 ID·기관 ID도 SHA-256으로 바꿔 기록합니다. 위임 내용(VC)·청구서 원문은 오프체인에 두고 <b>해시와 공개키만 온체인</b> 기록 → 프라이버시 보호.
+      사칭을 실제로 막는 것은 <b>청구서 전자서명(ECDSA P-256)</b>이고, 체인은 <b>여러 은행·결제대행사·지자체가 함께 쓰는 인증 목록·취소 이력의 공개 장부</b> 역할입니다.
+      Hardhat 자동 테스트 14건(기록 권한·인증 발급/취소·서명 검증 등)은 <b>contracts/test</b>에 있습니다.</div>`;
   }
 };
+
+/* ───────── 인스펙터 : 기관 인증 발급 ───────── */
+let CERT_Q='';
+const b64uBytes=(s)=>{const t=String(s).replace(/-/g,'+').replace(/_/g,'/');return b64bytes(t+'='.repeat((4-t.length%4)%4));};
+const hexOf=(b)=>'0x'+[...b].map(x=>x.toString(16).padStart(2,'0')).join('');
+function certIssueInput(v){CERT_Q=v;const b=document.getElementById('certIssueBox');if(b)b.innerHTML=certIssueBoxHTML();}
+function certPick(name){const i=document.getElementById('certQ');if(i)i.value=name;certIssueInput(name);}
+function certIssueBoxHTML(){
+  if(!normName(CERT_Q))return `<div class="mchsrc">대조 기준: ${Medical.source()}</div>`;
+  const hit=Medical.find(CERT_Q);
+  if(!hit.length){
+    const s=Medical.search(CERT_Q,4);
+    return `<div class="mchcard no" style="margin-top:9px"><div class="mt">${ic('warn')} 요양기관 목록에 없는 이름 — 인증 발급 불가</div>
+      <div class="ma">실재가 확인되지 않은 기관에는 인증을 발급하지 않습니다. 이 단계에서 사칭 기관이 걸러집니다.</div></div>
+      ${s.length?`<div class="mchlist">${s.map(r=>`<button type="button" onclick="certPick(${JSON.stringify(r[0]).replace(/"/g,'&quot;')})"><b>${zesc(r[0])}</b><span>${Medical.label(r)}</span></button>`).join('')}</div>`:''}`;
+  }
+  const r=hit[0], name=r[0], have=Cert.byName(name);
+  return `<div class="mchcard ok" style="margin-top:9px"><div class="mt">${ic('check')} 요양기관 목록 대조 통과</div>
+    <div class="mn">${zesc(name)} <span>${Medical.label(r)}</span></div>
+    <div class="ma">${zesc(r[3])}${r[4]?` · ${zesc(r[4])}`:''}</div></div>
+  ${have?`<div class="mchsrc">이미 인증 목록에 있는 기관입니다${Cert.certified(have)?'':' (인증 취소 상태)'}.</div>`
+    :`<button class="btn sm" style="margin-top:10px" onclick="certIssue()">${ic('key')} 서명키 생성 → 인증 발급</button>`}`;
+}
+async function certIssue(){
+  const hit=Medical.find(CERT_Q); if(!hit.length)return;
+  const r=hit[0], name=r[0], type=Medical.type(r), gu=Medical.gu(r);
+  if(Cert.byName(name)){toast(ic('info'),'이미 인증된 기관',name);return;}
+  const instId=await Cert.instId(name,type,gu);
+  const proof=Cert.proof(name,type,gu,r[3],r[4]);
+  const proofHash=await sha256(JSON.stringify(proof));
+  const pair=await crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'},true,['sign','verify']);
+  const jwk=await crypto.subtle.exportKey('jwk',pair.privateKey);
+  const pub=await crypto.subtle.exportKey('jwk',pair.publicKey);
+  const keyX=hexOf(b64uBytes(pub.x)), keyY=hexOf(b64uBytes(pub.y));
+  Cert.local.push({name,type,gu,addr:r[3],tel:r[4],fictional:false,status:'certified',localIssued:true,
+    instId,proof,proofHash,keyX,keyY,jwk:{kty:jwk.kty,crv:jwk.crv,x:jwk.x,y:jwk.y,d:jwk.d},
+    revokeReason:null,certifyTx:null,certifyBlock:null,revokeTx:null,revokeBlock:null});
+  await Chain.registerDelegation({delegationId:'INST-REGISTRY',fn:'institutionCertified',
+    note:`${name} 인증 발급 · 요양기관 목록 대조`,instId,proofHash,keyX,ts:now()});
+  CERT_Q='';
+  toast(ic('cert'),'기관 인증 발급',`${name} · 공개키를 인증 목록에 등록했습니다`);
+  render();
+}
+async function certRevokeLocal(instId){
+  const inst=Cert.local.find(i=>i.instId===instId); if(!inst)return;
+  inst.status='revoked'; inst.revokeReason='심사 시연 · 관리자 취소';
+  await Chain.registerDelegation({delegationId:'INST-REGISTRY',fn:'institutionRevoked',
+    note:`${inst.name} 인증 취소`,instId,reason:inst.revokeReason,ts:now()});
+  if(S._inv&&S._inv.instId===instId){S._inv={...S._inv,...await Cert.verify(S._inv)};Cert.lastVerify=S._inv;}
+  toast(ic('ban'),'기관 인증 취소',`${inst.name} · 이후 청구서는 보류됩니다`);
+  render();
+}
+/* 인증한 기관이 청구서에 서명 → 바로 스캔·검증 (발급 → 사용 한 바퀴) */
+async function certIssueInvoice(instId){
+  const inst=Cert.byId(instId); if(!inst||!inst.jwk)return;
+  const d=new Date(), p=n=>String(n).padStart(2,'0');
+  const inv={v:1,invNo:`INV-${d.getFullYear()}-${p(d.getMonth()+1)}${p(d.getDate())}-${rhex(2).toUpperCase()}`,
+    instId:inst.instId,inst:inst.name,type:inst.type,gu:inst.gu,cat:'hospital',amount:110000,
+    items:'외래 진료비',issuedAt:now(),nonce:rhex(16)};
+  inv.sig=await Cert.sign(inv,inst.jwk);
+  const item={key:'local:'+instId,icon:'qr',title:`${inst.name} 진료비 청구서`,sub:'직접 인증한 기관 발행',
+    hint:'이 단말에서 인증 발급',inv};
+  const at=INVOICES.findIndex(x=>x.key===item.key);
+  if(at>=0)INVOICES[at]=item; else INVOICES.push(item);
+  await scanInvoice(INVOICES.findIndex(x=>x.key===item.key));
+}
 
 /* ============================ scenario buttons ============================ */
 const SCN=[
   [`${ic('home')} iM뱅크 홈`,()=>{S.app='imbank';render();toast(ic('home'),'iM뱅크 앱 홈','CarePass가 iM뱅크 앱의 한 기능으로 들어가 있습니다. 카드나 하단 탭에서 진입하세요');}],
-  [`${ic('sliders')} 직접 조작(수동)`,()=>{S.app='carepass';S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt='';S._mch='';S.manual=true;render();toast(ic('sliders'),'수동 조작 모드','금액을 직접 입력하면 안전/주의/확인 필요 판정이 실시간으로 바뀝니다');}],
-  ['정상 병원비 8만원',()=>{S.app='carepass';S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt=80000;S._mch='대구의료원';render();toast(ic('play'),'시나리오 준비','결제처가 건강보험 등록 의료기관으로 확인됩니다. 결제 요청 보내기를 눌러 정상 케이스를 확인하세요');}],
-  ['이상 120만원 병원비',()=>{S.app='carepass';S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt=1200000;S._mch='경북대학교병원';render();toast(ic('play'),'시나리오 준비','AI가 평소와 다른 큰 금액을 감지 → 임시 보류합니다');}],
-  ['미등록 결제처(사칭)',()=>{S.app='carepass';S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt=90000;S._mch='○○메디컬센터';render();toast(ic('play'),'시나리오 준비','건강보험심사평가원 요양기관 목록(대구)에 없는 결제처 → 금액이 작아도 임시 보류합니다');}],
-  ['현금송금 시도(차단)',()=>{S.app='carepass';S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='cash';S._amt=500000;S._mch='개인 계좌송금';render();toast(ic('play'),'시나리오 준비','차단 항목 — 원천 차단됩니다');}],
-  ['생활비 보호선 발동',()=>{S.app='carepass';S.role='delegate';S.screen='request';S._reqCat='hospital';S._mch='대구의료원';
+  [`${ic('sliders')} 직접 조작(수동)`,()=>{S.app='carepass';S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt='';S._mch='';S._inv=null;S.manual=true;render();toast(ic('sliders'),'수동 조작 모드','금액을 직접 입력하면 안전/주의/확인 필요 판정이 실시간으로 바뀝니다');}],
+  ['정상 병원비 8만원',()=>{S.app='carepass';S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt=80000;S._mch='대구의료원';S._inv=null;render();toast(ic('play'),'시나리오 준비','결제처가 건강보험 등록 의료기관으로 확인됩니다. 결제 요청 보내기를 눌러 정상 케이스를 확인하세요');}],
+  ['이상 120만원 병원비',()=>{S.app='carepass';S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt=1200000;S._mch='경북대학교병원';S._inv=null;render();toast(ic('play'),'시나리오 준비','AI가 평소와 다른 큰 금액을 감지 → 임시 보류합니다');}],
+  ['미등록 결제처(사칭)',()=>{S.app='carepass';S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt=90000;S._mch='○○메디컬센터';S._inv=null;render();toast(ic('play'),'시나리오 준비','건강보험심사평가원 요양기관 목록(대구)에 없는 결제처 → 금액이 작아도 임시 보류합니다');}],
+  [`${ic('qr')} 청구서 QR · 사칭 검증`,()=>{S.app='carepass';S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt='';S._mch='';S._inv=null;S.tab='cert';render();openScan();
+    toast(ic('play'),'시나리오 준비','진짜 청구서와 사칭 청구서를 골라 보세요. 같은 이름이어도 병원 전자서명이 다르면 보류됩니다');}],
+  ['현금송금 시도(차단)',()=>{S.app='carepass';S.protectionFloor=500000;S.role='delegate';S.screen='request';S._reqCat='cash';S._amt=500000;S._mch='개인 계좌송금';S._inv=null;render();toast(ic('play'),'시나리오 준비','차단 항목 — 원천 차단됩니다');}],
+  ['생활비 보호선 발동',()=>{S.app='carepass';S.role='delegate';S.screen='request';S._reqCat='hospital';S._mch='대구의료원';S._inv=null;
     S.protectionFloor=Math.max(0,S.pool.balance-50000);S._amt=80000;render();
     toast(ic('play'),'보호선 시나리오','보호선을 잔액 근처로 상향 → 8만원 결제가 보호선을 침범해 자동 보류됩니다');
     setTimeout(()=>doSubmit(),400);}],
   ['한도 상향→냉각기간',()=>{S.app='carepass';S.role='delegate';S.screen='dhome';render();requestRaise('hospital',600000);toast(ic('play'),'한도 상향 요청','60초 냉각기간 시작 · 위임자 홈에서 확인');}],
   ['위임자 승인/거부 화면',()=>{S.app='carepass';S.role='delegator';S.screen='approvals';render();}],
-  [`${ic('access')} 접근성·음성 안내`,()=>{S.app='carepass';S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt=250000;S._mch='대구의료원';render();if(!S.a11y)toggleA11y();toast(ic('access'),'접근성 모드',`실시간 판정의 ${ic('volume')} 듣기로 음성 안내를 확인하세요`);}],
-  [`${ic('sos')} 은닉 SOS 시연`,()=>{S.app='carepass';S.role='delegate';S.screen='request';S._reqCat='hospital';S._mch='대구의료원';render();
+  [`${ic('access')} 접근성·음성 안내`,()=>{S.app='carepass';S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt=250000;S._mch='대구의료원';S._inv=null;render();if(!S.a11y)toggleA11y();toast(ic('access'),'접근성 모드',`실시간 판정의 ${ic('volume')} 듣기로 음성 안내를 확인하세요`);}],
+  [`${ic('sos')} 은닉 SOS 시연`,()=>{S.app='carepass';S.role='delegate';S.screen='request';S._reqCat='hospital';S._mch='대구의료원';S._inv=null;render();
     submitRequest('hospital',250000,'대구의료원').then(()=>{S.role='delegator';S.screen='approvals';render();
       toast(ic('sos'),'은닉 SOS 시연','승인 → PIN에 1122 입력. 겉으론 정상 승인, 실제론 지정기관 비공개 신고 + 온체인 기록');});}],
   [`${ic('bot')} iM Zero 상담`,()=>{S.app='carepass';S.role='delegate';S.screen='dhome';S.zero=true;render();}]
 ];
 $('scBtns').innerHTML=`<div class="sc-grp">기본 흐름</div>`+SCN.map((s,i)=>{
-  const sep=(i===9)?`<div class="sc-grp">추가 기능</div>`:'';
+  const sep=(i===10)?`<div class="sc-grp">추가 기능</div>`:'';
   return sep+`<button class="sc-btn" onclick="SCN[${i}][1]()"><span class="n">${i+1}</span>${s[0]}</button>`;
 }).join('');
 window.SCN=SCN;
@@ -1642,7 +2018,8 @@ tickClock();setInterval(tickClock,10000);
   for(const [i,ev] of DEMO_EVENTS.events.entries())
     await Chain.registerDelegation({...ev},ONCHAIN&&ONCHAIN.events[i]);
   render();
-  await Chain.verifyOnchain();
+  await Promise.all([Chain.verifyOnchain(),Cert.loadChain()]);
+  await buildInvoices(); /* 온체인 공개키를 먼저 읽은 뒤 시연용 서명 청구서를 만든다 */
   render();
 })();
 

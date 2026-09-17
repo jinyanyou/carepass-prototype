@@ -1,12 +1,13 @@
 {
   "name": "carepass-contracts",
   "version": "1.0.0",
-  "description": "CarePassRegistry — 가족 금융 대리권 이벤트 해시 기록 컨트랙트",
+  "description": "CarePassRegistry — 가족 금융 대리권 이벤트 해시 기록 + 의료기관 인증(청구서 서명 공개키) 컨트랙트",
   "directories": {
     "test": "test"
   },
   "scripts": {
     "compile": "hardhat compile",
+    "gen:institutions": "node scripts/gen-institutions.js",
     "test": "hardhat test",
     "deploy:local": "hardhat run scripts/deploy-and-seed.js --network localhost",
     "deploy:sepolia": "hardhat run scripts/deploy-and-seed.js --network sepolia",

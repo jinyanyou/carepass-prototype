@@ -23,8 +23,8 @@ start index.html      # Windows
 ## 화면 구성
 
 - **왼쪽 (폰)** — iM뱅크 앱 화면. iM뱅크 홈 → `CarePass` 기능 진입. 상단에서 `어머니(위임자) ↔ 딸(대리인)` iM뱅크 로그인 계정 전환. 헤더의 `가가` 버튼으로 **큰 글씨 모드**, 각 화면의 `🔊` 버튼으로 **음성 안내**.
-- **오른쪽 (데모 인스펙터)** — 심사용 내부 동작 뷰 (AI 판단 / 블록체인 원장 / 에스크로 / 컨트랙트).
-- **데모 시나리오** — `기본 흐름` 9종 + `추가 기능` 3종(접근성·은닉 SOS·iM Zero) 원클릭 재생. `직접 조작(수동)`에서 심사위원이 결제 금액을 직접 입력하면 판정이 실시간으로 바뀝니다.
+- **오른쪽 (데모 인스펙터)** — 심사용 내부 동작 뷰 (AI 판단 / 기관 인증 / 블록체인 원장 / 에스크로 / 컨트랙트).
+- **데모 시나리오** — `기본 흐름` 10종 + `추가 기능` 3종(접근성·은닉 SOS·iM Zero) 원클릭 재생. `직접 조작(수동)`에서 심사위원이 결제 금액을 직접 입력하면 판정이 실시간으로 바뀝니다.
 
 ## 사용자 화면 vs 심사 인스펙터
 
@@ -40,6 +40,7 @@ CarePass 앱 화면(고령자·가족이 보는 뷰)에는 **쉬운 말만** 노
 | 이상탐지 | 합성 데이터 42/31건 기반 규칙 엔진 + z-score |
 | 스마트컨트랙트 | **Sepolia 테스트넷 배포·소스 검증** `CarePassRegistry` — 시연 초기 이력 3건 실기록, 화면이 `getHistory` 조회 후 SHA-256 대조 |
 | 공공데이터 결제처 확인 | 건강보험심사평가원 요양기관 목록(대구 5,607곳)에 없는 병원비 결제처는 자동 보류 |
+| 의료기관 인증 · 청구서 전자서명 | 인증 기관의 서명 공개키를 온체인 등록, 청구서 QR 서명을 **WebCrypto ECDSA P-256**으로 실검증 → 이름만 베낀 사칭 청구서 보류 |
 | 에스크로 서브계좌 | 본계좌서 격리된 가상 위임 풀 |
 
 ### Should (구현)
@@ -62,11 +63,13 @@ CarePass 앱 화면(고령자·가족이 보는 뷰)에는 **쉬운 말만** 노
 | 항목 | 값 |
 |---|---|
 | 네트워크 | Ethereum **Sepolia** 테스트넷 (chainId 11155111) |
-| 컨트랙트 | [`0x9fDa394DfeF9a7B8AF637c9620c5ce8ad8751A1a`](https://sepolia.etherscan.io/address/0x9fDa394DfeF9a7B8AF637c9620c5ce8ad8751A1a#code) — Etherscan 소스 검증 완료 |
+| 컨트랙트 | [`0x760394Add857d89C35FaC3220E21c1C61f0ef6A9`](https://sepolia.etherscan.io/address/0x760394Add857d89C35FaC3220E21c1C61f0ef6A9#code) — Etherscan 소스 검증 완료 |
 | 기록 계정(recorder) | `0x0E00cB50396Bf3a3cdC80efab74bEaDeE501001F` |
-| 시연 초기 이력 | [위임 설정](https://sepolia.etherscan.io/tx/0x41b7565802478b9120acb7a69a0732ebcdd9e3d525f63d8b5bd6c97610c25056) · [병원비 승인](https://sepolia.etherscan.io/tx/0x5ca6c2d7c72331391ea375d1e8799ed78013ec40003133852087ee3282ca4fee) · [공과금 자동승인](https://sepolia.etherscan.io/tx/0x22787b75c85f5c5e693729a5353a3c6c7c5f1e46730c636555e574bf861f7761) |
+| 시연 초기 이력 | [위임 설정](https://sepolia.etherscan.io/tx/0xcb7686a03e669409215c95e9630303e6af16080fee6f379575bad2bb5ad8754f) · [병원비 승인](https://sepolia.etherscan.io/tx/0x65485aaf2bc87cf5c277288757ef0abc393bbf39fb4e71b2be52719687090c66) · [공과금 자동승인](https://sepolia.etherscan.io/tx/0xf87a765305e54c279942ab6c39eb18edd3519fcd9e5ff09498742f66923d320f) |
+| 기관 인증 발급 | [대구의료원](https://sepolia.etherscan.io/tx/0x0d2cf2f914b71e6a3c440bdf494361ed169ee9a932aa3a41f4cf70dd41ab4598) · [경북대학교병원](https://sepolia.etherscan.io/tx/0xc7234a405fa3b994d5c6a51a964ed17821fb401571f86b78f19ab562d8263c20) |
+| 기관 인증 취소 | [○○재활요양병원(시연용)](https://sepolia.etherscan.io/tx/0xf33d936af0fe248b00e61a9d8cf8169f8deafc90ba460e0a9bc494fe6ba78915) — 폐업·자격정지 이력 |
 
-- **구조**: 위임 내용(VC)은 오프체인, 이벤트 원문의 **SHA-256 해시만 온체인**. `registerDelegation`은 기록 계정만 호출할 수 있어 제3자가 가짜 이력을 끼워 넣지 못하고, `getHistory`는 누구나 조회·검증할 수 있습니다.
+- **구조**: 위임 내용(VC)·청구서 원문은 오프체인, 이벤트 원문의 **SHA-256 해시와 기관 공개키만 온체인**. `registerDelegation`·`certifyInstitution`·`revokeInstitution`은 기록 계정만 호출할 수 있어 제3자가 가짜 이력이나 가짜 인증 기관을 끼워 넣지 못하고, `getHistory`·`institutionKey`는 누구나 조회·검증할 수 있습니다.
 - **화면 검증**: 페이지를 열면 공개 노드(publicnode)에서 `getHistory()`를 읽고, 원문(`contracts/demo-events.json`)으로 다시 계산한 해시와 대조해 인스펙터 `블록체인 원장`에 **온체인 검증**을 표시합니다. 노드에 연결하지 못하면 로컬 기록으로 자동 전환해 시연은 멈추지 않습니다.
 - **데모 범위**: 시연 중 새로 생기는 결제·승인 이벤트는 브라우저 로컬 원장에만 기록합니다(실서비스는 은행 기록 서버가 전송). 비밀키를 웹페이지에 넣지 않기 위한 설계입니다.
 - 해시는 브라우저 **Web Crypto SHA-256**으로 계산하며, 비보안 컨텍스트(file://)에서는 순수 JS SHA-256으로 폴백합니다.
@@ -76,12 +79,13 @@ CarePass 앱 화면(고령자·가족이 보는 뷰)에는 **쉬운 말만** 노
 ```bash
 cd contracts
 npm install
-npm test                 # Hardhat 자동 테스트 6건 (기록 권한·순서·빈 해시·위·변조 탐지·ID 분리)
+npm test                 # Hardhat 자동 테스트 14건 (기록 권한·순서·위·변조 탐지·기관 인증 발급/취소·서명 검증)
 cp .env.example .env     # 테스트 전용 지갑 비밀키·Etherscan 키 입력 (git 제외)
+node scripts/gen-institutions.js        # (최초 1회) 시연용 기관 서명키 생성 → institutions.json
 npm run check:sepolia    # 기록 계정 잔액 확인
-npm run deploy:sepolia   # 배포 + 시연 이벤트 기록 → deployments/sepolia.json
+npm run deploy:sepolia   # 배포 + 기관 인증 발급/취소 + 시연 이벤트 기록 → deployments/sepolia.json
 npm run verify:sepolia   # Etherscan 소스 검증
-node scripts/sync-frontend.js sepolia   # index.html에 주소·tx 반영
+node scripts/sync-frontend.js sepolia   # index.html에 주소·tx·인증 기관 반영
 ```
 
 ## 공공데이터 결제처 확인
@@ -91,6 +95,31 @@ node scripts/sync-frontend.js sepolia   # index.html에 주소·tx 반영
 - **재현**: `python data/tools/build_daegu_medical.py "전국 병의원 및 약국 현황 2026.6.zip"`
 - **동작**: 대리인이 병원비 결제처를 검색하면 등록 여부·종별·위치를 보여주고, 목록에 없는 곳이면 금액과 무관하게 **임시 보류**해 병원 사칭 결제를 막습니다.
 - 시연 결제처는 공공 의료기관(대구의료원·경북대학교병원)을 사용하고, 사칭 예시 `○○메디컬센터`는 가상의 이름입니다.
+- **이름 대조만으로는 부족합니다** — 사기범이 결제처 이름을 그대로 베끼면 통과하기 때문에, 아래 의료기관 인증·청구서 전자서명을 한 겹 더 둡니다.
+
+
+## 의료기관 인증 · 청구서 전자서명 (사칭 방지)
+
+결제처 **이름**만 요양기관 목록과 대조하면, 사기범이 이름을 `대구의료원`으로 적는 것만으로 통과합니다.
+그래서 이름 대조 위에 **전자서명** 한 겹을 둡니다.
+
+1. **최초 등록** — 병원이 CarePass에 처음 가입할 때 기관명을 요양기관 목록(`data/daegu-medical.json`)과 대조합니다. 확인되면 기관 서명키(ECDSA P-256)를 만들고 **공개키를 온체인 인증 목록에 등록**합니다(`certifyInstitution`).
+2. **청구서 서명** — 병원 단말이 발행하는 청구서(QR)에 기관 서명키로 전자서명합니다.
+3. **결제 시 검증** — 앱이 청구서를 스캔하면 공개 노드에서 `institutionKey(instId)`로 **온체인 등록 공개키**를 읽어 서명을 검증합니다.
+4. **인증 취소** — 폐업·자격정지·서명키 유출 시 `revokeInstitution`으로 인증을 취소하며, 취소 이력도 체인에 남습니다.
+
+| 청구서 | 판정 |
+|---|---|
+| 인증 기관이 서명한 진짜 청구서 | 서명 검증 통과 → 기존 한도·이상탐지 규칙만 적용 |
+| 기관명만 베끼고 다른 키로 서명한 **사칭 청구서** | **서명 불일치 → 임시 보류** (금액이 작아도 보류) |
+| 청구서 금액과 요청 금액이 다른 경우 | **임시 보류** (대리인의 금액 부풀리기 차단) |
+| **인증이 취소된** 기관의 청구서 | **임시 보류** |
+| 아직 인증받지 않은 기관 | 서명 검증 불가 → 기존과 같이 위임자 확인 후 결제 |
+
+- 시연에서는 `대구의료원`·`경북대학교병원`을 사전 인증 기관으로 두고, 인증 취소 이력은 실제 상호를 쓰지 않도록 가상 기관 `○○재활요양병원(시연용)`으로 남겼습니다.
+- 대리인 화면의 `병원 청구서 QR 스캔`에서 **진짜 / 사칭 / 인증 취소** 청구서를 골라 볼 수 있고, 검증 원문·공개키·`verify()` 결과는 인스펙터 `기관 인증` 탭에 그대로 보입니다. 같은 탭에서 심사위원이 **직접 기관을 인증 발급**하고 그 기관 청구서를 발행·검증해 볼 수 있습니다.
+- **과장 없이**: 사칭을 실제로 막는 것은 **전자서명**이고, 블록체인의 역할은 *여러 은행·결제대행사·지자체가 함께 조회하는 인증 기관 목록과 취소 이력의 공개 장부*로 한정됩니다.
+- `contracts/institutions.json`의 서명키는 브라우저에서 "병원 단말이 서명하는" 과정을 재현하기 위한 **시연용 데모 키**이며 보호하는 자산이 없습니다. 실서비스에서는 기관 단말의 보안영역(HSM/Secure Enclave)에 두고 앱에 내려보내지 않습니다.
 
 ## 기술
 
@@ -98,7 +127,7 @@ node scripts/sync-frontend.js sepolia   # index.html에 주소·tx 반영
 - Solidity 0.8.24 · Hardhat 2 (테스트·배포·Etherscan 검증) · Ethereum Sepolia 테스트넷
 - 공공데이터: 건강보험심사평가원 요양기관 현황(대구)
 - iM뱅크 공식 브랜드 컬러(민트 `#00c7a9`) 반영 · Pretendard 폰트
-- 실제 `crypto.subtle` SHA-256 해싱 (비보안 컨텍스트는 순수 JS SHA-256 폴백)
+- 실제 `crypto.subtle` SHA-256 해싱 (비보안 컨텍스트는 순수 JS SHA-256 폴백) · 청구서 서명·검증은 `crypto.subtle` **ECDSA P-256**
 - 라이트/다크 테마 대응 · 반응형
 - 접근성: 큰 글씨 모드 + 음성 안내(TTS)로 디지털 소외계층 대응
 

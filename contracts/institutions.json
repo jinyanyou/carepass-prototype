@@ -1,0 +1,99 @@
+{
+  "note": "시연용 의료기관 서명키(ECDSA P-256). 브라우저에서 '병원 단말이 청구서에 전자서명'하는 과정을 실제 WebCrypto로 보여 주기 위한 데모 키이며 보호하는 자산이 없습니다. 실서비스에서는 기관 단말의 보안영역(HSM/Secure Enclave)에 보관하고 앱에 내려보내지 않습니다.",
+  "curve": "P-256 (ECDSA, SHA-256)",
+  "source": "건강보험심사평가원 「전국 병의원 및 약국 현황」",
+  "basis": "2026.6.",
+  "generatedAt": "2026-09-17T13:13:09.750Z",
+  "institutions": [
+    {
+      "name": "대구의료원",
+      "type": "종합병원",
+      "gu": "서구",
+      "addr": "평리로 157, (중리동)",
+      "tel": "053-560-7575",
+      "fictional": false,
+      "status": "certified",
+      "revokeReason": null,
+      "instId": "0x5f0ea8f8533d47fa107b6a13a85fa57454f2ae4446ca12dc7dc36308a9116197",
+      "proof": {
+        "src": "건강보험심사평가원 「전국 병의원 및 약국 현황」",
+        "basis": "2026.6.",
+        "name": "대구의료원",
+        "type": "종합병원",
+        "gu": "서구",
+        "addr": "평리로 157, (중리동)",
+        "tel": "053-560-7575"
+      },
+      "proofHash": "0x8ad1c3e4a2965ffdb9a3f05e86bad955c834f82c1c402204e623de18fc2de6cc",
+      "keyX": "0x266ca931106cfc6a6315695ca8a1c8e23da29e49a92b8552e8ffbfd2de0ade7a",
+      "keyY": "0xb2dad8d2b23a8d0fc650f4185f27982ae0f02acf64bd312ce9dde3ff3f2c0ad6",
+      "jwk": {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "JmypMRBs_GpjFWlcqKHI4j2inkmpK4VS6P-_0t4K3no",
+        "y": "strY0rI6jQ_GUPQYXyeYKuDwKs9kvTEs6d3j_z8sCtY",
+        "d": "pST16svBQYpffs7nxFCmBM2PvTkRdF9b6dyRLJW24gI"
+      }
+    },
+    {
+      "name": "경북대학교병원",
+      "type": "상급종합",
+      "gu": "중구",
+      "addr": "동덕로 130, (삼덕동2가, 경북대학교병원)",
+      "tel": "053-200-5114",
+      "fictional": false,
+      "status": "certified",
+      "revokeReason": null,
+      "instId": "0xdea5a9dd0a4bd05eb24e3bd489a8e23d87c331724f9d7176c69994d4c992a0a5",
+      "proof": {
+        "src": "건강보험심사평가원 「전국 병의원 및 약국 현황」",
+        "basis": "2026.6.",
+        "name": "경북대학교병원",
+        "type": "상급종합",
+        "gu": "중구",
+        "addr": "동덕로 130, (삼덕동2가, 경북대학교병원)",
+        "tel": "053-200-5114"
+      },
+      "proofHash": "0x99454e83b6ada78e8a6f9574517910b18bb3835c2a9b4fd58d6aa20d8b1e227b",
+      "keyX": "0x4da93e591611bfa1321dd649734a9a0dc4a26a967ed89dcd3498d56ca7eed73a",
+      "keyY": "0xcdb3bfc2ba420ca1515d06721424d046215944e027066f16d6dbc0d072026ccc",
+      "jwk": {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "Tak-WRYRv6EyHdZJc0qaDcSiapZ-2J3NNJjVbKfu1zo",
+        "y": "zbO_wrpCDKFRXQZyFCTQRiFZROAnBm8W1tvA0HICbMw",
+        "d": "IZDyeX9Q9vzNEkv2Vaq9RGYQzW29LnagnLLY9eeULTM"
+      }
+    },
+    {
+      "name": "○○재활요양병원",
+      "type": "요양병원",
+      "gu": "시연용",
+      "addr": "—",
+      "tel": "—",
+      "fictional": true,
+      "status": "revoked",
+      "revokeReason": "폐업 신고 · 요양기관 자격 정지",
+      "instId": "0x5c253cc0b5cbdf47377b3aa01c9da031e279c0128ff262a69de3a0aa47691090",
+      "proof": {
+        "src": "시연용 가상 기관 (인증 취소 이력 시연)",
+        "basis": "2026.6.",
+        "name": "○○재활요양병원",
+        "type": "요양병원",
+        "gu": "시연용",
+        "addr": "—",
+        "tel": "—"
+      },
+      "proofHash": "0xe958c2bb098abc742b83a3fb8bedab252aadc9e040b7327daba92dcff08cc8a2",
+      "keyX": "0xd5af0b96c588d195ffcb0a605f848a3adb6513ad44508b88523389149cff0898",
+      "keyY": "0xfa6b7e173c1b479de7f8755d1c8ad0dac4ce48e2f0b6c4af168e60b2667c2fab",
+      "jwk": {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "1a8LlsWI0ZX_ywpgX4SKOttlE61EUIuIUjOJFJz_CJg",
+        "y": "-mt-FzwbR53n-HVdHIrQ2sTOSOLwtsSvFo5gsmZ8L6s",
+        "d": "5MYcpEGRyerb2i625qLQ7uar3iY4Rr-5d5Q8zcMe3iw"
+      }
+    }
+  ]
+}

@@ -1,31 +1,57 @@
 {
   "network": "sepolia",
   "chainId": 11155111,
-  "address": "0x9fDa394DfeF9a7B8AF637c9620c5ce8ad8751A1a",
+  "address": "0x760394Add857d89C35FaC3220E21c1C61f0ef6A9",
   "recorder": "0x0E00cB50396Bf3a3cdC80efab74bEaDeE501001F",
-  "deployTx": "0x34d209c77772a2dc73c137f44350628a335fa460ac91fd33509c62364a57a00c",
-  "deployBlock": 11711495,
+  "deployTx": "0x32285a432d5aac50e0ad3a745128589133af2ecf5e4baf201d09ba6c17a782c2",
+  "deployBlock": 11724062,
   "delegationId": "DLG-2026-0914",
   "delegationKey": "0x21a510880cdada101f448d00fffba4a1fe24ef86034cfe75fc019f0bcd974576",
+  "institutions": [
+    {
+      "name": "대구의료원",
+      "instId": "0x5f0ea8f8533d47fa107b6a13a85fa57454f2ae4446ca12dc7dc36308a9116197",
+      "status": "certified",
+      "certifyTx": "0x0d2cf2f914b71e6a3c440bdf494361ed169ee9a932aa3a41f4cf70dd41ab4598",
+      "certifyBlock": 11724064
+    },
+    {
+      "name": "경북대학교병원",
+      "instId": "0xdea5a9dd0a4bd05eb24e3bd489a8e23d87c331724f9d7176c69994d4c992a0a5",
+      "status": "certified",
+      "certifyTx": "0xc7234a405fa3b994d5c6a51a964ed17821fb401571f86b78f19ab562d8263c20",
+      "certifyBlock": 11724066
+    },
+    {
+      "name": "○○재활요양병원",
+      "instId": "0x5c253cc0b5cbdf47377b3aa01c9da031e279c0128ff262a69de3a0aa47691090",
+      "status": "revoked",
+      "certifyTx": "0x6d2bd134d56e8594b796810939235b0ee098d695408653fb961c532e1994c107",
+      "certifyBlock": 11724068,
+      "revokeReason": "폐업 신고 · 요양기관 자격 정지",
+      "revokeTx": "0xf33d936af0fe248b00e61a9d8cf8169f8deafc90ba460e0a9bc494fe6ba78915",
+      "revokeBlock": 11724070
+    }
+  ],
   "events": [
     {
       "fn": "delegationConfigured",
       "dataHash": "0x7f76f3c8fad5fdef6cb4df308623992a15d9cfc621c9173a4ab02a32f2e06313",
-      "txHash": "0x41b7565802478b9120acb7a69a0732ebcdd9e3d525f63d8b5bd6c97610c25056",
-      "block": 11711497
+      "txHash": "0xcb7686a03e669409215c95e9630303e6af16080fee6f379575bad2bb5ad8754f",
+      "block": 11724072
     },
     {
       "fn": "paymentApproved",
       "dataHash": "0xddf735d45a47d517068c1ca39db018b0b2b87c0fe58aa67ff66589d380a8fa40",
-      "txHash": "0x5ca6c2d7c72331391ea375d1e8799ed78013ec40003133852087ee3282ca4fee",
-      "block": 11711499
+      "txHash": "0x65485aaf2bc87cf5c277288757ef0abc393bbf39fb4e71b2be52719687090c66",
+      "block": 11724074
     },
     {
       "fn": "paymentApproved",
       "dataHash": "0xecc2cfd18c530026e634fee2b41b64856c5e495d0bac13c63925c12102d70336",
-      "txHash": "0x22787b75c85f5c5e693729a5353a3c6c7c5f1e46730c636555e574bf861f7761",
-      "block": 11711501
+      "txHash": "0xf87a765305e54c279942ab6c39eb18edd3519fcd9e5ff09498742f66923d320f",
+      "block": 11724076
     }
   ],
-  "deployedAt": "2026-09-15T18:08:37.934Z"
+  "deployedAt": "2026-09-17T13:40:58.163Z"
 }

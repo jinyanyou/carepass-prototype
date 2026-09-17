@@ -1,10 +1,11 @@
-// 컨트랙트 배포 → 시연 초기 이벤트 기록 → deployments/<network>.json 저장
+// 컨트랙트 배포 → 의료기관 인증 발급/취소 → 시연 초기 이벤트 기록 → deployments/<network>.json 저장
 //   npx hardhat run scripts/deploy-and-seed.js --network sepolia
 const fs = require("fs");
 const path = require("path");
 const { ethers, network } = require("hardhat");
 const { delegationKey, eventHash } = require("./hash");
 const demo = require("../demo-events.json");
+const certs = require("../institutions.json");
 
 const CONFIRMATIONS = network.name === "hardhat" || network.name === "localhost" ? 1 : 2;
 
@@ -22,6 +23,23 @@ async function main() {
   const deployReceipt = await ethers.provider.getTransactionReceipt(deployTx.hash);
   console.log(`deployed ${address} (block ${deployReceipt.blockNumber})`);
 
+  // ① 의료기관 인증 — 요양기관 목록으로 실재가 확인된 기관에 발급, 취소분은 이어서 폐기
+  const institutions = [];
+  for (const inst of certs.institutions) {
+    const tx = await registry.certifyInstitution(inst.instId, inst.keyX, inst.keyY, inst.proofHash, inst.name);
+    const receipt = await tx.wait(CONFIRMATIONS);
+    console.log(`certified ${inst.name} ${inst.instId.slice(0, 12)}… → tx ${tx.hash} (block ${receipt.blockNumber})`);
+    const rec = { name: inst.name, instId: inst.instId, status: "certified", certifyTx: tx.hash, certifyBlock: receipt.blockNumber };
+    if (inst.status === "revoked") {
+      const rtx = await registry.revokeInstitution(inst.instId, inst.revokeReason || "인증 취소");
+      const rrec = await rtx.wait(CONFIRMATIONS);
+      console.log(`revoked   ${inst.name} → tx ${rtx.hash} (block ${rrec.blockNumber})`);
+      Object.assign(rec, { status: "revoked", revokeReason: inst.revokeReason, revokeTx: rtx.hash, revokeBlock: rrec.blockNumber });
+    }
+    institutions.push(rec);
+  }
+
+  // ② 위임·결제 이력
   const id = delegationKey(demo.delegationId);
   const events = [];
   for (const ev of demo.events) {
@@ -41,6 +59,7 @@ async function main() {
     deployBlock: deployReceipt.blockNumber,
     delegationId: demo.delegationId,
     delegationKey: id,
+    institutions,
     events,
     deployedAt: new Date().toISOString(),
   };

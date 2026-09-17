@@ -1,0 +1,161 @@
+<title>CarePass 시스템 구조도</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --teal:#0f9b8a; --teald:#0a7d6f; --ink:#12302c; --mute:#53706b;
+    --fill:#e9f8f4; --line:#a5dbd2; --gline:#d7dedd; --gfill:#f5f7f7;
+  }
+  body{width:3200px;height:1800px;background:#fff;font-family:Pretendard,'Noto Sans KR',sans-serif;
+    color:var(--ink);-webkit-font-smoothing:antialiased;overflow:hidden}
+  #cv{position:relative;width:3200px;height:1800px}
+  svg.wires{position:absolute;inset:0;width:3200px;height:1800px}
+  .bx{position:absolute;border-radius:26px;border:3px solid var(--line);background:var(--fill);padding:28px 32px}
+  .bx.dash{border-style:dashed}
+  .bx.grey{border:3px dotted var(--gline);background:var(--gfill)}
+  .bx h3{font-size:45px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+  .bx h3.sm{font-size:39px}
+  .bx p{font-size:31px;font-weight:500;color:var(--mute);line-height:1.5;margin-top:12px}
+  .colh{position:absolute;font-size:33px;font-weight:800;color:var(--teal);letter-spacing:-.01em}
+  .lbl{position:absolute;font-size:26px;font-weight:700;color:var(--mute);background:#fff;
+    padding:2px 8px;white-space:nowrap;text-align:center;line-height:1.3}
+  .lbl.t{color:var(--teald)}
+  h1{position:absolute;left:120px;top:92px;font-size:78px;font-weight:800;letter-spacing:-.03em}
+  h2{position:absolute;left:124px;top:196px;font-size:36px;font-weight:600;color:var(--mute)}
+  .legend{position:absolute;right:120px;top:104px;display:flex;gap:44px;align-items:center}
+  .legend div{display:flex;gap:16px;align-items:center;font-size:30px;font-weight:600;color:var(--mute)}
+  .legend i{width:56px;height:34px;border-radius:10px;display:block}
+  .l1{border:3px solid var(--line);background:var(--fill)}
+  .l2{border:3px dashed var(--line);background:#fff}
+  .l3{border:3px dotted var(--gline);background:var(--gfill)}
+  .divider{height:3px;background:var(--line);opacity:.55;margin:22px 0}
+  .step{font-size:39px;font-weight:800;letter-spacing:-.02em}
+  .step span{color:var(--teal)}
+  .sub{font-size:30px;font-weight:500;color:var(--mute);line-height:1.5;margin-top:10px}
+  .sub b{color:var(--teald);font-weight:700}
+  .verdict{font-size:37px;font-weight:800;color:var(--teald);text-align:center;letter-spacing:-.02em}
+  .mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:26px;font-weight:500;color:var(--mute);line-height:1.6}
+</style>
+
+<div id="cv">
+  <h1>CarePass 시스템 구조도</h1>
+  <h2>iM뱅크 앱 내장 · 청구서 전자서명 검증부터 블록체인 기록까지</h2>
+  <div class="legend">
+    <div><i class="l1"></i>프로토타입 동작 구현</div>
+    <div><i class="l2"></i>시뮬레이션</div>
+    <div><i class="l3"></i>설계(후속)</div>
+  </div>
+
+  <div class="colh" style="left:120px;top:300px">입력 · 사용자 · iM뱅크 앱</div>
+  <div class="colh" style="left:1000px;top:300px">AI 판정 엔진</div>
+  <div class="colh" style="left:1900px;top:300px">자산 · 안전장치</div>
+  <div class="colh" style="left:2620px;top:300px">블록체인 레이어</div>
+
+  <!-- 입력 -->
+  <div class="bx" style="left:120px;top:355px;width:600px;height:212px">
+    <h3 class="sm">의료기관 (병원 단말)</h3>
+    <p>인증 발급 시 서명키 생성<br>청구서 QR에 <b style="color:var(--teald)">전자서명</b></p>
+  </div>
+  <div class="bx" style="left:120px;top:592px;width:600px;height:205px">
+    <h3 class="sm">공공데이터</h3>
+    <p>건강보험심사평가원 요양기관 현황<br>2026.6. · 대구 5,607곳 · 공공누리 1유형</p>
+  </div>
+  <div class="bx" style="left:120px;top:822px;width:600px;height:222px">
+    <h3>대리인 (딸)</h3>
+    <p>청구서 QR 스캔 · 결제 요청<br>한도 상향 요청</p>
+  </div>
+  <div class="bx" style="left:120px;top:1070px;width:600px;height:265px">
+    <h3>위임자 (어머니)</h3>
+    <p>업무·건당·월 한도 위임 설정<br>보류 결제 PIN 승인·거부<br>위임 정지 · 은닉 SOS PIN</p>
+  </div>
+  <div class="bx" style="left:120px;top:1360px;width:600px;height:205px">
+    <h3 class="sm">접근성 · AI 상담</h3>
+    <p>큰 글씨 · 음성 안내(TTS)<br>음성 질문(STT) 쉬운 말 답변</p>
+  </div>
+
+  <!-- AI 판정 엔진 -->
+  <div class="bx" style="left:1000px;top:355px;width:720px;height:690px">
+    <div class="step"><span>①</span> 청구서 서명 검증</div>
+    <div class="sub">온체인 인증 목록의 기관 공개키로<br><b>ECDSA P-256</b> 서명 검증<br>사칭 · 인증취소 · 금액불일치 보류</div>
+    <div class="divider"></div>
+    <div class="step"><span>②</span> 규칙 엔진</div>
+    <div class="sub">건당·월 한도 · 차단 항목 · 생활비 보호선<br><b>등록 의료기관 확인(공공데이터)</b></div>
+    <div class="divider"></div>
+    <div class="step"><span>③</span> 패턴 이상탐지</div>
+    <div class="sub">대리인 결제 이력 z-score<br>(합성 데이터 병원비 42 · 공과금 31건)</div>
+  </div>
+  <div class="bx" style="left:1000px;top:1110px;width:345px;height:195px">
+    <div class="verdict">안전</div>
+    <p style="text-align:center;margin-top:14px">자동·간단 확인<br>→ 결제 실행</p>
+  </div>
+  <div class="bx" style="left:1375px;top:1110px;width:345px;height:195px">
+    <div class="verdict">주의 · 확인 필요</div>
+    <p style="text-align:center;margin-top:14px">임시 보류<br>→ 위임자 승인</p>
+  </div>
+
+  <!-- 자산 · 안전장치 -->
+  <div class="bx dash" style="left:1900px;top:355px;width:560px;height:265px">
+    <h3 class="sm">위임 풀 (에스크로)</h3>
+    <p>본계좌와 분리된 위임액<br>항목별 한도 배분 · 가상 잔액<br>수동 재충전만 허용</p>
+  </div>
+  <div class="bx" style="left:1900px;top:660px;width:560px;height:215px">
+    <h3 class="sm">강압적 위임 대응</h3>
+    <p>냉각기간 (시연 60초)<br>신뢰인(사회복지사) 알림</p>
+  </div>
+  <div class="bx dash" style="left:1900px;top:915px;width:560px;height:215px">
+    <h3 class="sm">보안 센터</h3>
+    <p>원격 VC 폐기 · 후견인 전환<br>지정기관 비공개 SOS 알림</p>
+  </div>
+
+  <!-- 블록체인 -->
+  <div class="bx" style="left:2620px;top:355px;width:460px;height:775px">
+    <h3>CarePass<br>Registry</h3>
+    <p class="mono" style="margin-top:14px">Solidity ^0.8.20<br>Sepolia 배포<br>Etherscan 소스 검증</p>
+    <div class="divider"></div>
+    <p style="margin-top:0"><b style="color:var(--teald)">위임·결제 이력</b><br><span class="mono">registerDelegation<br>getHistory</span></p>
+    <div class="divider"></div>
+    <p style="margin-top:0"><b style="color:var(--teald)">의료기관 인증 목록</b><br><span class="mono">certifyInstitution<br>revokeInstitution<br>institutionKey</span></p>
+    <div class="divider"></div>
+    <p style="margin-top:0;font-size:29px">이벤트 SHA-256 해시와<br>기관 공개키만 온체인<br>VC·청구서 원문은 오프체인</p>
+  </div>
+
+  <!-- 후속 -->
+  <div class="bx grey" style="left:1000px;top:1400px;width:2080px;height:165px;padding:30px 40px">
+    <h3 style="font-size:42px">iM뱅크 코어 · 외부 연동 (후속 단계)</h3>
+    <p style="margin-top:14px">실계좌 결제 승인 API · 에스크로 서브계좌 · 생체인증·다중서명 · W3C DID/VC 발급 · 기관 단말 HSM 키 관리 · AI 상담 연계</p>
+  </div>
+
+  <svg class="wires">
+    <defs>
+      <marker id="ar" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0.6 L10 5 L0 9.4 z" fill="#5b6f6c"/>
+      </marker>
+      <marker id="arg" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0.6 L10 5 L0 9.4 z" fill="#0f9b8a"/>
+      </marker>
+      <marker id="ard" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0.6 L10 5 L0 9.4 z" fill="#aebab8"/>
+      </marker>
+    </defs>
+    <g fill="none" stroke="#5b6f6c" stroke-width="5" stroke-linejoin="round" marker-end="url(#ar)">
+      <path d="M720 460 H985" stroke="#0f9b8a" marker-end="url(#arg)"/>
+      <path d="M720 694 H985"/>
+      <path d="M720 932 H985"/>
+      <path d="M1720 470 H1885"/>
+      <path d="M2460 470 H2605"/>
+      <path d="M2460 767 H2605"/>
+      <path d="M2460 1022 H2605"/>
+      <path d="M1172 1045 V1095"/>
+      <path d="M1548 1045 V1095"/>
+      <path d="M1548 1305 V1358 H800 V1202 H715"/>
+    </g>
+    <path d="M2180 1130 V1385" fill="none" stroke="#aebab8" stroke-width="5" stroke-dasharray="14 12" marker-end="url(#ard)"/>
+  </svg>
+
+  <div class="lbl t" style="left:742px;top:374px;width:220px">청구서 QR<br>전자서명</div>
+  <div class="lbl" style="left:742px;top:648px;width:220px">기관 실재 확인</div>
+  <div class="lbl" style="left:742px;top:886px;width:220px">결제 요청</div>
+  <div class="lbl" style="left:1728px;top:424px;width:150px">결제 실행</div>
+  <div class="lbl" style="left:2468px;top:424px;width:130px">해시 기록</div>
+  <div class="lbl" style="left:900px;top:1330px">보류 사유 쉬운 말 안내 → PIN 승인</div>
+</div>
