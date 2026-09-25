@@ -15,7 +15,10 @@
   --crit:#C6453B; --crit-wash:#F9E5E2;
   --shadow:0 1px 2px rgba(20,33,31,.06),0 12px 28px -12px rgba(20,33,31,.18);
   --shadow-lg:0 14px 34px -18px rgba(10,40,35,.22);
-  --font:"Pretendard Variable","Pretendard","Noto Sans KR",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  --font:"Pretendard Variable","Pretendard","Noto Sans KR",system-ui,sans-serif;
+  /* 한글은 JetBrains Mono에 없어 전각 CJK 모노로 폴백되면서 자간이 벌어진다.
+     한글 폰트를 모노 뒤에 두면 숫자·해시만 모노로 잡히고 한글은 본문 폰트로 떨어진다. */
+  --mono:"JetBrains Mono","Pretendard Variable","Pretendard","Noto Sans KR",ui-monospace,monospace;
   --r-xs:9px; --r-sm:12px; --r-md:16px; --r-lg:20px; --r-pill:999px;
 }
 :root:not([data-theme="light"]){
@@ -43,6 +46,8 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);l
 h1,h2,h3,h4{margin:0;font-weight:800;letter-spacing:-.02em;text-wrap:balance}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .mono{font-family:var(--mono)}
+/* 모노 블록(해시·주소·tx) 안에 섞이는 한글 라벨·값 — 모노의 넓은 공백 폭을 쓰지 않도록 본문 폰트로 되돌린다 */
+.ko{font-family:var(--font);font-weight:inherit;font-style:normal}
 .tnum{font-variant-numeric:tabular-nums}
 .ic{width:1em;height:1em;flex:none;vertical-align:-.14em}
 
@@ -331,7 +336,7 @@ pre.code .k{color:#5fd0b6}.code .c{color:#5a6f6a}.code .s{color:#e0a878}.code .f
 .flow{font-size:11.5px;color:var(--ink-mute);text-align:center;padding:10px;border:1px dashed var(--line);border-radius:var(--r-sm);font-weight:500}
 
 /* onchain badges + etherscan */
-.vbadge{font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:var(--r-pill);letter-spacing:.02em;display:inline-flex;align-items:center;gap:3px}
+.vbadge{font-family:var(--font);font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:var(--r-pill);letter-spacing:.02em;display:inline-flex;align-items:center;gap:3px}
 .vbadge.real{background:var(--good-wash);color:var(--good)} .vbadge.sim{background:var(--card);color:var(--ink-mute);border:1px solid var(--line)}
 .anchor{border:1.5px solid color-mix(in srgb,var(--good) 45%,transparent);background:var(--good-wash);border-radius:var(--r-md);padding:13px 14px;margin-bottom:13px}
 .anchor .ah{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;color:var(--good)}
@@ -389,7 +394,7 @@ a.escan:hover{color:var(--primary)}
 .livepre.caution{border-color:color-mix(in srgb,var(--warn) 45%,transparent);background:var(--warn-wash)}
 .livepre.danger{border-color:color-mix(in srgb,var(--crit) 45%,transparent);background:var(--crit-wash)}
 .livepre .lh{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800}
-.livepre .lz{margin-left:auto;font-family:var(--mono);font-size:11.5px;font-weight:700}
+.livepre .lz{margin-left:auto;font-size:11.5px;font-weight:700}
 .livepre .lsay{font-size:11.5px;color:var(--ink-soft);margin-top:6px;font-weight:500;line-height:1.5}
 .livescale{position:relative;height:8px;border-radius:var(--r-pill);margin-top:10px;background:linear-gradient(90deg,var(--good) 0%,var(--good) 33%,var(--warn) 45%,var(--warn) 60%,var(--crit) 75%);opacity:.85}
 .livescale i{position:absolute;top:-3px;width:14px;height:14px;border-radius:50%;background:var(--card);border:3px solid var(--ink);transform:translateX(-50%);transition:left .2s}
@@ -448,8 +453,8 @@ a.escan:hover{color:var(--primary)}
 .zmsg.bot{align-self:flex-start;background:var(--card-2);border:1px solid var(--line-soft);border-bottom-left-radius:5px}
 .zmsg.me{align-self:flex-end;background:var(--primary);color:#fff;border-bottom-right-radius:5px;font-weight:600}
 .zmsg.wait{color:var(--ink-mute)}
-.zq{display:flex;gap:6px;overflow-x:auto;padding:10px 14px 2px;border-top:1px solid var(--line-soft);scrollbar-width:none}
-.zq::-webkit-scrollbar{display:none}
+/* 가로 스크롤이면 마지막 칩이 폰 프레임에 잘려 버그처럼 보인다 — 줄바꿈으로 4개를 모두 노출한다 */
+.zq{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px 2px;border-top:1px solid var(--line-soft)}
 .zq button{flex:none;white-space:nowrap;display:flex;align-items:center;gap:5px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-pill);padding:8px 12px;font-size:12px;font-weight:700;color:var(--ink-soft)}
 .zq button:hover{border-color:var(--primary);color:var(--primary-deep);background:var(--primary-wash)}
 .zq button:disabled{opacity:.5}
@@ -887,7 +892,7 @@ const S={
     cash:{key:'cash',em:ic('cash'),nm:'현금 송금',allowed:false,perTx:0,cap:0,spent:0,wl:[]}
   },
   hist:makeHistory(),
-  requests:[], cooling:null, lastVerdict:null,
+  requests:[], cooling:null, lastVerdict:null, lastDone:null, /* lastDone: 승인/거부 직후 폰 화면에 남길 결과 */
   trustee:'김민서 (사회복지사)',
   a11y:false, revoked:false, sosSent:false, sosPin:'1122', zero:false, hideAmt:false
 };
@@ -971,9 +976,11 @@ async function decide(reqId,ok,reason){
   const req=S.requests.find(r=>r.id===reqId); if(!req)return;
   if(ok){req.status='approved';req.decided='위임자 승인'+(req.cosign?' · 추가 인증':'');
     applyPayment(req);await logChain('paymentApproved',req,req.decided);
+    S.lastDone={ok:true,amount:req.amount,merchant:req.merchant};
     toast(ic('checkc'),'승인 완료',`${won(req.amount)} · 위임 풀에서만 차감(본계좌 불변)`);}
   else{req.status='rejected';req.decided='거부: '+(reason||'위임자 판단');
     await logChain('paymentRejected',req,req.decided);
+    S.lastDone={ok:false,amount:req.amount,merchant:req.merchant,reason:reason||'위임자 판단'};
     toast(ic('ban'),'결제 차단됨',`${req.merchant} · ${reason||'거부'} · 온체인 이력 기록`);}
   S.tab='ledger'; render();
 }
@@ -1228,6 +1235,20 @@ const SCREENS={
   /* 위임자 : 승인 */
   approvals(){
     const pend=S.requests.filter(r=>r.status==='pending'||r.status==='hold');
+    /* 처리할 요청이 없을 때: 방금 승인/거부한 결과를 폰 안에 남긴다.
+       예전엔 곧장 빈 화면이 돼서 "승인했는데 아무 일도 안 일어난" 것처럼 보였다. */
+    if(!pend.length&&S.lastDone){const d=S.lastDone;
+      return `<div class="sect" style="margin-top:8px"><div class="sect-t">처리 완료</div>
+      <div class="c pad" style="text-align:center;${d.ok?'':'background:var(--crit-wash);border-color:color-mix(in srgb,var(--crit) 32%,transparent)'}">
+        <div style="width:46px;height:46px;border-radius:50%;margin:2px auto 10px;display:grid;place-items:center;font-size:22px;background:${d.ok?'var(--good-wash)':'var(--crit-wash)'};color:${d.ok?'var(--good)':'var(--crit)'}">${d.ok?ic('checkc'):ic('ban')}</div>
+        <div style="font-weight:800;font-size:15px">${d.ok?'결제가 완료되었습니다':'결제를 차단했습니다'}</div>
+        <div class="tnum" style="font-weight:800;font-size:22px;margin-top:6px">${won(d.amount)}</div>
+        <div style="font-size:12px;color:var(--ink-mute);margin-top:3px">${d.merchant}</div>
+        <div style="font-size:11.5px;color:var(--ink-soft);margin-top:12px;line-height:1.6;font-weight:500">
+          ${d.ok?`위임 풀에서만 빠져나갔고 어머니 본계좌 <b>${won(isoMain())}</b>은 그대로입니다.<br>위임 풀 잔액 <b>${won(S.pool.balance)}</b>`
+                :`사유: ${zesc(d.reason)}<br>결제는 진행되지 않았고 거부 이력이 기록되었습니다.`}</div>
+        <button class="btn ghost sm" style="margin-top:14px;width:auto;padding:8px 14px" onclick="go('history')">${ic('timer')} 위임 이력에서 확인</button>
+      </div></div>`;}
     if(!pend.length)return emptyView('확인할 요청이 없습니다','대리인이 결제를 요청하면 AI 판단과 함께 여기 표시됩니다');
     return `<div class="sect" style="margin-top:8px"><div class="sect-t">승인 대기 · ${pend.length}건</div>
     ${pend.map(r=>{const v=r.v;return `<div class="c pad" style="margin-bottom:13px">
@@ -1251,6 +1272,11 @@ const SCREENS={
   history(){
     const ev=[...Chain.getHistory(DELEG_ID)].reverse();
     if(!ev.length)return emptyView('아직 기록된 이력이 없습니다','');
+    /* 시각만 찍으면 오늘 오후 12:26이 지난주 오후 3:00 위에 오면서 정렬이 어긋난 것처럼 보인다 */
+    const evWhen=ts=>{const d=new Date(ts),t=d.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+      return d.toDateString()===new Date().toDateString()?`오늘 ${t}`:`${d.getMonth()+1}월 ${d.getDate()}일 ${t}`;};
+    /* 온체인에 실제 기록된 건과 시연 중 로컬 원장에만 쌓인 건을 나눠 센다 (인스펙터 표기와 일치) */
+    const onCnt=ev.filter(e=>e.onchain).length, locCnt=ev.length-onCnt;
     const fnMap={registerDelegation:['setup','위임 등록'],delegationConfigured:['setup','위임 내역 서명'],
       paymentRequested:['','결제 요청'],paymentApproved:['approve','결제 승인'],paymentRejected:['reject','결제 거부'],
       limitRaiseRequested:['','한도 상향 요청'],limitRaiseApplied:['approve','한도 발효'],limitRaiseCancelled:['reject','상향 취소'],
@@ -1260,11 +1286,11 @@ const SCREENS={
       <div class="c pad"><div class="tl">${ev.map(e=>{const[cls,nm]=fnMap[e.fn]||['','기록'];
         return `<div class="ev ${cls}"><div class="mk"></div>
           <div class="th">${nm}${e.payload.amount?` · ${won(e.payload.amount)}`:''}</div>
-          <div class="tm">${e.payload.note||''} · ${new Date(e.ts).toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}</div>
+          <div class="tm">${e.payload.note||''} · ${evWhen(e.ts)}</div>
           <div class="hash mono" onclick="copyHash('${e.dataHash}')" title="클릭하여 해시 복사">${ic('link')} ${short(e.dataHash)}</div></div>`;}).join('')}</div>
       </div>
       <div class="c pad" style="margin-top:12px;font-size:11.5px;color:var(--ink-mute);font-weight:500">
-        <b style="color:var(--ink-soft)">getHistory("${DELEG_ID}")</b> → ${ev.length}건 조회 · 모든 대리 행위가 해시로 위·변조 불가하게 기록됩니다.</div></div>`;
+        <b style="color:var(--ink-soft)">getHistory("${DELEG_ID}")</b> → 온체인 ${onCnt}건 조회${locCnt?` · 시연 중 생긴 ${locCnt}건은 브라우저 로컬 기록`:''} · 모든 대리 행위가 해시로 위·변조 불가하게 기록됩니다.</div></div>`;
   }
 };
 function allocRow(c){return `<div class="alloc"><div class="em">${c.em}</div>
@@ -1654,6 +1680,8 @@ async function triggerSos(reqId){
   await logChain('paymentApproved',req,'정상 승인(표면)');
   await logChain('sosAlert',{id:req.id,cat:req.cat,amount:req.amount},'은닉 SOS · 지정기관 비공개 통보');
   S.sosSent=true;S.tab='ledger';
+  /* 겉으로는 일반 승인과 완전히 같아야 한다 — 결과 카드도 평소 승인과 구분되지 않게 남긴다 */
+  S.lastDone={ok:true,amount:req.amount,merchant:req.merchant};
   toast(ic('checkc'),'승인 완료',`${won(req.amount)} · ${req.merchant}`);
   render();
 }
@@ -1682,7 +1710,7 @@ SCREENS.report=()=>{
     <div class="repstat">
       <div class="rs">AI 이상 감지<b class="tnum" style="color:var(--warn)">${flagged}건</b></div>
       <div class="rs">보류·차단<b class="tnum" style="color:var(--crit)">${blocked}건</b></div>
-      <div class="rs">정상 승인<b class="tnum" style="color:var(--good)">${approved}건</b></div>
+      <div class="rs">승인 완료<b class="tnum" style="color:var(--good)">${approved}건</b></div>
       <div class="rs">본계좌 접근<b class="tnum" style="color:var(--good)">0회</b></div>
     </div>
     <div class="c pad" style="margin-top:13px"><div style="font-size:11px;font-weight:800;color:var(--ink-mute);margin-bottom:7px">AI 자연어 요약</div>
@@ -1758,10 +1786,10 @@ const INSP={
           <span class="vbadge ${on?'real':'sim'}" style="margin-left:auto">${on?`${ic('check')} 인증 유효`:'인증 취소'}</span></div>
         <div class="cb"><div><span>instId</span>${short(i.instId)}</div>
           <div><span>pubkey X</span>${short(k.keyX)}${match?` <span class="vbadge ${match==='일치'?'real':'sim'}">내장 목록과 ${match}</span>`:''}</div>
-          <div><span>근거 해시</span>${short(i.proofHash)}</div>
+          <div><span class="ko">근거 해시</span>${short(i.proofHash)}</div>
           ${i.certifyTx?`<div style="font-family:var(--font)"><a class="escan" href="${explorerTx(i.certifyTx)}" target="_blank" rel="noopener noreferrer">발급 tx (#${i.certifyBlock&&i.certifyBlock.toLocaleString()})</a>${i.revokeTx?` · <a class="escan" href="${explorerTx(i.revokeTx)}" target="_blank" rel="noopener noreferrer">취소 tx (#${i.revokeBlock&&i.revokeBlock.toLocaleString()})</a>`:''}</div>`
           :`<div><span>기록</span>${i.localIssued?'이 단말에서 발급 (온체인 미전송)':'온체인 전송 전 (v2 재배포 필요)'}</div>`}
-          ${!on&&i.revokeReason?`<div><span>취소 사유</span>${zesc(i.revokeReason)}</div>`:''}</div>
+          ${!on&&i.revokeReason?`<div><span class="ko">취소 사유</span><b class="ko">${zesc(i.revokeReason)}</b></div>`:''}</div>
         ${i.localIssued?`<div class="cact"><button class="btn ghost sm" onclick="certIssueInvoice('${i.instId}')">이 기관 청구서 발행·검증</button>
           ${on?`<button class="btn ghost sm" onclick="certRevokeLocal('${i.instId}')">인증 취소</button>`:''}</div>`:''}
       </div>`;}).join('');
@@ -1807,7 +1835,7 @@ const INSP={
       <div class="ah">${ic('link')} Sepolia 테스트넷 · CarePassRegistry <span class="vbadge ${st[0]}" style="margin-left:6px">${st[1]}</span></div>
       <div class="arow"><div><span>contract</span>${short(ONCHAIN.address)}</div>
         <div><span>recorder</span>${short(ONCHAIN.recorder)}</div>
-        <div><span>getHistory</span>${Chain.status==='verified'||Chain.status==='mismatch'?`온체인 ${Chain.onchainCount}건 조회`:'—'}</div>
+        <div><span>getHistory</span>${Chain.status==='verified'||Chain.status==='mismatch'?`<b class="ko">온체인 ${Chain.onchainCount}건 조회</b>`:'—'}</div>
         ${ONCHAIN.explorer?`<div><a class="escan" href="${explorerAddr(ONCHAIN.address)}" target="_blank" rel="noopener noreferrer">Etherscan에서 컨트랙트·소스 보기 ${ext}</a></div>`:''}</div>
       <div ${note}>초기 위임·결제 이력은 Sepolia에 실제로 기록돼 있습니다. 브라우저가 공개 노드에서 <b>getHistory()</b>를 읽어, 원문으로 다시 계산한 <b>SHA-256 해시</b>와 대조합니다.
         ${Chain.status==='offline'?'<br><b>지금은 노드에 연결하지 못해 로컬 기록만 표시합니다.</b>':''}
@@ -1987,7 +2015,11 @@ const SCN=[
     S.protectionFloor=Math.max(0,S.pool.balance-50000);S._amt=80000;render();
     toast(ic('play'),'보호선 시나리오','보호선을 잔액 근처로 상향 → 8만원 결제가 보호선을 침범해 자동 보류됩니다');
     setTimeout(()=>doSubmit(),400);}],
-  ['한도 상향→냉각기간',()=>{S.app='carepass';S.role='delegate';S.screen='dhome';render();requestRaise('hospital',600000);toast(ic('play'),'한도 상향 요청','60초 냉각기간 시작 · 위임자 홈에서 확인');}],
+  ['한도 상향→냉각기간',()=>{S.app='carepass';S.role='delegate';S.screen='dhome';
+    /* 두 번째 재생부터는 이미 60만원이 발효돼 있어 "₩600,000 → ₩600,000"으로 보인다. 늘 30만→60만이 보이도록 되돌린다 */
+    if(S.cooling){clearInterval(S.cooling.timer);S.cooling=null;}
+    S.alloc.hospital.perTx=300000;
+    render();requestRaise('hospital',600000);toast(ic('play'),'한도 상향 요청','60초 냉각기간 시작 · 위임자 홈에서 확인');}],
   ['위임자 승인/거부 화면',()=>{S.app='carepass';S.role='delegator';S.screen='approvals';render();}],
   [`${ic('access')} 접근성·음성 안내`,()=>{S.app='carepass';S.role='delegate';S.screen='request';S._reqCat='hospital';S._amt=250000;S._mch='대구의료원';S._inv=null;render();if(!S.a11y)toggleA11y();toast(ic('access'),'접근성 모드',`실시간 판정의 ${ic('volume')} 듣기로 음성 안내를 확인하세요`);}],
   [`${ic('sos')} 은닉 SOS 시연`,()=>{S.app='carepass';S.role='delegate';S.screen='request';S._reqCat='hospital';S._mch='대구의료원';S._inv=null;render();
@@ -1995,11 +2027,17 @@ const SCN=[
       toast(ic('sos'),'은닉 SOS 시연','승인 → PIN에 1122 입력. 겉으론 정상 승인, 실제론 지정기관 비공개 신고 + 온체인 기록');});}],
   [`${ic('bot')} iM Zero 상담`,()=>{S.app='carepass';S.role='delegate';S.screen='dhome';S.zero=true;render();}]
 ];
+/* 시나리오를 바꿀 때 앞 시나리오가 띄워둔 iM Zero 패널·모달이 다음 화면을 덮지 않도록 먼저 닫는다 */
+function runScn(i){
+  if(S.zero){S.zero=false;zeroStopMic();}
+  closeModal();
+  SCN[i][1]();
+}
 $('scBtns').innerHTML=`<div class="sc-grp">기본 흐름</div>`+SCN.map((s,i)=>{
   const sep=(i===10)?`<div class="sc-grp">추가 기능</div>`:'';
-  return sep+`<button class="sc-btn" onclick="SCN[${i}][1]()"><span class="n">${i+1}</span>${s[0]}</button>`;
+  return sep+`<button class="sc-btn" onclick="runScn(${i})"><span class="n">${i+1}</span>${s[0]}</button>`;
 }).join('');
-window.SCN=SCN;
+window.SCN=SCN;window.runScn=runScn;
 
 /* role toggle chips inside scenario? add a role switch control above phone */
 /* ============================ boot ============================ */
@@ -2013,8 +2051,15 @@ tickClock();setInterval(tickClock,10000);
 
 /* seed one prior approved payment so the app opens in a realistic working state */
 (async function seed(){
-  S.alloc.hospital.spent=120000; S.alloc.utility.spent=145000;
-  S.pool.balance=S.pool.cap-120000-145000; /* 위임 풀만 차감 · 본계좌 불변 */
+  /* 온체인 초기 이력(DEMO_EVENTS)과 같은 결제를 요청 목록에도 넣는다.
+     월간 리포트의 금액과 건수가 모두 S.requests 한 곳에서 나오도록 맞추기 위한 것으로,
+     예전처럼 spent만 올리면 "총액 26.5만원 · 정상 승인 0건"처럼 서로 어긋난다. */
+  DEMO_EVENTS.events.filter(e=>e.fn==='paymentApproved').forEach(e=>{
+    const req={id:'REQ-'+e.salt.slice(0,6).toUpperCase(),cat:e.cat,amount:e.amount,merchant:e.merchant,
+      v:{level:'normal',say:'평소 범위 안의 결제입니다.',reasons:[]},status:'approved',ts:e.ts,cosign:false,
+      decided:S.alloc[e.cat].auto?'자동승인 (월 정기)':'위임자 승인'};
+    S.requests.unshift(req); applyPayment(req); /* 위임 풀만 차감 · 본계좌 불변 */
+  });
   for(const [i,ev] of DEMO_EVENTS.events.entries())
     await Chain.registerDelegation({...ev},ONCHAIN&&ONCHAIN.events[i]);
   render();
