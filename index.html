@@ -2035,9 +2035,11 @@ const SCREENS={
           신뢰 기관이어도 <b>보호자에게 알리거나 보류</b>합니다.</div>
         ${S.trusted.length?S.trusted.map(t=>`<div class="alloc" style="padding:9px 0">
           <div class="em">${ic('hospital')}</div>
-          <div style="flex:1"><div class="nm">${zesc(t.name)}</div>
-            <div class="meta">${t.src==='past'?`${t.type} · 위임 전 본인 결제 <b>${t.n}회</b> · 평소 ${manwon(t.mean)}`:'직접 추가하셨습니다'}</div></div>
-          <button class="btn ghost sm" style="flex:none;padding:5px 11px" onclick="trustRemove(${JSON.stringify(t.name).replace(/"/g,'&quot;')})">해제</button>
+          <!-- .btn 은 width:100% 다. 여기에 flex:none 을 주면 버튼이 폭을 전부 가져가 가운데가 0으로
+               눌리고 글자가 한 글자씩 세로로 쪼개진다. 버튼은 width:auto, 가운데는 min-width:0 으로 둔다 -->
+          <div style="flex:1;min-width:0"><div class="nm">${zesc(t.name)}</div>
+            <div class="meta">${t.src==='past'?`${t.type} · 본인 결제 <b>${t.n}회</b> · 평소 ${manwon(t.mean)}`:'직접 추가'}</div></div>
+          <button class="btn ghost sm" style="flex:none;width:auto;padding:6px 12px;font-size:12px" onclick="trustRemove(${JSON.stringify(t.name).replace(/"/g,'&quot;')})">해제</button>
         </div>`).join(''):`<div style="font-size:12px;color:var(--ink-mute);font-weight:600;padding:6px 0">등록된 곳이 없습니다. 모든 병원비가 확인을 거칩니다.</div>`}
         <label class="fld" style="margin-top:10px"><span class="l">병원 추가</span>
           <input class="in" id="trustq" placeholder="병원 이름을 검색하세요" value="${zesc(S._trustQ)}" oninput="onTrustQ(this.value)"></label>
