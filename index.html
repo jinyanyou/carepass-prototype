@@ -769,15 +769,42 @@ function makeHistory(){
   return{hospital,utility,cash:[]};
 }
 
-/* 위임을 맺기 **전에** 위임자(어머니)가 본인 명의로 결제했던 의료기관 이력.
-   실서비스에서는 은행이 이미 보유한 카드·계좌 거래내역에서 그대로 추출된다 — 새로 모을 데이터가 아니다.
-   여기 값은 그 상태를 재현한 시연용 더미다.
-   ⚠ 금액 분포(S.hist)는 건드리지 않는다. 건드리면 μ·σ·z 와 eval 평가 수치가 전부 어긋난다. */
-const PAST_VISITS=[
-  {name:'대구의료원',     n:14, lastDays:9},
-  {name:'경북대학교병원', n:5,  lastDays:23},
+/* ── 위임 전 본인 결제 원장 ──────────────────────────────────────────────────
+   위임을 맺기 **전에** 위임자(어머니)가 본인 명의로 결제했던 의료기관 이력이다.
+   실서비스에서는 이 원장이 은행의 카드·계좌 거래내역에서 그대로 온다 — 새로 모을 데이터가 아니다.
+   판정의 μ·σ 도, 신뢰 기관 목록도 **전부 이 원장 하나에서 도출**된다. 그게 개인화의 실체다.
+
+   ⚠ 금액은 makeHistory() 가 만든 42건을 **그대로** 쓴다. 여기서 붙이는 것은 '어느 기관에서, 언제'
+   뿐이라 금액 다중집합이 바뀌지 않는다 — μ·σ·z 와 eval 평가셋 정합이 유지된다.
+
+   금액 배정은 비싼 건부터 상위 종별로 내려간다. 공개 통계상 외래 본인부담은 종별로 갈리기 때문이다
+   (의원 30%·65세 이상 정액제 / 병원 40% / 종합병원 50% / 상급종합 진찰료 100%+나머지 60%).   */
+const PAST_PLAN=[
+  {name:'경북대학교병원',   type:'상급종합', n:5},
+  {name:'고은재활요양병원', type:'요양병원', n:2},   /* 2회 — 신뢰 기준 미달. '아직 확인을 거치는 곳' */
+  {name:'대구의료원',       type:'종합병원', n:14},
+  {name:'메디암한방병원',   type:'한방병원', n:1},
+  {name:'박애의원',         type:'의원',     n:9},
+  {name:'대구약국',         type:'약국',     n:11},
 ];
-const TRUST_MIN_VISITS=3;   /* 과거 이 횟수 이상 방문한 기관만 자동 신뢰 — 1회 방문은 근거가 약하다 */
+function makeLedger(amounts){
+  const sorted=[...amounts].sort((a,b)=>b-a);
+  const r=rng(20260915); const out=[]; let i=0;
+  for(const p of PAST_PLAN)
+    for(let k=0;k<p.n;k++)
+      out.push({name:p.name,type:p.type,amount:sorted[i++],daysAgo:3+Math.floor(r()*177)});
+  return out.sort((a,b)=>a.daysAgo-b.daysAgo);
+}
+const HIST=makeHistory();
+const PAST_LEDGER=makeLedger(HIST.hospital);
+/* 원장을 기관별로 집계 — 횟수·평균·최근 방문. 신뢰 기관은 여기서 갈린다 */
+const PAST_VISITS=PAST_PLAN.map(p=>{
+  const rows=PAST_LEDGER.filter(x=>x.name===p.name);
+  return {name:p.name,type:p.type,n:rows.length,
+    mean:Math.round(rows.reduce((t,x)=>t+x.amount,0)/rows.length),
+    lastDays:Math.min(...rows.map(x=>x.daysAgo))};
+}).sort((a,b)=>b.n-a.n);
+const TRUST_MIN_VISITS=3;   /* 과거 이 횟수 이상 방문한 기관만 자동 신뢰 — 1~2회는 근거가 약하다 */
 
 /* ============================ escrow "smart contract" (mirror of Solidity) ============================ */
 /* ONCHAIN:BEGIN — contracts/scripts/sync-frontend.js 가 자동 생성. 직접 고치지 마세요 */
@@ -994,7 +1021,7 @@ const S={
     utility:{key:'utility',em:ic('receipt'),nm:'공과금 결제',allowed:true,perTx:200000,cap:600000,spent:0,auto:true,wl:['공과금','전기','가스','수도','통신']},
     cash:{key:'cash',em:ic('cash'),nm:'현금 송금',allowed:false,perTx:0,cap:0,spent:0,wl:[]}
   },
-  hist:makeHistory(),
+  hist:HIST,   /* 위 PAST_LEDGER 와 같은 42건 — 원장과 통계가 같은 출처라는 뜻 */
   requests:[], cooling:null, lastVerdict:null, lastDone:null, /* lastDone: 승인/거부 직후 폰 화면에 남길 결과 */
   trustee:'김민서 (사회복지사)',
   guardian:{nm:'이준호',rl:'아들'},   /* 공동보호자 — 결제 권한 없이 알림만 받고 이의제기하는 가족 */
@@ -1006,7 +1033,8 @@ const S={
   a11y:false, revoked:false, sosSent:false, sosPin:'1122', zero:false, hideAmt:false,
   /* 신뢰 기관 — 여기 있는 곳은 '확인 요청 없이' 결제된다. 검사를 끄는 것이 아니라 묻지 않는 것이다.
      (c) 과거 본인 결제 이력에서 자동 등록 + (a) 위임 설정에서 위임자가 직접 추가·제거 */
-  trusted:PAST_VISITS.filter(v=>v.n>=TRUST_MIN_VISITS).map(v=>({name:v.name,src:'past',n:v.n,lastDays:v.lastDays})),
+  trusted:PAST_VISITS.filter(v=>v.n>=TRUST_MIN_VISITS)
+    .map(v=>({name:v.name,src:'past',n:v.n,lastDays:v.lastDays,mean:v.mean,type:v.type})),
   _trustQ:''
 };
 /* 결제처가 신뢰 기관인가 — 이름은 공백을 지우고 비교한다(결제처 검색과 같은 규칙) */
@@ -2008,7 +2036,7 @@ const SCREENS={
         ${S.trusted.length?S.trusted.map(t=>`<div class="alloc" style="padding:9px 0">
           <div class="em">${ic('hospital')}</div>
           <div style="flex:1"><div class="nm">${zesc(t.name)}</div>
-            <div class="meta">${t.src==='past'?`위임 전 본인 결제 ${t.n}회 · 자동 등록`:'직접 추가하셨습니다'}</div></div>
+            <div class="meta">${t.src==='past'?`${t.type} · 위임 전 본인 결제 <b>${t.n}회</b> · 평소 ${manwon(t.mean)}`:'직접 추가하셨습니다'}</div></div>
           <button class="btn ghost sm" style="flex:none;padding:5px 11px" onclick="trustRemove(${JSON.stringify(t.name).replace(/"/g,'&quot;')})">해제</button>
         </div>`).join(''):`<div style="font-size:12px;color:var(--ink-mute);font-weight:600;padding:6px 0">등록된 곳이 없습니다. 모든 병원비가 확인을 거칩니다.</div>`}
         <label class="fld" style="margin-top:10px"><span class="l">병원 추가</span>
@@ -2673,7 +2701,28 @@ function renderInsp(){
 const INSP={
   ai(){
     const lv=S.lastVerdict;
-    if(!lv)return `<div class="i-empty">대리인이 결제를 요청하면<br>규칙 엔진 + z-score 계산 과정이 여기 표시됩니다.<br><br><span style="font-size:12px">합성 학습 데이터: 병원비 ${S.hist.hospital.length}건 · 공과금 ${S.hist.utility.length}건</span></div>`;
+    if(!lv){
+      /* 판정이 아직 없을 때는 **무엇을 근거로 개인화되는지**를 보여준다.
+         μ·σ 와 신뢰 기관이 모두 이 원장 하나에서 나온다는 것이 심사에서 확인돼야 한다. */
+      const st=stats(S.hist.hospital);
+      return `<div style="padding:4px 0">
+        <div class="i-empty" style="padding:14px 10px 18px">대리인이 결제를 요청하면<br>규칙 엔진 + z-score 계산 과정이 여기 표시됩니다.</div>
+        <div style="font-size:13px;font-weight:800;margin-bottom:6px">위임 전 본인 결제 원장 — 개인화의 근거</div>
+        <div style="font-size:11.5px;color:var(--ink-mute);font-weight:500;line-height:1.7;margin-bottom:10px">
+          실서비스에서는 이 원장이 <b>은행 거래내역에서 그대로</b> 옵니다.
+          아래 <b>μ·σ 와 신뢰 기관이 전부 여기서 계산</b>됩니다 — 모수를 가정한 값이 아닙니다.</div>
+        <div class="calc">
+          ${PAST_VISITS.map(v=>`<div class="step">
+            <span>${zesc(v.name)} <span style="color:var(--ink-mute)">· ${zesc(v.type)}</span></span>
+            <b>${v.n}회 · ${won(v.mean)} ${v.n>=TRUST_MIN_VISITS?'· 신뢰':'· 기준 미달'}</b></div>`).join('')}
+          <div class="step"><span>합계 ${S.hist.hospital.length}건 → 평균 μ · 표준편차 σ</span>
+            <b>${won(st.mean)} · ${won(st.std)}</b></div>
+        </div>
+        <div style="font-size:11px;color:var(--ink-mute);font-weight:500;margin-top:8px;line-height:1.7">
+          신뢰 기준 <b>${TRUST_MIN_VISITS}회 이상</b> · 공과금 ${S.hist.utility.length}건은 별도 분포입니다.<br>
+          금액 분포는 로그정규(중앙값 85,000 · σ_log 0.45)로 생성한 시연값입니다. 모수 자체에 인용 가능한 공개 통계는 없습니다.</div>
+      </div>`;
+    }
     const{v,amount,catKey}=lv;const h=v.hist||[];const st=h.length?stats(h):{mean:0,std:0,min:0,max:0};
     const z=v.z||0;const zpos=clamp((z+1)/5,0,1)*100;
     // sparkline
