@@ -1050,7 +1050,9 @@ function counterfactual(catKey,amount,v){
     text:`금액을 낮춰도 통과되지 않습니다 — ${blockers[0]} 문제입니다.`};
   const caps=[['건당 한도',a.perTx],['월 한도 잔여',Math.max(0,a.cap-a.spent)],
     ['생활비 보호선',Math.max(0,S.pool.balance-S.protectionFloor)],
-    ['평소 패턴(μ+2σ)',Math.round(st.mean+2*st.std)]];
+    /* 이 라벨은 cfLine() 을 거쳐 폰(사용자) 화면에 그대로 찍힌다. userReason() 같은 정화를 지나지 않으므로
+       여기에 μ·σ·z 를 쓰면 고령자 화면에 기술 지표가 노출된다. 기술값은 인스펙터 'AI 판단' 탭에만 둔다 */
+    ['평소 결제 범위',Math.round(st.mean+2*st.std)]];
   const lim=caps.filter(c=>c[1]>0).sort((x,y)=>x[1]-y[1])[0];
   if(!lim||amount<=lim[1])return {kind:'pass',text:''};
   return {kind:'amount',limit:lim[1],by:lim[0],
