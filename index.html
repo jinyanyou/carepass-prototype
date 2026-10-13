@@ -2249,7 +2249,8 @@ async function hiraLookup(name){
   if(location.protocol==='file:'||Hira.on===false)return null;   /* 파일로 열었거나 키가 없는 배포 */
   try{
     const ctl=new AbortController();const t=setTimeout(()=>ctl.abort(),5000);
-    const r=await fetch('/api/hira?name='+encodeURIComponent(name),{signal:ctl.signal});
+    /* 내장 목록이 대구 전용이라 지역을 같이 보낸다 — yadmNm 은 부분일치라 전국이 딸려 온다 */
+    const r=await fetch('/api/hira?region=%EB%8C%80%EA%B5%AC&name='+encodeURIComponent(name),{signal:ctl.signal});
     clearTimeout(t);
     const j=await r.json();
     if(j.configured===false){Hira.on=false;return null;}          /* 키 미설정 — 다시 묻지 않는다 */

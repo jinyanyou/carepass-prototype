@@ -77,13 +77,17 @@ module.exports = async (req, res) => {
   res.setHeader("Cache-Control", "no-store");
   const key = process.env.HIRA_API_KEY;
   const name = String((req.query && req.query.name) || "").trim();
+  // yadmNm 은 부분일치라 '대구약국'에 포항·의성 약국까지 딸려 온다.
+  // 우리 내장 목록이 대구 전용이므로 주소로 지역을 좁힌다.
+  const region = String((req.query && req.query.region) || "").trim();
 
   // 키가 없으면 '끈 상태'로 조용히 알린다. 앱은 이 응답을 보고 내장 스냅샷만 쓴다.
   if (!key) return res.status(200).json({ ok: false, configured: false, reason: "no key" });
   if (!name) return res.status(400).json({ ok: false, configured: true, reason: "name required" });
   if (name.length > 40) return res.status(400).json({ ok: false, configured: true, reason: "name too long" });
 
-  const hit = cache.get(name);
+  const ckey = name + "|" + region;
+  const hit = cache.get(ckey);
   if (hit && Date.now() - hit.at < TTL_MS) return res.status(200).json({ ...hit.body, cached: true });
 
   const now = Date.now();
@@ -100,9 +104,10 @@ module.exports = async (req, res) => {
   }
   if (!r.ok) return res.status(200).json({ ok: false, configured: true, reason: r.reason });
 
-  const body = { ok: true, configured: true, source: "hira-api", name, items: r.items };
-  cache.set(name, { at: Date.now(), body });
+  const items = region ? r.items.filter((i) => (i.addr || "").includes(region)) : r.items;
+  const body = { ok: true, configured: true, source: "hira-api", name, region: region || null, items };
+  cache.set(ckey, { at: Date.now(), body });
   // 조회 기록만 남긴다 (기관명·건수). 개인정보가 아니다.
-  try { await store.push("carepass:hira:log", { ts: Date.now(), name, n: r.items.length }, 200); } catch {}
+  try { await store.push("carepass:hira:log", { ts: Date.now(), name, region, n: items.length }, 200); } catch {}
   return res.status(200).json(body);
 };
