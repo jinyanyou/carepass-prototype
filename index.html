@@ -379,7 +379,9 @@ a.escan:hover{color:var(--primary)}
 
 /* live anomaly preview (수동 조작) */
 /* 공공데이터 결제처 확인 */
-.mchhint{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.mchhint{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.mchlab{display:flex;align-items:center;gap:5px;margin-top:9px;font-size:11px;font-weight:700;color:var(--ink-mute)}
+.mchlab svg{width:13px;height:13px;color:var(--good)}
 .mchlist{margin-top:8px;border:1px solid var(--line);border-radius:var(--r-sm);overflow:hidden;background:var(--card)}
 .mchlist button{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;text-align:left;border:0;border-top:1px solid var(--line);background:none;padding:9px 12px;font-size:12.5px;color:var(--ink)}
 .mchlist button:first-child{border-top:0}
@@ -2208,7 +2210,12 @@ let MCH_HITS=[];
 function mchBoxHTML(q){
   const src=`<div class="mchsrc">출처: ${Medical.source()} (공공누리 제1유형)</div>`;
   if(!normName(q)){
-    return `<div class="mchhint">${['대구의료원','경북대학교병원'].map(n=>`<button type="button" class="qchip" onclick="pickMch(${JSON.stringify(n).replace(/"/g,'&quot;')})">${n}</button>`).join('')}</div>${src}`;
+    /* 위임자가 등록해 둔 곳을 대리인 결제 화면에 바로 띄운다 — 매번 병원 이름을 검색하지 않게.
+       ⚠ 라벨에 "확인 없이 결제됩니다" 라고 쓰지 않는다. 이 화면은 대리인(감시 대상)이 보는 곳이라
+       어디가 마찰이 가장 낮은지 광고하는 셈이 된다. 편의만 주고 우회 힌트는 주지 않는다. */
+    const names=S.trusted.length?S.trusted.map(t=>t.name):['대구의료원','경북대학교병원'];
+    const lab=S.trusted.length?`<div class="mchlab">${ic('check')} 어머니가 등록한 자주 가는 곳</div>`:'';
+    return `${lab}<div class="mchhint">${names.map(n=>`<button type="button" class="qchip" onclick="pickMch(${JSON.stringify(n).replace(/"/g,'&quot;')})">${zesc(n)}</button>`).join('')}</div>${src}`;
   }
   const hit=Medical.find(q);
   if(hit.length){
