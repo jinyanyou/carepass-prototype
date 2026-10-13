@@ -1,0 +1,7 @@
+{
+  "name": "carepass-prototype",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CarePass — iM뱅크 앱 내장 가족 금융 대리권 프로토타입",
+  "engines": { "node": "22.x" }
+}

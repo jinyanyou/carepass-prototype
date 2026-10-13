@@ -20,3 +20,12 @@ contracts/coverage/
 contracts/coverage.json
 contracts/deployments/localhost.json
 contracts/deployments/hardhat.json
+
+.vercel
+.env*
+.env.local
+
+# 에이전트 도구 캐시
+.agents/
+.claude/
+skills-lock.json

@@ -1,0 +1,8 @@
+# 배포에 필요 없는 것 — 저장소에는 남기고 배포본에서만 뺀다
+contracts/node_modules
+contracts/cache
+contracts/artifacts
+contracts/.env
+*.bak
+index.html.pre-rev3.bak
+eval/eval_set.json
