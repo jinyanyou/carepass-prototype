@@ -769,6 +769,16 @@ function makeHistory(){
   return{hospital,utility,cash:[]};
 }
 
+/* 위임을 맺기 **전에** 위임자(어머니)가 본인 명의로 결제했던 의료기관 이력.
+   실서비스에서는 은행이 이미 보유한 카드·계좌 거래내역에서 그대로 추출된다 — 새로 모을 데이터가 아니다.
+   여기 값은 그 상태를 재현한 시연용 더미다.
+   ⚠ 금액 분포(S.hist)는 건드리지 않는다. 건드리면 μ·σ·z 와 eval 평가 수치가 전부 어긋난다. */
+const PAST_VISITS=[
+  {name:'대구의료원',     n:14, lastDays:9},
+  {name:'경북대학교병원', n:5,  lastDays:23},
+];
+const TRUST_MIN_VISITS=3;   /* 과거 이 횟수 이상 방문한 기관만 자동 신뢰 — 1회 방문은 근거가 약하다 */
+
 /* ============================ escrow "smart contract" (mirror of Solidity) ============================ */
 /* ONCHAIN:BEGIN — contracts/scripts/sync-frontend.js 가 자동 생성. 직접 고치지 마세요 */
 const DEMO_EVENTS={"delegationId":"DLG-2026-0914","idSalt":"7b41e9d2a8c05f36","events":[{"delegationId":"DLG-2026-0914","fn":"delegationConfigured","note":"초기 위임 설정 서명","pool":3000000,"floor":500000,"ts":1789347600000,"salt":"c1a7e0f3b92d4a58"},{"delegationId":"DLG-2026-0914","fn":"paymentApproved","note":"병원비 승인","cat":"hospital","amount":120000,"merchant":"대구의료원","ts":1789437600000,"salt":"5e0b9d61a4c83f27"},{"delegationId":"DLG-2026-0914","fn":"paymentApproved","note":"공과금 자동승인","cat":"utility","amount":145000,"merchant":"한국전력 공과금","ts":1789452000000,"salt":"93f2c8a06d17b4e5"}]};
@@ -993,8 +1003,14 @@ const S={
   usedInv:[],                         /* 이미 결제에 쓰인 청구서 번호 — 중복 청구 탐지용 */
   suspectDelegate:false,              /* FINRA 4512 — 대리인이 착취에 가담한 것으로 의심되는 상태 */
   consent:{signed:false,ts:null,sigHash:null,docHash:null,checks:[false,false,false],strokes:[]},  /* 위임장 직접 서명 */
-  a11y:false, revoked:false, sosSent:false, sosPin:'1122', zero:false, hideAmt:false
+  a11y:false, revoked:false, sosSent:false, sosPin:'1122', zero:false, hideAmt:false,
+  /* 신뢰 기관 — 여기 있는 곳은 '확인 요청 없이' 결제된다. 검사를 끄는 것이 아니라 묻지 않는 것이다.
+     (c) 과거 본인 결제 이력에서 자동 등록 + (a) 위임 설정에서 위임자가 직접 추가·제거 */
+  trusted:PAST_VISITS.filter(v=>v.n>=TRUST_MIN_VISITS).map(v=>({name:v.name,src:'past',n:v.n,lastDays:v.lastDays})),
+  _trustQ:''
 };
+/* 결제처가 신뢰 기관인가 — 이름은 공백을 지우고 비교한다(결제처 검색과 같은 규칙) */
+function isTrusted(m){const k=normName(m||'');return !!k&&S.trusted.some(t=>normName(t.name)===k);}
 
 /* ============================ 청구-결제 매칭 · 구조화 탐지 · 반사실 설명 ============================ */
 /* ① 청구-결제 매칭 — 병원이 서명한 청구서의 필드와 실제 결제 요청을 대조한다.
@@ -1077,6 +1093,10 @@ function judge(catKey,amount,merchant){
   const z=st.std>0?(amount-st.mean)/st.std:0;
   const merchantOk=a.wl.length?a.wl.some(w=>merchant.includes(w)):true;
   const reg=a.registry&&merchant?Medical.find(merchant):null; /* 공공데이터 결제처 확인 */
+  /* 신뢰 기관 여부 — **결제처 축 하나만** 면제한다.
+     금액(z)·빈도(구조화)·한도 축은 신뢰 기관에서도 그대로 돈다. 고령자 금융착취는 가짜 병원보다
+     '진짜 병원에서 과다하게 쓰는 것'이 흔해서, 기관만 믿으면 그 유형을 전부 놓친다. */
+  const trusted=!!a.registry&&isTrusted(merchant);
   /* 스캔한 청구서 — 기관 전자서명 검증 + 청구-결제 매칭.
      예전에는 결제처 이름이 다르면 청구서를 그냥 무시했다. 그러면 "청구서는 A병원 걸 스캔하고
      결제처만 B로 바꾸는" 수법이 아무 경고 없이 통과한다. 이제 불일치를 '탐지'한다. */
@@ -1130,7 +1150,8 @@ function judge(catKey,amount,merchant){
   else if(level==='normal')say=`평소 ${nm}${nmJ} <b>${manwon(lo)}~${manwon(hi)}</b> 수준이고 이번 <b>${won(amount)}</b>은 정상 범위입니다. 바로 승인하셔도 됩니다.`;
   else if(action==='hold')say=`평소 ${nm}${nmJ} <b>${manwon(lo)}~${manwon(hi)}</b>인데 이번 요청은 <b>${won(amount)}</b>입니다. 규칙에 걸려 <b>결제를 임시 보류</b>하고 본인 확인을 요청합니다.`;
   else say=`평소 ${nm}${nmJ} <b>${manwon(lo)}~${manwon(hi)}</b>인데 이번 요청은 <b>${won(amount)}</b>입니다. 보호자 확인 후 승인 여부를 결정하세요.`;
-  const out={level,action,cosign,z,mean:st.mean,std:st.std,min:st.min,max:st.max,say,reasons,hist:h,reg,inv,invAny,match:M,struct:STR,signedOk};
+  if(trusted&&level==='normal')reasons.push(`신뢰 기관 — 위임 전 본인 결제 이력이 있는 곳 · 확인 요청 없이 진행`);
+  const out={level,action,cosign,z,mean:st.mean,std:st.std,min:st.min,max:st.max,say,reasons,hist:h,reg,inv,invAny,match:M,struct:STR,signedOk,trusted};
   out.cf=counterfactual(catKey,amount,out);          /* 반사실 설명 */
   out.freq=freqNote(merchant);
   return out;
@@ -1142,13 +1163,26 @@ async function submitRequest(catKey,amount,merchant){
   const v=judge(catKey,amount,merchant); S.lastVerdict={catKey,amount,merchant,v};
   const req={id:'REQ-'+rhex(4).toUpperCase(),cat:catKey,amount,merchant,v,
     status:v.action==='hold'?'hold':(v.action==='confirm'?'pending':'pending'),ts:now(),cosign:v.cosign};
-  // 공과금 소액 자동승인
-  if(v.action==='approve'&&S.alloc[catKey].auto&&!v.cosign&&v.level==='normal'){
-    req.status='approved'; applyPayment(req); await logChain('paymentApproved',req,'자동승인 (월 정기)');
-    toast(ic('checkc'),'공과금 자동승인',`${won(amount)} · ${merchant}`);
+  /* 자동승인 — 결정 4의 1층 "일상은 자동, 예외만 알림·보류".
+     위임자가 치매·인지질환이면 건별 승인 자체를 수행하지 못한다. 그래서 일상 결제를 매번 묻는 설계는
+     서비스 전제와 모순이다(A-1). 두 경로로만 자동 처리한다.
+       · 공과금 : 월 정기 (auto)
+       · 병원비 : **신뢰 기관**(과거 본인 결제 이력 또는 위임자가 직접 등록한 곳)
+     어느 쪽이든 판정이 normal 이고 한도 안이어야 한다 — 금액·빈도·한도 검사는 그대로 돈다. */
+  const autoOK=v.action==='approve'&&!v.cosign&&v.level==='normal'&&(S.alloc[catKey].auto||v.trusted);
+  if(autoOK){
+    const why=S.alloc[catKey].auto?'자동승인 (월 정기)':'자동승인 (신뢰 기관 · 확인 요청 없음)';
+    req.status='approved'; applyPayment(req); await logChain('paymentApproved',req,why);
+    /* 보호자 알림함에는 남기되 '새 알림'으로 울리지는 않는다 — 일상 결제까지 울리면 알림 스팸이 되고,
+       그러면 정작 예외가 묻힌다. 사후에 훑어보고 이의제기할 수 있어야 하므로 기록 자체는 남긴다. */
+    const al=notifyGuardian('auto','자동 승인된 결제',
+      `${won(amount)} · ${merchant} — ${S.alloc[catKey].auto?'월 정기 공과금':'신뢰 기관'}이라 확인 요청 없이 진행됐습니다.`,
+      req);
+    if(al)al.state='seen';
+    toast(ic('checkc'),S.alloc[catKey].auto?'공과금 자동승인':'신뢰 기관 자동승인',`${won(amount)} · ${merchant}`);
   }else{
     if(APPMODE){
-      const alertNeeded=(v.level!=='normal'||v.action==='hold');
+      const alertNeeded=needAlert(catKey,v);
       const okSent=await appAct('request',{
         cat:catKey,amount,merchant,status:req.status,
         level:v.level,action:v.action,say:v.say,z:v.z,
@@ -1163,13 +1197,25 @@ async function submitRequest(catKey,amount,merchant){
     await logChain('paymentRequested',req, v.action==='hold'?'AI 임시 보류':'보호자 확인 대기');
     if(v.action==='hold')toast(ic('stop'),'AI가 결제를 보류했습니다',v.reasons[0]);
     else toast(ic('mail'),'보호자에게 확인 요청 발송',`${won(amount)} · ${merchant}`);
-    /* 결정 4의 2층 — 평소와 다른 건만 보호자에게 넘긴다. 정상 건까지 보내면 알림 스팸이 된다 */
-    if(v.level!=='normal'||v.action==='hold')
+    if(needAlert(catKey,v))
       notifyGuardian(v.action==='hold'?'hold':'caution',
-        v.action==='hold'?'AI가 보류한 결제':'평소와 다른 결제',
+        alertTitle(catKey,v),
         v.reasons.map(x=>userReason(x)).filter(Boolean)[0]||v.say.replace(/<[^>]+>/g,''), req);
   }
   S.requests.unshift(req); S.tab='ai'; render();
+}
+/* 결정 4의 2층 — 보호자에게 넘길 건을 고른다. 일상 결제까지 보내면 알림 스팸이 되고 정작 예외가 묻힌다.
+   ① 평소와 다르거나 보류된 건
+   ② **처음 결제하는 병원** — 신뢰 기관이 아니면 판정이 정상이어도 알린다.
+      이게 없으면 미신뢰 기관 결제가 아무에게도 알려지지 않은 채 위임자 승인만 기다리게 되고,
+      위임자가 치매·인지질환이면 그 결제는 영영 멈춰 있는다. */
+function needAlert(catKey,v){
+  return v.level!=='normal'||v.action==='hold'||(!!S.alloc[catKey].registry&&!v.trusted);
+}
+function alertTitle(catKey,v){
+  if(v.action==='hold')return 'AI가 보류한 결제';
+  if(v.level!=='normal')return '평소와 다른 결제';
+  return '처음 결제하는 병원';
 }
 function applyPayment(req){
   /* 위임 풀(목적 제한 서브계좌)에서만 차감 · 본계좌(격리분 제외)는 불변 */
@@ -1638,7 +1684,23 @@ async function doObject(id,reason){
   const req=S.requests.find(r=>r.id===al.reqId);
   let note=`보호자 이의제기 · ${reason}`;
   if(req&&(req.status==='pending'||req.status==='hold')){ req.status='hold'; req.objected=reason; note+=' · 해당 요청 보류'; }
-  else if(req&&req.status==='approved'){ S.suspectDelegate=true; note+=' · 결제 완료 건 → 대리인 의심 상태 전환'; }
+  else if(req&&req.status==='approved'){
+    /* 사후 되돌리기 — 이미 집행된 건. 앱이 할 수 있는 것과 없는 것이 분명히 갈린다.
+         할 수 있음 : 확산 차단(신뢰 해제·의심 전환) · 장부 롤백 · 증거 고정(온체인)
+         못 함      : 가맹점에 간 돈을 되찾는 것. 카드 거래취소·착오송금 반환은 은행 분쟁처리와
+                      가맹점 동의 또는 법적 절차가 필요하다 → 분쟁 접수까지만 하고 넘긴다 */
+    req.status='disputed'; req.objected=reason;
+    S.pool.balance+=req.amount; S.alloc[req.cat].spent=Math.max(0,S.alloc[req.cat].spent-req.amount);
+    /* 한도 롤백이 중요한 이유 — 성능평가에서 '월 한도 초과' 보류 160건 중 120건이
+       사기가 한도를 먼저 소진해 뒤따르는 정상 결제가 막힌 연쇄였다. 2차 피해를 여기서 끊는다.
+       단 S.recent 에서는 지우지 않는다 — 구조화 탐지가 봐야 할 공격 패턴 증거다. */
+    const before=S.trusted.length;
+    S.trusted=S.trusted.filter(t=>normName(t.name)!==normName(req.merchant));
+    S.suspectDelegate=true;
+    note+=` · 결제 완료 건 → 분쟁 접수 · 한도 ${won(req.amount)} 롤백`+(S.trusted.length<before?' · 신뢰 기관 해제':'')+' · 대리인 의심 상태 전환';
+    await logChain('paymentDisputed',{id:req.id,cat:req.cat,amount:req.amount,merchant:req.merchant,reason},
+      `집행된 결제에 대한 이의제기 — 증거 고정. 실제 환수는 은행 분쟁처리 절차로 이관`);
+  }
   await logChain('guardianObjection',{id:al.reqId,amount:al.amount,merchant:al.merchant},note);
   S.tab='ledger';
   toast(ic('ban'),'이의제기 접수',`${reason} · 온체인 기록${req&&req.status==='hold'?' · 결제 보류됨':''}`);
@@ -1939,6 +2001,20 @@ const SCREENS={
         ${c.allowed?`<label class="fld" style="width:100%;margin-top:10px"><span class="l">건당 한도 · ${won(c.perTx)}</span>
           <input type="range" min="0" max="1000000" step="10000" value="${c.perTx}" style="width:100%;accent-color:var(--primary)" oninput="setPerTx('${c.key}',this.value)"></label>`:''}
       </div>`).join('')}</div></div>
+      <div class="sect"><div class="sect-t">자주 가는 병원 · 확인 없이 결제</div><div class="c pad">
+        <div style="font-size:11.5px;color:var(--ink-soft);font-weight:500;line-height:1.65;margin-bottom:10px">
+          여기 있는 곳은 <b>매번 묻지 않고</b> 결제됩니다. 금액이 평소와 많이 다르거나 한도를 넘으면
+          신뢰 기관이어도 <b>보호자에게 알리거나 보류</b>합니다.</div>
+        ${S.trusted.length?S.trusted.map(t=>`<div class="alloc" style="padding:9px 0">
+          <div class="em">${ic('hospital')}</div>
+          <div style="flex:1"><div class="nm">${zesc(t.name)}</div>
+            <div class="meta">${t.src==='past'?`위임 전 본인 결제 ${t.n}회 · 자동 등록`:'직접 추가하셨습니다'}</div></div>
+          <button class="btn ghost sm" style="flex:none;padding:5px 11px" onclick="trustRemove(${JSON.stringify(t.name).replace(/"/g,'&quot;')})">해제</button>
+        </div>`).join(''):`<div style="font-size:12px;color:var(--ink-mute);font-weight:600;padding:6px 0">등록된 곳이 없습니다. 모든 병원비가 확인을 거칩니다.</div>`}
+        <label class="fld" style="margin-top:10px"><span class="l">병원 추가</span>
+          <input class="in" id="trustq" placeholder="병원 이름을 검색하세요" value="${zesc(S._trustQ)}" oninput="onTrustQ(this.value)"></label>
+        <div id="trustBox">${trustBoxHTML(S._trustQ)}</div>
+      </div></div>
       <div class="sect"><div class="c pad" style="background:var(--warn-wash);border-color:color-mix(in srgb,var(--warn) 30%,transparent)">
         <div style="font-size:12px;font-weight:700;color:var(--warn);display:flex;gap:7px;align-items:center">${ic('timer')} 냉각기간 적용</div>
         <div style="font-size:11.5px;color:var(--ink-soft);margin-top:5px;font-weight:500">신규 위임·한도 상향은 <b>60초(데모)</b> 후 발효되며, 그 사이 취소할 수 있고 신뢰인에게 자동 통지됩니다. 상향 요청은 대리인 화면에서 시연하세요.</div>
@@ -2120,6 +2196,34 @@ function onMch(v){
   S._mch=v;
   const box=document.getElementById('mchBox');if(box)box.innerHTML=mchBoxHTML(v);
   onAmt(S._amt);
+}
+/* 신뢰 기관 추가 — 결제처 검색과 같은 공공데이터(심평원 요양기관 목록)에서만 고를 수 있다.
+   목록에 없는 이름을 손으로 넣게 하면 가짜 병원을 신뢰 목록에 올릴 수 있다. */
+let TRUST_HITS=[];
+function trustBoxHTML(q){
+  if(!normName(q))return '';
+  const has=n=>S.trusted.some(t=>normName(t.name)===normName(n));
+  const hit=Medical.find(q);
+  const rows=hit.length?hit.slice(0,1):(TRUST_HITS=Medical.search(q));
+  if(!rows.length)return `<div class="mchcard no"><div class="mt">${ic('warn')} 등록 목록에 없는 이름이에요</div></div>`;
+  return `<div class="mchlist">${rows.map(r=>has(r[0])
+    ? `<button type="button" disabled style="opacity:.5"><b>${zesc(r[0])}</b><span>이미 등록됨</span></button>`
+    : `<button type="button" onclick="trustAdd(${JSON.stringify(r[0]).replace(/"/g,'&quot;')})"><b>${zesc(r[0])}</b><span>${Medical.label(r)}</span></button>`).join('')}</div>`;
+}
+function onTrustQ(v){S._trustQ=v;const b=document.getElementById('trustBox');if(b)b.innerHTML=trustBoxHTML(v);}
+function trustAdd(name){
+  if(!Medical.find(name).length){toast(ic('warn'),'등록 의료기관이 아닙니다',name);return;}
+  if(S.trusted.some(t=>normName(t.name)===normName(name)))return;
+  S.trusted.push({name,src:'setup'}); S._trustQ='';
+  logChain('trustedMerchantAdded',{merchant:name,cat:'hospital',amount:0},`위임자가 신뢰 기관으로 등록 · ${name}`);
+  toast(ic('check'),'확인 없이 결제할 병원 추가',`${name} · 평소 금액 범위 안에서만 자동 승인됩니다`);
+  renderApp();
+}
+function trustRemove(name){
+  S.trusted=S.trusted.filter(t=>normName(t.name)!==normName(name));
+  logChain('trustedMerchantRemoved',{merchant:name,cat:'hospital',amount:0},`위임자가 신뢰 기관에서 해제 · ${name}`);
+  toast(ic('undo'),'신뢰 해제',`${name} 결제는 다시 확인을 거칩니다`);
+  renderApp();
 }
 function pickMch(name){
   const inp=document.getElementById('mch');if(inp)inp.value=name;
