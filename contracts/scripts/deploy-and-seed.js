@@ -40,7 +40,7 @@ async function main() {
   }
 
   // ② 위임·결제 이력
-  const id = delegationKey(demo.delegationId);
+  const id = delegationKey(demo.delegationId, demo.idSalt);
   const events = [];
   for (const ev of demo.events) {
     const dataHash = eventHash(ev);

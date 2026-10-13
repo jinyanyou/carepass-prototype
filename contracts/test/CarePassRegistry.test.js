@@ -18,7 +18,7 @@ describe("CarePassRegistry", function () {
 
   it("기록 계정은 이벤트 해시를 순서대로 기록하고 이벤트를 남긴다", async function () {
     const { registry } = await deploy();
-    const id = delegationKey(demo.delegationId);
+    const id = delegationKey(demo.delegationId, demo.idSalt);
 
     for (const [i, ev] of demo.events.entries()) {
       await expect(registry.registerDelegation(id, eventHash(ev), ev.fn))
@@ -38,7 +38,7 @@ describe("CarePassRegistry", function () {
 
   it("기록 계정이 아니면 기록할 수 없다 (가짜 이력 삽입 차단)", async function () {
     const { registry, stranger } = await deploy();
-    const id = delegationKey(demo.delegationId);
+    const id = delegationKey(demo.delegationId, demo.idSalt);
     await expect(
       registry.connect(stranger).registerDelegation(id, eventHash(demo.events[0]), "paymentApproved")
     ).to.be.revertedWithCustomError(registry, "NotRecorder");
@@ -47,13 +47,13 @@ describe("CarePassRegistry", function () {
   it("빈 해시는 거부한다", async function () {
     const { registry } = await deploy();
     await expect(
-      registry.registerDelegation(delegationKey(demo.delegationId), ethers.ZeroHash, "paymentApproved")
+      registry.registerDelegation(delegationKey(demo.delegationId, demo.idSalt), ethers.ZeroHash, "paymentApproved")
     ).to.be.revertedWithCustomError(registry, "EmptyHash");
   });
 
   it("원문이 한 글자라도 바뀌면 해시가 달라져 위·변조가 드러난다", async function () {
     const { registry } = await deploy();
-    const id = delegationKey(demo.delegationId);
+    const id = delegationKey(demo.delegationId, demo.idSalt);
     const original = demo.events[1];
     await registry.registerDelegation(id, eventHash(original), original.fn);
 
