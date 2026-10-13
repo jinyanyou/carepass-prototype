@@ -1,0 +1,568 @@
+{
+ "meta": {
+  "scored": 1985,
+  "scored_fraud": 162,
+  "burn_in_records": 848,
+  "z_hard": 3.0,
+  "near": 0.9,
+  "struct_min": 3,
+  "struct_window_days": 7,
+  "shrink_k": 10,
+  "if_features": [
+   "z",
+   "ratio",
+   "near_n",
+   "near_sum",
+   "spent_ratio",
+   "prev_gap",
+   "hour",
+   "weekday"
+  ],
+  "if_threshold_pct": 1.0
+ },
+ "arms": {
+  "A 규칙만": {
+   "tp": 134,
+   "fp": 239,
+   "fn": 28,
+   "tn": 1584,
+   "recall": 0.8271604938271605,
+   "fpr": 0.13110257816785517,
+   "fpr_detect": 0.0,
+   "fp_design": 239,
+   "fp_detect": 0,
+   "precision": 0.35924932975871315
+  },
+  "B z-score만": {
+   "tp": 36,
+   "fp": 25,
+   "fn": 126,
+   "tn": 1798,
+   "recall": 0.2222222222222222,
+   "fpr": 0.013713658804168952,
+   "fpr_detect": 0.007679648930334613,
+   "fp_design": 11,
+   "fp_detect": 14,
+   "precision": 0.5901639344262295
+  },
+  "C 규칙+z (멘토링 시점)": {
+   "tp": 141,
+   "fp": 253,
+   "fn": 21,
+   "tn": 1570,
+   "recall": 0.8703703703703703,
+   "fpr": 0.1387822270981898,
+   "fpr_detect": 0.007679648930334613,
+   "fp_design": 239,
+   "fp_detect": 14,
+   "precision": 0.35786802030456855
+  },
+  "D C+구조화+매칭 (현재)": {
+   "tp": 148,
+   "fp": 253,
+   "fn": 14,
+   "tn": 1570,
+   "recall": 0.9135802469135802,
+   "fpr": 0.1387822270981898,
+   "fpr_detect": 0.007679648930334613,
+   "fp_design": 239,
+   "fp_detect": 14,
+   "precision": 0.3690773067331671
+  },
+  "E D+Isolation Forest": {
+   "tp": 152,
+   "fp": 261,
+   "fn": 10,
+   "tn": 1562,
+   "recall": 0.9382716049382716,
+   "fpr": 0.14317059791552386,
+   "fpr_detect": 0.012068019747668678,
+   "fp_design": 239,
+   "fp_detect": 22,
+   "precision": 0.36803874092009686
+  }
+ },
+ "by_attack": {
+  "A 규칙만": {
+   "drain_fast": 1.0,
+   "structuring": 0.6164383561643836,
+   "fake_clinic": 1.0,
+   "invoice_tamper": 1.0
+  },
+  "B z-score만": {
+   "drain_fast": 1.0,
+   "structuring": 0.0958904109589041,
+   "fake_clinic": 0.05,
+   "invoice_tamper": 0.2413793103448276
+  },
+  "C 규칙+z (멘토링 시점)": {
+   "drain_fast": 1.0,
+   "structuring": 0.7123287671232876,
+   "fake_clinic": 1.0,
+   "invoice_tamper": 1.0
+  },
+  "D C+구조화+매칭 (현재)": {
+   "drain_fast": 1.0,
+   "structuring": 0.8082191780821918,
+   "fake_clinic": 1.0,
+   "invoice_tamper": 1.0
+  },
+  "E D+Isolation Forest": {
+   "drain_fast": 1.0,
+   "structuring": 0.863013698630137,
+   "fake_clinic": 1.0,
+   "invoice_tamper": 1.0
+  }
+ },
+ "z_sweep": [
+  {
+   "z": 1.5,
+   "recall": 0.3888888888888889,
+   "fpr": 0.08173340647284695,
+   "precision": 0.2971698113207547,
+   "fp": 149
+  },
+  {
+   "z": 1.6,
+   "recall": 0.3765432098765432,
+   "fpr": 0.07131102578167856,
+   "precision": 0.3193717277486911,
+   "fp": 130
+  },
+  {
+   "z": 1.7,
+   "recall": 0.35802469135802467,
+   "fpr": 0.06034009873834339,
+   "precision": 0.34523809523809523,
+   "fp": 110
+  },
+  {
+   "z": 1.8,
+   "recall": 0.35185185185185186,
+   "fpr": 0.05375754251234229,
+   "precision": 0.36774193548387096,
+   "fp": 98
+  },
+  {
+   "z": 1.9,
+   "recall": 0.345679012345679,
+   "fpr": 0.04662643993417444,
+   "precision": 0.3971631205673759,
+   "fp": 85
+  },
+  {
+   "z": 2.0,
+   "recall": 0.3395061728395062,
+   "fpr": 0.044980800877674164,
+   "precision": 0.40145985401459855,
+   "fp": 82
+  },
+  {
+   "z": 2.1,
+   "recall": 0.3395061728395062,
+   "fpr": 0.04004388370817334,
+   "precision": 0.4296875,
+   "fp": 73
+  },
+  {
+   "z": 2.2,
+   "recall": 0.3271604938271605,
+   "fpr": 0.036752605595172794,
+   "precision": 0.44166666666666665,
+   "fp": 67
+  },
+  {
+   "z": 2.3,
+   "recall": 0.3148148148148148,
+   "fpr": 0.03236423477783873,
+   "precision": 0.4636363636363636,
+   "fp": 59
+  },
+  {
+   "z": 2.4,
+   "recall": 0.30864197530864196,
+   "fpr": 0.02852441031267142,
+   "precision": 0.49019607843137253,
+   "fp": 52
+  },
+  {
+   "z": 2.5,
+   "recall": 0.29012345679012347,
+   "fpr": 0.02578167855183763,
+   "precision": 0.5,
+   "fp": 47
+  },
+  {
+   "z": 2.6,
+   "recall": 0.2654320987654321,
+   "fpr": 0.022490400438837082,
+   "precision": 0.5119047619047619,
+   "fp": 41
+  },
+  {
+   "z": 2.7,
+   "recall": 0.25308641975308643,
+   "fpr": 0.019747668678003292,
+   "precision": 0.5324675324675324,
+   "fp": 36
+  },
+  {
+   "z": 2.8,
+   "recall": 0.24691358024691357,
+   "fpr": 0.015907844212835986,
+   "precision": 0.5797101449275363,
+   "fp": 29
+  },
+  {
+   "z": 2.9,
+   "recall": 0.24074074074074073,
+   "fpr": 0.01426220515633571,
+   "precision": 0.6,
+   "fp": 26
+  },
+  {
+   "z": 3.0,
+   "recall": 0.2222222222222222,
+   "fpr": 0.013713658804168952,
+   "precision": 0.5901639344262295,
+   "fp": 25
+  },
+  {
+   "z": 3.1,
+   "recall": 0.21604938271604937,
+   "fpr": 0.013165112452002194,
+   "precision": 0.5932203389830508,
+   "fp": 24
+  },
+  {
+   "z": 3.2,
+   "recall": 0.20987654320987653,
+   "fpr": 0.012068019747668678,
+   "precision": 0.6071428571428571,
+   "fp": 22
+  },
+  {
+   "z": 3.3,
+   "recall": 0.2037037037037037,
+   "fpr": 0.009325287986834888,
+   "precision": 0.66,
+   "fp": 17
+  },
+  {
+   "z": 3.4,
+   "recall": 0.19135802469135801,
+   "fpr": 0.007679648930334613,
+   "precision": 0.6888888888888889,
+   "fp": 14
+  },
+  {
+   "z": 3.5,
+   "recall": 0.18518518518518517,
+   "fpr": 0.007131102578167855,
+   "precision": 0.6976744186046512,
+   "fp": 13
+  },
+  {
+   "z": 3.6,
+   "recall": 0.17901234567901234,
+   "fpr": 0.006582556226001097,
+   "precision": 0.7073170731707317,
+   "fp": 12
+  },
+  {
+   "z": 3.7,
+   "recall": 0.17901234567901234,
+   "fpr": 0.006034009873834339,
+   "precision": 0.725,
+   "fp": 11
+  },
+  {
+   "z": 3.8,
+   "recall": 0.17901234567901234,
+   "fpr": 0.005485463521667581,
+   "precision": 0.7435897435897436,
+   "fp": 10
+  },
+  {
+   "z": 3.9,
+   "recall": 0.1728395061728395,
+   "fpr": 0.005485463521667581,
+   "precision": 0.7368421052631579,
+   "fp": 10
+  },
+  {
+   "z": 4.0,
+   "recall": 0.1728395061728395,
+   "fpr": 0.004388370817334065,
+   "precision": 0.7777777777777778,
+   "fp": 8
+  },
+  {
+   "z": 4.1,
+   "recall": 0.1728395061728395,
+   "fpr": 0.0032912781130005485,
+   "precision": 0.8235294117647058,
+   "fp": 6
+  },
+  {
+   "z": 4.2,
+   "recall": 0.16666666666666666,
+   "fpr": 0.0032912781130005485,
+   "precision": 0.8181818181818182,
+   "fp": 6
+  },
+  {
+   "z": 4.3,
+   "recall": 0.16666666666666666,
+   "fpr": 0.0016456390565002743,
+   "precision": 0.9,
+   "fp": 3
+  },
+  {
+   "z": 4.4,
+   "recall": 0.16666666666666666,
+   "fpr": 0.0016456390565002743,
+   "precision": 0.9,
+   "fp": 3
+  },
+  {
+   "z": 4.5,
+   "recall": 0.16666666666666666,
+   "fpr": 0.0005485463521667581,
+   "precision": 0.9642857142857143,
+   "fp": 1
+  },
+  {
+   "z": 4.6,
+   "recall": 0.16666666666666666,
+   "fpr": 0.0005485463521667581,
+   "precision": 0.9642857142857143,
+   "fp": 1
+  },
+  {
+   "z": 4.7,
+   "recall": 0.15432098765432098,
+   "fpr": 0.0005485463521667581,
+   "precision": 0.9615384615384616,
+   "fp": 1
+  },
+  {
+   "z": 4.8,
+   "recall": 0.15432098765432098,
+   "fpr": 0.0,
+   "precision": 1.0,
+   "fp": 0
+  },
+  {
+   "z": 4.9,
+   "recall": 0.15432098765432098,
+   "fpr": 0.0,
+   "precision": 1.0,
+   "fp": 0
+  },
+  {
+   "z": 5.0,
+   "recall": 0.15432098765432098,
+   "fpr": 0.0,
+   "precision": 1.0,
+   "fp": 0
+  }
+ ],
+ "fp_causes": {
+  "월 누적 한도 초과": 160,
+  "건당 한도 초과": 92,
+  "생활비 보호선 침범": 9,
+  "z-score 임계 초과": 25,
+  "구조화 패턴": 5,
+  "청구서 불일치": 0,
+  "미등록 결제처": 0
+ },
+ "notes": {
+  "over_month_in_attacked_hh": 120,
+  "over_month_total": 160
+ },
+ "policy": {
+  "clean_hold_rate": 0.008159564823209429,
+  "clean_notify_rate": 0.08975521305530372,
+  "fraud_hold_rate": 0.7654320987654321,
+  "fraud_any_rate": 0.9135802469135802
+ },
+ "clean": {
+  "records": 1103,
+  "households": 72,
+  "A 규칙만": {
+   "hold": 95,
+   "rate": 0.08612873980054397
+  },
+  "B z-score만": {
+   "hold": 21,
+   "rate": 0.019038984587488667
+  },
+  "C 규칙+z (멘토링 시점)": {
+   "hold": 108,
+   "rate": 0.09791477787851315
+  },
+  "D C+구조화+매칭 (현재)": {
+   "hold": 108,
+   "rate": 0.09791477787851315
+  },
+  "E D+Isolation Forest": {
+   "hold": 111,
+   "rate": 0.10063463281958296
+  }
+ },
+ "by_profile": {
+  "A 규칙만": {
+   "loose": 0.42105263157894735,
+   "tight": 0.6851851851851852
+  },
+  "B z-score만": {
+   "loose": 0.3684210526315789,
+   "tight": 0.0
+  },
+  "C 규칙+z (멘토링 시점)": {
+   "loose": 0.7894736842105263,
+   "tight": 0.6851851851851852
+  },
+  "D C+구조화+매칭 (현재)": {
+   "loose": 0.8947368421052632,
+   "tight": 0.7777777777777778
+  },
+  "E D+Isolation Forest": {
+   "loose": 1.0,
+   "tight": 0.8148148148148148
+  }
+ },
+ "timing": {
+  "A 규칙만": {
+   "drain_fast": {
+    "first_hit_mean": 1.0,
+    "leaked_mean": 0.0,
+    "episodes": 12,
+    "episodes_caught": 12
+   },
+   "structuring": {
+    "first_hit_mean": 3.3333333333333335,
+    "leaked_mean": 462000.0,
+    "episodes": 12,
+    "episodes_caught": 12
+   },
+   "fake_clinic": {
+    "first_hit_mean": 1.0,
+    "leaked_mean": 0.0,
+    "episodes": 12,
+    "episodes_caught": 12
+   },
+   "invoice_tamper": {
+    "first_hit_mean": 1.0,
+    "leaked_mean": 0.0,
+    "episodes": 12,
+    "episodes_caught": 12
+   }
+  },
+  "B z-score만": {
+   "drain_fast": {
+    "first_hit_mean": 1.0,
+    "leaked_mean": 0.0,
+    "episodes": 12,
+    "episodes_caught": 12
+   },
+   "structuring": {
+    "first_hit_mean": 1.0,
+    "leaked_mean": 643166.6666666666,
+    "episodes": 12,
+    "episodes_caught": 5
+   },
+   "fake_clinic": {
+    "first_hit_mean": 2.5,
+    "leaked_mean": 239666.66666666666,
+    "episodes": 12,
+    "episodes_caught": 2
+   },
+   "invoice_tamper": {
+    "first_hit_mean": 1.5,
+    "leaked_mean": 226333.33333333334,
+    "episodes": 12,
+    "episodes_caught": 6
+   }
+  },
+  "C 규칙+z (멘토링 시점)": {
+   "drain_fast": {
+    "first_hit_mean": 1.0,
+    "leaked_mean": 0.0,
+    "episodes": 12,
+    "episodes_caught": 12
+   },
+   "structuring": {
+    "first_hit_mean": 2.4166666666666665,
+    "leaked_mean": 202333.33333333334,
+    "episodes": 12,
+    "episodes_caught": 12
+   },
+   "fake_clinic": {
+    "first_hit_mean": 1.0,
+    "leaked_mean": 0.0,
+    "episodes": 12,
+    "episodes_caught": 12
+   },
+   "invoice_tamper": {
+    "first_hit_mean": 1.0,
+    "leaked_mean": 0.0,
+    "episodes": 12,
+    "episodes_caught": 12
+   }
+  },
+  "D C+구조화+매칭 (현재)": {
+   "drain_fast": {
+    "first_hit_mean": 1.0,
+    "leaked_mean": 0.0,
+    "episodes": 12,
+    "episodes_caught": 12
+   },
+   "structuring": {
+    "first_hit_mean": 2.0,
+    "leaked_mean": 142833.33333333334,
+    "episodes": 12,
+    "episodes_caught": 12
+   },
+   "fake_clinic": {
+    "first_hit_mean": 1.0,
+    "leaked_mean": 0.0,
+    "episodes": 12,
+    "episodes_caught": 12
+   },
+   "invoice_tamper": {
+    "first_hit_mean": 1.0,
+    "leaked_mean": 0.0,
+    "episodes": 12,
+    "episodes_caught": 12
+   }
+  },
+  "E D+Isolation Forest": {
+   "drain_fast": {
+    "first_hit_mean": 1.0,
+    "leaked_mean": 0.0,
+    "episodes": 12,
+    "episodes_caught": 12
+   },
+   "structuring": {
+    "first_hit_mean": 1.8333333333333333,
+    "leaked_mean": 119250.0,
+    "episodes": 12,
+    "episodes_caught": 12
+   },
+   "fake_clinic": {
+    "first_hit_mean": 1.0,
+    "leaked_mean": 0.0,
+    "episodes": 12,
+    "episodes_caught": 12
+   },
+   "invoice_tamper": {
+    "first_hit_mean": 1.0,
+    "leaked_mean": 0.0,
+    "episodes": 12,
+    "episodes_caught": 12
+   }
+  }
+ }
+}
