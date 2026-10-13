@@ -2,7 +2,9 @@
 
 2026 AI Blockchain Challenge in Daegu 출품작 · iM뱅크 앱 내장 기능으로 설계
 
-**라이브 데모: https://jinyanyou.github.io/carepass-prototype/**
+**라이브 데모: https://carepass-im.vercel.app**  ·  실사용 모드(로그인): https://carepass-im.vercel.app/app
+
+화면별 동작과 판정 규칙은 [`기능설명서/`](기능설명서/README.md)에 정리했습니다.
 
 계좌를 통째로 넘기는 위임이 아니라, AI가 감시하는 업무별·한도별 금융 대리권을 블록체인으로 증명하는 지갑입니다.
 고령자·장애인처럼 금융 대리 관리가 필요한 시민과 그 가족을 위한 서비스이고,
@@ -20,7 +22,9 @@ start index.html      # Windows
 
 왼쪽은 iM뱅크 앱 화면입니다. iM뱅크 홈에서 `CarePass`로 들어가고, 상단에서 어머니(위임자)와 딸(대리인) 계정을 전환할 수 있습니다. 헤더의 `가가` 버튼이 큰 글씨 모드, 각 화면의 `🔊` 버튼이 음성 안내입니다.
 
-오른쪽은 데모 인스펙터로, 심사용 내부 동작 뷰입니다. AI 판단, 기관 인증, 블록체인 원장, 에스크로, 컨트랙트 다섯 가지를 볼 수 있습니다.
+등장인물은 셋입니다. 어머니(위임자)가 권한을 주고, 딸(대리인)이 결제를 요청하고, 아들(공동보호자)은 결제 권한 없이 평소와 다른 건만 통지받아 이의제기합니다. 상단 계정 토글로 세 사람의 화면을 오갈 수 있습니다.
+
+오른쪽은 데모 인스펙터로, 심사용 내부 동작 뷰입니다. AI 판단, 기관 인증, 블록체인 원장, 서브계좌, 컨트랙트 다섯 가지를 볼 수 있습니다.
 
 아래 데모 시나리오에서 기본 흐름 10종과 추가 기능 3종(접근성·은닉 SOS·iM Zero)을 원클릭으로 재생할 수 있고, `직접 조작(수동)`에서 결제 금액을 입력하면 판정이 실시간으로 바뀝니다.
 
@@ -35,12 +39,13 @@ CarePass 앱 화면, 즉 고령자와 가족이 보는 뷰에는 쉬운 말만 �
 | 항목 | 구현 방식 |
 |---|---|
 | 위임 설정 | 위임 풀 슬라이더 + 항목별 권한·한도 지정 UI |
-| 결제요청 → AI판단 → 위임자확인 → 승인/거부 | 전체 플로우 완주 (승인 시 PIN 인증) |
+| 위임장 직접 서명(확인 3항목 + 서명·위임장 해시 온체인) | 건별 승인을 대신하는 설정 시점 일회성 동의 |
+| 결제요청 → AI판단 → 보호자 알림·확인 → 승인/거부 | 전체 플로우 완주 (승인 시 PIN 인증) |
 | 이상탐지 | 합성 데이터 42/31건 기반 규칙 엔진 + z-score |
 | 스마트컨트랙트 | Sepolia 테스트넷 배포·소스 검증 `CarePassRegistry`. 시연 초기 이력 3건을 실제로 기록했고, 화면이 `getHistory` 조회 후 SHA-256으로 대조 |
 | 공공데이터 결제처 확인 | 건강보험심사평가원 요양기관 목록(대구 5,607곳)에 없는 병원비 결제처는 자동 보류 |
 | 의료기관 인증 · 청구서 전자서명 | 인증 기관의 서명 공개키를 온체인 등록하고, 청구서 QR 서명을 WebCrypto ECDSA P-256으로 실제 검증. 이름만 베낀 사칭 청구서는 보류 |
-| 에스크로 서브계좌 | 본계좌에서 격리된 가상 위임 풀 |
+| 목적 제한 서브계좌 | 본계좌에서 격리된 가상 위임 풀. 자금은 위임자 명의 계좌에 남고 사용 목적·한도만 제한한다 |
 
 ### Should (구현)
 
@@ -65,17 +70,31 @@ CarePass 앱 화면, 즉 고령자와 가족이 보는 뷰에는 쉬운 말만 �
 | 항목 | 값 |
 |---|---|
 | 네트워크 | Ethereum Sepolia 테스트넷 (chainId 11155111) |
-| 컨트랙트 | [`0x760394Add857d89C35FaC3220E21c1C61f0ef6A9`](https://sepolia.etherscan.io/address/0x760394Add857d89C35FaC3220E21c1C61f0ef6A9#code) (Etherscan 소스 검증 완료) |
+| 컨트랙트 | [`0xcb421360C1f64384CFE65d9FCB67efe6446e91aB`](https://sepolia.etherscan.io/address/0xcb421360C1f64384CFE65d9FCB67efe6446e91aB#code) (Etherscan 소스 검증 완료) |
 | 기록 계정(recorder) | `0x0E00cB50396Bf3a3cdC80efab74bEaDeE501001F` |
-| 시연 초기 이력 | [위임 설정](https://sepolia.etherscan.io/tx/0xcb7686a03e669409215c95e9630303e6af16080fee6f379575bad2bb5ad8754f) · [병원비 승인](https://sepolia.etherscan.io/tx/0x65485aaf2bc87cf5c277288757ef0abc393bbf39fb4e71b2be52719687090c66) · [공과금 자동승인](https://sepolia.etherscan.io/tx/0xf87a765305e54c279942ab6c39eb18edd3519fcd9e5ff09498742f66923d320f) |
-| 기관 인증 발급 | [대구의료원](https://sepolia.etherscan.io/tx/0x0d2cf2f914b71e6a3c440bdf494361ed169ee9a932aa3a41f4cf70dd41ab4598) · [경북대학교병원](https://sepolia.etherscan.io/tx/0xc7234a405fa3b994d5c6a51a964ed17821fb401571f86b78f19ab562d8263c20) |
-| 기관 인증 취소 | [○○재활요양병원(시연용)](https://sepolia.etherscan.io/tx/0xf33d936af0fe248b00e61a9d8cf8169f8deafc90ba460e0a9bc494fe6ba78915) (폐업·자격정지 이력) |
+| 시연 초기 이력 | [위임 설정](https://sepolia.etherscan.io/tx/0xb774cfc74bbb76a59024ab0925637d66efb155c670535135f14d3e6aa9318075) · [병원비 승인](https://sepolia.etherscan.io/tx/0xd5b238b495db7b796b43659f49ca7ceeb8610cf086975cb781f294eb126ebdda) · [공과금 자동승인](https://sepolia.etherscan.io/tx/0xc87fa5673120acdbeed6350f596211a3f4d7c79b46efa709c2497b54fd3416eb) |
+| 기관 인증 발급 | [대구의료원](https://sepolia.etherscan.io/tx/0x10adf653f29bdc1f3ff5953e9a3fcb028a44d8b6a0283f67fd7464c6d0d7846e) · [경북대학교병원](https://sepolia.etherscan.io/tx/0xa4b67d103a34d8bb23ad5bd0d32ba735c2757e39135175b35147bef0af0f3e1d) |
+| 기관 인증 취소 | [○○재활요양병원(시연용)](https://sepolia.etherscan.io/tx/0xed4ad6fe52d5274b924e657318dcb7a180091f57f9d26a1ad47ce6d468096e25) (폐업·자격정지 이력) |
 
-구조는 오프체인과 온체인을 나눴습니다. 위임 내용(VC)과 청구서 원문은 오프체인에 두고, 온체인에는 이벤트 원문의 SHA-256 해시와 기관 공개키만 올립니다. `registerDelegation`·`certifyInstitution`·`revokeInstitution`은 기록 계정만 호출할 수 있어 제3자가 가짜 이력이나 가짜 인증 기관을 끼워 넣을 수 없고, 반대로 `getHistory`·`institutionKey`는 누구나 조회해 검증할 수 있습니다.
+구조는 오프체인과 온체인을 나눴습니다. 위임 내용(VC)과 청구서 원문은 오프체인에 두고, 온체인에는 이벤트 원문의 SHA-256 해시와 기관 공개키만 올립니다. 이력을 묶는 위임 ID는 `DLG-연도-월일` 형식이라 그냥 해시하면 후보가 수천 개뿐이라 전수 대입으로 되돌릴 수 있습니다. 그래서 위임별 salt를 섞은 `SHA-256("위임 ID|salt")`를 키로 쓰고 salt는 오프체인(은행)에 둡니다 (`contracts/scripts/hash.js`의 `delegationKey`). 2026-10-07 재배포로 **현재 배포본부터 salt가 적용된 키**(`0xd675…caf19`)를 씁니다. salt 도입 전 컨트랙트(`0x760394…`)는 폐기했습니다. `registerDelegation`·`certifyInstitution`·`revokeInstitution`은 기록 계정만 호출할 수 있어 제3자가 가짜 이력이나 가짜 인증 기관을 끼워 넣을 수 없고, 반대로 `getHistory`·`institutionKey`는 누구나 조회해 검증할 수 있습니다.
 
 페이지를 열면 공개 노드(publicnode)에서 `getHistory()`를 읽어, 원문(`contracts/demo-events.json`)으로 다시 계산한 해시와 대조한 뒤 인스펙터 `블록체인 원장`에 온체인 검증 결과를 표시합니다. 노드에 연결하지 못하면 로컬 기록으로 자동 전환하므로 시연이 멈추지는 않습니다.
 
 시연 도중 새로 생기는 결제·승인 이벤트는 브라우저 로컬 원장에만 기록합니다. 실서비스라면 은행 기록 서버가 전송할 부분인데, 비밀키를 웹페이지에 넣지 않으려고 이렇게 나눴습니다. 해시는 브라우저 Web Crypto SHA-256으로 계산하고, 비보안 컨텍스트(file://)에서는 순수 JS SHA-256으로 폴백합니다.
+
+### 백엔드 (`api/`) — 선택적 레이어
+
+배포본에서는 Vercel 서버리스 함수 세 개가 함께 돕니다. **서버가 없어도 앱은 그대로 동작합니다** — 심사위원이 ZIP을 받아 `index.html`을 파일로 열면 백엔드 관련 UI는 아예 나타나지 않고 지금까지의 동작이 그대로 유지됩니다.
+
+| 엔드포인트 | 하는 일 |
+|---|---|
+| `GET /api/health` | 배포 확인 · 저장소 모드 보고 |
+| `GET·POST·DELETE /api/session` | 로그인 / 세션 조회 / 로그아웃. 세션은 **HMAC으로 서명한 HttpOnly 쿠키**라 별도 저장소가 필요 없고, 서명이 한 글자라도 다르면 거부됩니다 |
+| `GET·POST·DELETE /api/audit` | 시연 중 생긴 대리 행위를 계정별로 append. 서버가 **수신 시각과 직전 항목 해시를 엮어 체인**을 만들기 때문에 중간 한 건을 지우거나 바꾸면 뒤가 전부 어긋납니다 |
+
+비밀번호 인증은 하지 않습니다. 은행 인증을 대체하려는 것이 아니라 **세션이 서버에서 서명·검증되고 기록이 서버에 남는다**는 구조만 보이는 범위입니다.
+
+기록 저장소는 환경변수에 따라 달라집니다. `KV_REST_API_URL`·`KV_REST_API_TOKEN`이 있으면 Vercel KV에 영구 저장하고, 없으면 인스턴스 메모리를 쓰며 **화면에 "인스턴스 메모리라 서버 재시작 시 비워진다"고 그대로 표시**합니다. `SESSION_SECRET`을 지정하면 세션 서명 키로 씁니다.
 
 ### 컨트랙트 개발 환경 (`contracts/`)
 
@@ -116,7 +135,7 @@ node scripts/sync-frontend.js sepolia   # index.html에 주소·tx·인증 기�
 | 기관명만 베끼고 다른 키로 서명한 사칭 청구서 | 서명 불일치 → 임시 보류 (금액이 작아도 보류) |
 | 청구서 금액과 요청 금액이 다른 경우 | 임시 보류 (대리인의 금액 부풀리기 차단) |
 | 인증이 취소된 기관의 청구서 | 임시 보류 |
-| 아직 인증받지 않은 기관 | 서명 검증 불가 → 기존과 같이 위임자 확인 후 결제 |
+| 아직 인증받지 않은 기관 | 서명 검증 불가 → 기존과 같이 보호자 확인 후 결제 |
 
 시연에서는 대구의료원과 경북대학교병원을 사전 인증 기관으로 뒀고, 인증 취소 이력은 실제 상호를 쓰지 않으려고 가상 기관 `○○재활요양병원(시연용)`으로 남겼습니다.
 
