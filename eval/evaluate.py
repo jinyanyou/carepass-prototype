@@ -6,7 +6,7 @@ CarePass 탐지 성능평가 — ② 5안 비교 · 혼동행렬 · z 임계 역
 ---
 A 규칙만            한도·보호선·미등록기관·청구금액 불일치
 B z-score만         z >= 3
-C 규칙 + z          ← 멘토링(2026-10-05) 시점의 앱
+C 규칙 + z          ← 개선 전의 앱
 D C + 구조화 + 청구-결제 매칭(기관·발행일·중복)   ← 현재 앱 (2026-10-07 추가분)
 E D + Isolation Forest (다변량)                  ← 오프라인 확장. 앱에는 탑재하지 않음
 
@@ -126,7 +126,7 @@ TRAIN = [x for x in ROWS if x["day"] < BURN_IN_DAYS]      # 전부 정상 (번�
 
 # ── 3. 탐지기 ─────────────────────────────────────────────────────────────
 def det_rules(x):
-    """A — 멘토링 당시 구현돼 있던 규칙"""
+    """A — 개선 전에 구현돼 있던 규칙"""
     return (x["over_tx"] or x["over_month"] or x["floor_breach"]
             or x["unregistered"] or x["inv_amt_bad"] or x["inv_sig_bad"])
 
@@ -169,7 +169,7 @@ IF_FLAG, IF_THR = fit_isolation_forest()
 ARMS = {
     "A 규칙만":            lambda x: det_rules(x),
     "B z-score만":         lambda x: det_z(x),
-    "C 규칙+z (멘토링 시점)": lambda x: det_rules(x) or det_z(x),
+    "C 규칙+z (개선 전)": lambda x: det_rules(x) or det_z(x),
     "D C+구조화+매칭 (현재)": lambda x: det_rules(x) or det_z(x) or det_struct(x) or det_match_ext(x),
     "E D+Isolation Forest": lambda x: (det_rules(x) or det_z(x) or det_struct(x)
                                        or det_match_ext(x) or IF_FLAG[id(x)]),

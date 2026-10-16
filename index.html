@@ -1151,8 +1151,8 @@ function judge(catKey,amount,merchant){
      '진짜 병원에서 과다하게 쓰는 것'이 흔해서, 기관만 믿으면 그 유형을 전부 놓친다. */
   const trusted=!!a.registry&&isTrusted(merchant);
   /* 스캔한 청구서 — 기관 전자서명 검증 + 청구-결제 매칭.
-     예전에는 결제처 이름이 다르면 청구서를 그냥 무시했다. 그러면 "청구서는 A병원 걸 스캔하고
-     결제처만 B로 바꾸는" 수법이 아무 경고 없이 통과한다. 이제 불일치를 '탐지'한다. */
+     청구서와 결제처가 어긋나면 무시하지 않고 '탐지'한다 — 진짜 청구서를 스캔하고
+     결제처만 바꿔치는 수법을 잡기 위해서다. */
   const invAny=(S._inv&&S._inv.cat===catKey)?S._inv:null;
   const M=matchInvoice(invAny,amount,merchant);
   const inv=(M&&M.instOk)?invAny:null;

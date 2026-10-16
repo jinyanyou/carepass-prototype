@@ -35,7 +35,7 @@ RAMP = LinearSegmentedColormap.from_list(
 ARMS = list(R["arms"].keys())
 SHORT = {"A 규칙만": "A\n규칙만",
          "B z-score만": "B\nz-score만",
-         "C 규칙+z (멘토링 시점)": "C  규칙+z\n(멘토링 시점)",
+         "C 규칙+z (개선 전)": "C  규칙+z\n(개선 전)",
          "D C+구조화+매칭 (현재)": "D  C+구조화\n+매칭 (현재)",
          "E D+Isolation Forest": "E  D+Isolation\nForest"}
 ATK = {"drain_fast": "한 번에\n큰 금액", "structuring": "한도 아래\n분할",
