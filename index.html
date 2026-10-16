@@ -768,13 +768,6 @@ function evWhen(ts){const d=new Date(ts),t=d.toLocaleTimeString('ko-KR',{hour:'2
 function ago(t){const s=(now()-t)/1000;if(s<60)return'방금';if(s<3600)return Math.floor(s/60)+'분 전';if(s<86400)return Math.floor(s/3600)+'시간 전';return Math.floor(s/86400)+'일 전';}
 
 /* ============================ synthetic history (30~50건) ============================ */
-/* 2026-10-07 수정 — 절단(censoring) 제거.
-   예전에는 정규분포로 뽑은 병원비를 2만~19만으로 clamp 해서 썼다. 그런데 꼬리를 잘라내면
-   표본 표준편차 σ가 실제보다 작게 추정되고, z=(x−μ)/σ의 분모가 작아져 **z가 부풀려진다**.
-   즉 평범한 금액도 쉽게 "평소와 다름"으로 튀어 오탐이 늘어난다.
-   (`eval/REPORT.md` 한계 4 참고 — 자체 성능평가 중에 발견한 문제다)
-   의료비는 실제로 오른쪽 꼬리가 긴 분포이므로 로그정규로 생성하고 자르지 않는다.
-   중앙값 85,000 · σ(log) 0.45 → 평균 ≈ 94,000 · 표준편차 ≈ 45,000 (eval 평가셋과 동일한 모수) */
 const lognorm=(r,median,sigmaLog)=>Math.exp(Math.log(median)+gauss(r,0,1)*sigmaLog);
 function makeHistory(){
   const r=rng(20260909);
@@ -1227,12 +1220,6 @@ async function submitRequest(catKey,amount,merchant){
   const v=judge(catKey,amount,merchant); S.lastVerdict={catKey,amount,merchant,v};
   const req={id:'REQ-'+rhex(4).toUpperCase(),cat:catKey,amount,merchant,v,
     status:v.action==='hold'?'hold':(v.action==='confirm'?'pending':'pending'),ts:now(),cosign:v.cosign};
-  /* 자동승인 — 결정 4의 1층 "일상은 자동, 예외만 알림·보류".
-     위임자가 치매·인지질환이면 건별 승인 자체를 수행하지 못한다. 그래서 일상 결제를 매번 묻는 설계는
-     서비스 전제와 모순이다(A-1). 두 경로로만 자동 처리한다.
-       · 공과금 : 월 정기 (auto)
-       · 병원비 : **신뢰 기관**(과거 본인 결제 이력 또는 위임자가 직접 등록한 곳)
-     어느 쪽이든 판정이 normal 이고 한도 안이어야 한다 — 금액·빈도·한도 검사는 그대로 돈다. */
   const autoOK=v.action==='approve'&&!v.cosign&&v.level==='normal'&&(S.alloc[catKey].auto||v.trusted);
   if(autoOK){
     const why=S.alloc[catKey].auto?'자동승인 (월 정기)':'자동승인 (신뢰 기관 · 확인 요청 없음)';
@@ -1268,11 +1255,6 @@ async function submitRequest(catKey,amount,merchant){
   }
   S.requests.unshift(req); S.tab='ai'; render();
 }
-/* 결정 4의 2층 — 보호자에게 넘길 건을 고른다. 일상 결제까지 보내면 알림 스팸이 되고 정작 예외가 묻힌다.
-   ① 평소와 다르거나 보류된 건
-   ② **처음 결제하는 병원** — 신뢰 기관이 아니면 판정이 정상이어도 알린다.
-      이게 없으면 미신뢰 기관 결제가 아무에게도 알려지지 않은 채 위임자 승인만 기다리게 되고,
-      위임자가 치매·인지질환이면 그 결제는 영영 멈춰 있는다. */
 function needAlert(catKey,v){
   return v.level!=='normal'||v.action==='hold'||(!!S.alloc[catKey].registry&&!v.trusted);
 }
@@ -1405,9 +1387,6 @@ function serverPanel(){
   </div>`;
 }
 /* ============================ 실사용 모드 (/app) ============================ */
-/* 데모(/)는 심사용으로 그대로 두고, /app 은 "실제로 써 보는" 화면이다.
-   로그인한 사람의 역할 화면만 보이고, 상태는 서버에 있다 —
-   딸이 다른 폰에서 결제를 요청하면 어머니 폰에 뜬다. 계정 토글도 인스펙터도 없다. */
 const APPMODE = location.pathname.replace(/\/+$/,'') === '/app';
 const APP = {rev:-1, poll:null, err:'', busy:false, manual:false, picked:-1, lastId:'', toastEl:null};
 
@@ -1561,9 +1540,6 @@ async function appLogout(){
   render();
 }
 /* ============================ 백엔드 연동 (있으면 쓰고, 없으면 그대로 동작) ============================ */
-/* 이현기 팀장: "백엔드 + 로그인 + 배포 — 실제로 열어보게".
-   다만 심사위원이 ZIP을 받아 file://로 열 수도 있으므로 **백엔드는 선택적 레이어**다.
-   서버가 없으면 모든 호출이 조용히 실패하고 앱은 지금과 똑같이 동작한다. */
 const API={on:false,storage:null,session:null,saved:0,persistent:false,busy:false};
 async function apiFetch(path,opt){
   /* 403·409 같은 '서버가 거부한' 응답도 본문에 사유가 들어 있다. 예외로 던지면 그 사유를 못 보여준다.
@@ -1633,11 +1609,6 @@ async function apiClearAudit(){
 }
 
 /* ============================ 위임장 직접 서명 (결정 4의 일회성 동의) ============================ */
-/* 이경준 교수: "동의받는 과정(위임장)을 생각해보기 → 서명을 직접 받는 형태로"
-   호주 Banking Code(해외사례_정리.md)는 위임장을 받을 때 ① 권한 범위를 이해했는지
-   ② 금융학대 위험을 설명받았는지 ③ 철회 방법을 아는지를 확인시키고 서명을 받는다.
-   건별 승인을 없애는 대신 그 동의를 '설정 시점에 한 번' 제대로 받는 자리가 여기다.
-   서명 이미지는 온체인에 올리지 않는다 — 해시만 올린다. */
 const CONSENT_CHECKS=[
   '딸 이지은에게 <b>병원비·공과금 결제만</b>, 정해진 한도 안에서 맡긴다는 것을 이해했습니다.',
   '대리권이 <b>본인 의사와 다르게 쓰일 위험</b>과 그때 보호자·신뢰인에게 알림이 간다는 설명을 들었습니다.',
@@ -1714,9 +1685,6 @@ async function revokeConsent(){
 }
 
 /* ============================ 보호자(공동보호자) 알림 · 이의제기 ============================ */
-/* 결정 4의 2층 — 결제를 막는 대신 보호자에게 알리고 이의제기 창구를 준다.
-   FINRA 4512: 대리인이 착취에 가담한 것으로 의심되면 그 대리인에게는 통지하지 않는다.
-   그래서 알림은 늘 보호자에게 가지만, 대리인 화면의 토스트는 suspectDelegate일 때 생략한다. */
 function notifyGuardian(kind,title,msg,req){
   const al={id:'ALT-'+rhex(3).toUpperCase(),kind,title,msg,ts:now(),
     reqId:req&&req.id||null,amount:req&&req.amount||0,merchant:req&&req.merchant||'',
@@ -1750,15 +1718,8 @@ async function doObject(id,reason){
   let note=`보호자 이의제기 · ${reason}`;
   if(req&&(req.status==='pending'||req.status==='hold')){ req.status='hold'; req.objected=reason; note+=' · 해당 요청 보류'; }
   else if(req&&req.status==='approved'){
-    /* 사후 되돌리기 — 이미 집행된 건. 앱이 할 수 있는 것과 없는 것이 분명히 갈린다.
-         할 수 있음 : 확산 차단(신뢰 해제·의심 전환) · 장부 롤백 · 증거 고정(온체인)
-         못 함      : 가맹점에 간 돈을 되찾는 것. 카드 거래취소·착오송금 반환은 은행 분쟁처리와
-                      가맹점 동의 또는 법적 절차가 필요하다 → 분쟁 접수까지만 하고 넘긴다 */
     req.status='disputed'; req.objected=reason;
     S.pool.balance+=req.amount; S.alloc[req.cat].spent=Math.max(0,S.alloc[req.cat].spent-req.amount);
-    /* 한도 롤백이 중요한 이유 — 성능평가에서 '월 한도 초과' 보류 160건 중 120건이
-       사기가 한도를 먼저 소진해 뒤따르는 정상 결제가 막힌 연쇄였다. 2차 피해를 여기서 끊는다.
-       단 S.recent 에서는 지우지 않는다 — 구조화 탐지가 봐야 할 공격 패턴 증거다. */
     const before=S.trusted.length;
     S.trusted=S.trusted.filter(t=>normName(t.name)!==normName(req.merchant));
     S.suspectDelegate=true;
@@ -1844,9 +1805,7 @@ function netLabel(){
 /* ---- roles / nav ---- */
 const NAV={
   delegate:[['request','결제요청','M12 1v22 M4 8h12a4 4 0 010 8H8'],['dstatus','요청내역','M9 11l3 3 8-8 M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11'],['dhome','홈','M3 11l9-8 9 8 M5 10v10h14V10']],
-  delegator:[['home','홈','M3 11l9-8 9 8 M5 10v10h14V10'],/* 톱니가 한쪽만 뭉개지고 전체가 기울어 보여서 다시 그렸다. 상대좌표가 누적되며 어긋난 경로였다.
-   지금 것은 중심 (12,12) 기준 6톱니를 60°씩 정확히 배치해 대칭이 보장된다 — 24px 에서 톱니가
-   붙어 보이지 않도록 8톱니가 아니라 6톱니를 골랐다. */
+  delegator:[['home','홈','M3 11l9-8 9 8 M5 10v10h14V10'],
 ['setup','위임설정','M10.43 5.69L10.69 3.10L13.31 3.10L13.57 5.69A6.50 6.50 0 0 1 16.68 7.48L19.05 6.41L20.37 8.69L18.25 10.21A6.50 6.50 0 0 1 18.25 13.79L20.37 15.31L19.05 17.59L16.68 16.52A6.50 6.50 0 0 1 13.57 18.31L13.31 20.90L10.69 20.90L10.43 18.31A6.50 6.50 0 0 1 7.32 16.52L4.95 17.59L3.63 15.31L5.75 13.79A6.50 6.50 0 0 1 5.75 10.21L3.63 8.69L4.95 6.41L7.32 7.48A6.50 6.50 0 0 1 10.43 5.69Z M12 9A3 3 0 1 0 12 15A3 3 0 1 0 12 9Z'],['approvals','승인','M9 11l3 3 8-8 M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11'],['history','위임이력','M12 8v4l3 2 M3 12a9 9 0 109-9 9 9 0 00-9 9z M3 12H1']],
   guardian:[['galerts','알림','M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9 M13.7 21a2 2 0 01-3.4 0'],['history','위임이력','M12 8v4l3 2 M3 12a9 9 0 109-9 9 9 0 00-9 9z M3 12H1']]
 };
