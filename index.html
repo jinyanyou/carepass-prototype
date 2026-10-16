@@ -560,17 +560,10 @@ body.pickmode .view{padding:0}
   display:grid;place-items:center;font-weight:800;font-size:17px;letter-spacing:-.04em}
 .login h2{margin:0;font-size:21px;font-weight:800;letter-spacing:-.02em}
 .login .lsub{font-size:12.5px;color:var(--ink-mute);font-weight:500;margin-top:2px}
-.login .fld2{display:flex;flex-direction:column;gap:6px}
-.login .fld2 span{font-size:11.5px;font-weight:700;color:var(--ink-mute)}
 .login input{width:100%;padding:13px 14px;border-radius:var(--r-sm);border:1.5px solid var(--line);
   background:var(--card);color:var(--ink);font-size:15px;font-family:var(--font);box-sizing:border-box}
 .login input:focus{outline:none;border-color:var(--primary)}
 .login .err{font-size:12px;color:var(--crit);font-weight:700;min-height:16px}
-.login .hintbox{background:var(--card-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 13px}
-.login .hintbox b{color:var(--ink-soft)}
-.login .hrow{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-mute);
-  font-weight:600;padding:5px 0;cursor:pointer}
-.login .hrow:hover{color:var(--primary-deep)}
 .pick{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:15px 15px;
   border-radius:var(--r-md);border:1.5px solid var(--line);background:var(--card);
   box-shadow:var(--shadow);transition:.16s}
@@ -778,11 +771,11 @@ function makeHistory(){
 }
 
 /* ── 위임 전 본인 결제 원장 ──────────────────────────────────────────────────
-   위임을 맺기 **전에** 위임자(어머니)가 본인 명의로 결제했던 의료기관 이력이다.
+   위임을 맺기 전에 위임자(어머니)가 본인 명의로 결제했던 의료기관 이력이다.
    실서비스에서는 이 원장이 은행의 카드·계좌 거래내역에서 그대로 온다 — 새로 모을 데이터가 아니다.
-   판정의 μ·σ 도, 신뢰 기관 목록도 **전부 이 원장 하나에서 도출**된다. 그게 개인화의 실체다.
+   판정의 μ·σ 도, 신뢰 기관 목록도 전부 이 원장 하나에서 도출된다. 그게 개인화의 실체다.
 
-   ⚠ 금액은 makeHistory() 가 만든 42건을 **그대로** 쓴다. 여기서 붙이는 것은 '어느 기관에서, 언제'
+   금액은 makeHistory() 가 만든 42건을 그대로 쓴다. 여기서 붙이는 것은 '어느 기관에서, 언제'
    뿐이라 금액 다중집합이 바뀌지 않는다 — μ·σ·z 와 eval 평가셋 정합이 유지된다.
 
    금액 배정은 비싼 건부터 상위 종별로 내려간다. 공개 통계상 외래 본인부담은 종별로 갈리기 때문이다
@@ -805,7 +798,6 @@ function makeLedger(amounts){
 }
 const HIST=makeHistory();
 const PAST_LEDGER=makeLedger(HIST.hospital);
-/* 원장을 기관별로 집계 — 횟수·평균·최근 방문. 신뢰 기관은 여기서 갈린다 */
 const PAST_VISITS=PAST_PLAN.map(p=>{
   const rows=PAST_LEDGER.filter(x=>x.name===p.name);
   return {name:p.name,type:p.type,n:rows.length,
@@ -820,8 +812,6 @@ const DEMO_EVENTS={"delegationId":"DLG-2026-0914","idSalt":"7b41e9d2a8c05f36","e
 const ONCHAIN={"network":"sepolia","chainId":11155111,"address":"0xcb421360C1f64384CFE65d9FCB67efe6446e91aB","recorder":"0x0E00cB50396Bf3a3cdC80efab74bEaDeE501001F","deployTx":"0xb699f4d444cff3d9f561785d3d0f2241e1ce02444b9d4e0c3aad51aef382ce19","deployBlock":11863983,"delegationKey":"0xd6759699ed068a1cedec959e5a3572306694070f23a75db17ef5b64c000caf19","explorer":"https://sepolia.etherscan.io","rpc":["https://ethereum-sepolia-rpc.publicnode.com","https://sepolia.gateway.tenderly.co"],"events":[{"fn":"delegationConfigured","dataHash":"0x7f76f3c8fad5fdef6cb4df308623992a15d9cfc621c9173a4ab02a32f2e06313","txHash":"0xb774cfc74bbb76a59024ab0925637d66efb155c670535135f14d3e6aa9318075","block":11863993},{"fn":"paymentApproved","dataHash":"0xddf735d45a47d517068c1ca39db018b0b2b87c0fe58aa67ff66589d380a8fa40","txHash":"0xd5b238b495db7b796b43659f49ca7ceeb8610cf086975cb781f294eb126ebdda","block":11863995},{"fn":"paymentApproved","dataHash":"0xecc2cfd18c530026e634fee2b41b64856c5e495d0bac13c63925c12102d70336","txHash":"0xc87fa5673120acdbeed6350f596211a3f4d7c79b46efa709c2497b54fd3416eb","block":11863997}],"institutions":[{"name":"대구의료원","instId":"0x5f0ea8f8533d47fa107b6a13a85fa57454f2ae4446ca12dc7dc36308a9116197","status":"certified","certifyTx":"0x10adf653f29bdc1f3ff5953e9a3fcb028a44d8b6a0283f67fd7464c6d0d7846e","certifyBlock":11863985},{"name":"경북대학교병원","instId":"0xdea5a9dd0a4bd05eb24e3bd489a8e23d87c331724f9d7176c69994d4c992a0a5","status":"certified","certifyTx":"0xa4b67d103a34d8bb23ad5bd0d32ba735c2757e39135175b35147bef0af0f3e1d","certifyBlock":11863987},{"name":"○○재활요양병원","instId":"0x5c253cc0b5cbdf47377b3aa01c9da031e279c0128ff262a69de3a0aa47691090","status":"revoked","certifyTx":"0xa25ec4fc2115537f6e190bc6f81bf902dd9b659c33c1b636ff14c156cbee1482","certifyBlock":11863989,"revokeReason":"폐업 신고 · 요양기관 자격 정지","revokeTx":"0xed4ad6fe52d5274b924e657318dcb7a180091f57f9d26a1ad47ce6d468096e25","revokeBlock":11863991}]};
 const CERT={"curve":"P-256 (ECDSA, SHA-256)","source":"건강보험심사평가원 「전국 병의원 및 약국 현황」","basis":"2026.6.","note":"시연용 의료기관 서명키(ECDSA P-256). 브라우저에서 '병원 단말이 청구서에 전자서명'하는 과정을 실제 WebCrypto로 보여 주기 위한 데모 키이며 보호하는 자산이 없습니다. 실서비스에서는 기관 단말의 보안영역(HSM/Secure Enclave)에 보관하고 앱에 내려보내지 않습니다.","institutions":[{"name":"대구의료원","type":"종합병원","gu":"서구","addr":"평리로 157, (중리동)","tel":"053-560-7575","fictional":false,"status":"certified","revokeReason":null,"instId":"0x5f0ea8f8533d47fa107b6a13a85fa57454f2ae4446ca12dc7dc36308a9116197","proof":{"src":"건강보험심사평가원 「전국 병의원 및 약국 현황」","basis":"2026.6.","name":"대구의료원","type":"종합병원","gu":"서구","addr":"평리로 157, (중리동)","tel":"053-560-7575"},"proofHash":"0x8ad1c3e4a2965ffdb9a3f05e86bad955c834f82c1c402204e623de18fc2de6cc","keyX":"0x266ca931106cfc6a6315695ca8a1c8e23da29e49a92b8552e8ffbfd2de0ade7a","keyY":"0xb2dad8d2b23a8d0fc650f4185f27982ae0f02acf64bd312ce9dde3ff3f2c0ad6","jwk":{"kty":"EC","crv":"P-256","x":"JmypMRBs_GpjFWlcqKHI4j2inkmpK4VS6P-_0t4K3no","y":"strY0rI6jQ_GUPQYXyeYKuDwKs9kvTEs6d3j_z8sCtY","d":"pST16svBQYpffs7nxFCmBM2PvTkRdF9b6dyRLJW24gI"},"certifyTx":"0x10adf653f29bdc1f3ff5953e9a3fcb028a44d8b6a0283f67fd7464c6d0d7846e","certifyBlock":11863985,"revokeTx":null,"revokeBlock":null},{"name":"경북대학교병원","type":"상급종합","gu":"중구","addr":"동덕로 130, (삼덕동2가, 경북대학교병원)","tel":"053-200-5114","fictional":false,"status":"certified","revokeReason":null,"instId":"0xdea5a9dd0a4bd05eb24e3bd489a8e23d87c331724f9d7176c69994d4c992a0a5","proof":{"src":"건강보험심사평가원 「전국 병의원 및 약국 현황」","basis":"2026.6.","name":"경북대학교병원","type":"상급종합","gu":"중구","addr":"동덕로 130, (삼덕동2가, 경북대학교병원)","tel":"053-200-5114"},"proofHash":"0x99454e83b6ada78e8a6f9574517910b18bb3835c2a9b4fd58d6aa20d8b1e227b","keyX":"0x4da93e591611bfa1321dd649734a9a0dc4a26a967ed89dcd3498d56ca7eed73a","keyY":"0xcdb3bfc2ba420ca1515d06721424d046215944e027066f16d6dbc0d072026ccc","jwk":{"kty":"EC","crv":"P-256","x":"Tak-WRYRv6EyHdZJc0qaDcSiapZ-2J3NNJjVbKfu1zo","y":"zbO_wrpCDKFRXQZyFCTQRiFZROAnBm8W1tvA0HICbMw","d":"IZDyeX9Q9vzNEkv2Vaq9RGYQzW29LnagnLLY9eeULTM"},"certifyTx":"0xa4b67d103a34d8bb23ad5bd0d32ba735c2757e39135175b35147bef0af0f3e1d","certifyBlock":11863987,"revokeTx":null,"revokeBlock":null},{"name":"○○재활요양병원","type":"요양병원","gu":"시연용","addr":"—","tel":"—","fictional":true,"status":"revoked","revokeReason":"폐업 신고 · 요양기관 자격 정지","instId":"0x5c253cc0b5cbdf47377b3aa01c9da031e279c0128ff262a69de3a0aa47691090","proof":{"src":"시연용 가상 기관 (인증 취소 이력 시연)","basis":"2026.6.","name":"○○재활요양병원","type":"요양병원","gu":"시연용","addr":"—","tel":"—"},"proofHash":"0xe958c2bb098abc742b83a3fb8bedab252aadc9e040b7327daba92dcff08cc8a2","keyX":"0xd5af0b96c588d195ffcb0a605f848a3adb6513ad44508b88523389149cff0898","keyY":"0xfa6b7e173c1b479de7f8755d1c8ad0dac4ce48e2f0b6c4af168e60b2667c2fab","jwk":{"kty":"EC","crv":"P-256","x":"1a8LlsWI0ZX_ywpgX4SKOttlE61EUIuIUjOJFJz_CJg","y":"-mt-FzwbR53n-HVdHIrQ2sTOSOLwtsSvFo5gsmZ8L6s","d":"5MYcpEGRyerb2i625qLQ7uar3iY4Rr-5d5Q8zcMe3iw"},"certifyTx":"0xa25ec4fc2115537f6e190bc6f81bf902dd9b659c33c1b636ff14c156cbee1482","certifyBlock":11863989,"revokeTx":"0xed4ad6fe52d5274b924e657318dcb7a180091f57f9d26a1ad47ce6d468096e25","revokeBlock":11863991}]};
 /* ONCHAIN:END */
-/* 초기 이력(DEMO_EVENTS)은 Sepolia에 실제로 기록돼 있어 공개 노드에서 getHistory로 읽어 해시를 대조한다.
-   시연 중 새로 생기는 이벤트는 브라우저 로컬에만 기록 (실서비스는 은행 기록 서버가 전송) */
 const Chain={
   block:ONCHAIN?ONCHAIN.events[ONCHAIN.events.length-1].block:11665005, events:[],
   status:ONCHAIN?'checking':'local', onchainCount:0, rpcUsed:null,
@@ -1037,8 +1027,6 @@ const S={
   suspectDelegate:false,              /* FINRA 4512 — 대리인이 착취에 가담한 것으로 의심되는 상태 */
   consent:{signed:false,ts:null,sigHash:null,docHash:null,checks:[false,false,false],strokes:[]},  /* 위임장 직접 서명 */
   a11y:false, revoked:false, sosSent:false, sosPin:'1122', zero:false, hideAmt:false,
-  /* 신뢰 기관 — 여기 있는 곳은 '확인 요청 없이' 결제된다. 검사를 끄는 것이 아니라 묻지 않는 것이다.
-     (c) 과거 본인 결제 이력에서 자동 등록 + (a) 위임 설정에서 위임자가 직접 추가·제거 */
   trusted:PAST_VISITS.filter(v=>v.n>=TRUST_MIN_VISITS)
     .map(v=>({name:v.name,src:'past',n:v.n,lastDays:v.lastDays,mean:v.mean,type:v.type,verifiedAt:now()})),
   _trustQ:'', _regChk:null
@@ -1048,27 +1036,19 @@ const S={
    그대로 남는다 — 신뢰 기관은 결제처 축을 면제받으므로 오히려 더 위험하다.
    기관 마스터 재점검(api/registry-check.js)이 그걸 잡지만, 그 배치가 멈추거나 공공 API 가
    죽으면 다시 구멍이 열린다. 그래서 신뢰 자체에 유효기간을 둔다.
-   **확인한 지 오래된 신뢰는 신뢰가 아니다.** 외부 호출 없이 결제 경로에서 즉답으로 판단하므로,
+   확인한 지 오래된 신뢰는 신뢰가 아니다. 외부 호출 없이 결제 경로에서 즉답으로 판단하므로,
    점검이 실패해도 시스템은 안전한 쪽(일반 기관 취급)으로 떨어진다 — fail-safe 가 여기다. */
 const TRUST_TTL_DAYS=90;
 const trustAge=t=>(t&&t.verifiedAt)?(now()-t.verifiedAt)/86400000:Infinity;
 const trustStale=t=>trustAge(t)>TRUST_TTL_DAYS;
-/* 자동 승인이 해지된 상태 — 두 가지 사유가 있고, 둘 다 목록에서 지우지 않고 '비활성'으로 남긴다.
-   지워 버리면 위임자가 '왜 없어졌지'를 알 수 없다. 남겨 두고 사유를 보여준 다음, 지우는 건
-   위임자가 직접 결정하게 한다. */
 const trustClosed=t=>!!(t&&t.closed);                       /* 심평원 조회 결과에 없음 */
 const trustInactive=t=>trustClosed(t)||trustStale(t);       /* 비활성 = 자동 승인 해지 */
 const trustWhy=t=>trustClosed(t)?'조회 안 됨'
   :trustStale(t)?`확인 만료 · ${Math.floor(trustAge(t))}일 전`:'';
 function trustRec(m){const k=normName(m||'');return k?(S.trusted.find(t=>normName(t.name)===k)||null):null;}
-/* 결제처가 신뢰 기관인가 — 이름은 공백을 지우고 비교한다(결제처 검색과 같은 규칙).
-   조회되지 않거나 유효기간이 지난 신뢰는 면제하지 않는다. */
 function isTrusted(m){const t=trustRec(m);return !!t&&!trustInactive(t);}
 
 /* ============================ 청구-결제 매칭 · 구조화 탐지 · 반사실 설명 ============================ */
-/* ① 청구-결제 매칭 — 병원이 서명한 청구서의 필드와 실제 결제 요청을 대조한다.
-   서명 payload(기관·금액·발행일·청구서번호)가 이미 있으므로 OCR 없이 대조만으로 성립한다.
-   종이 영수증 OCR은 실서비스 확장 범위이고 여기 구현 범위가 아니다. */
 const INV_VALID_DAYS=14;
 function matchInvoice(inv,amount,merchant){
   if(!inv)return null;
@@ -1090,8 +1070,6 @@ function matchInvoice(inv,amount,merchant){
     instOk:checks[1].ok,amtOk:checks[2].ok,stale:!checks[3].ok,reused:!checks[4].ok};
 }
 
-/* ② 구조화(한도 회피) 탐지 — "한도 바로 아래 금액을 반복"하는 분할 결제.
-   금액 하나만 보는 z-score로는 절대 안 잡힌다. 건당 한도 대비 근접률과 윈도 내 빈도를 같이 본다. */
 const STRUCT_WINDOW_DAYS=7, STRUCT_NEAR=0.9, STRUCT_MIN=3;
 function structuring(catKey,amount){
   const a=S.alloc[catKey]; if(!a||!a.perTx)return null;
@@ -1104,8 +1082,6 @@ function structuring(catKey,amount){
           capRatio:a.cap?sum/a.cap:0};
 }
 
-/* ③ 반사실 설명 — "무엇이 달랐으면 통과였는가". 고령자에겐 쉬운 말로, 심사용엔 기여도로.
-   금액을 낮춰도 통과되지 않는 경우(사칭·서명 실패)를 통과 가능한 것처럼 말하지 않는 것이 핵심이다. */
 function counterfactual(catKey,amount,v){
   const a=S.alloc[catKey], st={mean:v.mean,std:v.std};
   const blockers=[];
@@ -1119,8 +1095,6 @@ function counterfactual(catKey,amount,v){
     text:`금액을 낮춰도 통과되지 않습니다 — ${blockers[0]} 문제입니다.`};
   const caps=[['건당 한도',a.perTx],['월 한도 잔여',Math.max(0,a.cap-a.spent)],
     ['생활비 보호선',Math.max(0,S.pool.balance-S.protectionFloor)],
-    /* 이 라벨은 cfLine() 을 거쳐 폰(사용자) 화면에 그대로 찍힌다. userReason() 같은 정화를 지나지 않으므로
-       여기에 μ·σ·z 를 쓰면 고령자 화면에 기술 지표가 노출된다. 기술값은 인스펙터 'AI 판단' 탭에만 둔다 */
     ['평소 결제 범위',Math.round(st.mean+2*st.std)]];
   const lim=caps.filter(c=>c[1]>0).sort((x,y)=>x[1]-y[1])[0];
   if(!lim||amount<=lim[1])return {kind:'pass',text:''};
@@ -1146,13 +1120,7 @@ function judge(catKey,amount,merchant){
   const z=st.std>0?(amount-st.mean)/st.std:0;
   const merchantOk=a.wl.length?a.wl.some(w=>merchant.includes(w)):true;
   const reg=a.registry&&merchant?Medical.find(merchant):null; /* 공공데이터 결제처 확인 */
-  /* 신뢰 기관 여부 — **결제처 축 하나만** 면제한다.
-     금액(z)·빈도(구조화)·한도 축은 신뢰 기관에서도 그대로 돈다. 고령자 금융착취는 가짜 병원보다
-     '진짜 병원에서 과다하게 쓰는 것'이 흔해서, 기관만 믿으면 그 유형을 전부 놓친다. */
   const trusted=!!a.registry&&isTrusted(merchant);
-  /* 스캔한 청구서 — 기관 전자서명 검증 + 청구-결제 매칭.
-     청구서와 결제처가 어긋나면 무시하지 않고 '탐지'한다 — 진짜 청구서를 스캔하고
-     결제처만 바꿔치는 수법을 잡기 위해서다. */
   const invAny=(S._inv&&S._inv.cat===catKey)?S._inv:null;
   const M=matchInvoice(invAny,amount,merchant);
   const inv=(M&&M.instOk)?invAny:null;
@@ -1224,8 +1192,6 @@ async function submitRequest(catKey,amount,merchant){
   if(autoOK){
     const why=S.alloc[catKey].auto?'자동승인 (월 정기)':'자동승인 (신뢰 기관 · 확인 요청 없음)';
     req.status='approved'; applyPayment(req); await logChain('paymentApproved',req,why);
-    /* 보호자 알림함에는 남기되 '새 알림'으로 울리지는 않는다 — 일상 결제까지 울리면 알림 스팸이 되고,
-       그러면 정작 예외가 묻힌다. 사후에 훑어보고 이의제기할 수 있어야 하므로 기록 자체는 남긴다. */
     const al=notifyGuardian('auto','자동 승인된 결제',
       `${won(amount)} · ${merchant} — ${S.alloc[catKey].auto?'월 정기 공과금':'신뢰 기관'}이라 확인 요청 없이 진행됐습니다.`,
       req);
@@ -1388,7 +1354,7 @@ function serverPanel(){
 }
 /* ============================ 실사용 모드 (/app) ============================ */
 const APPMODE = location.pathname.replace(/\/+$/,'') === '/app';
-const APP = {rev:-1, poll:null, err:'', busy:false, manual:false, picked:-1, lastId:'', toastEl:null};
+const APP = {rev:-1, poll:null, err:'', busy:false, picked:-1, toastEl:null};
 
 function appBoot(){
   if(!APPMODE)return;
@@ -1453,8 +1419,6 @@ async function appAct(action,payload){
 }
 
 /* ── 로그인 화면 ── */
-/* 시연용 계정 — 버튼을 누르면 그 계정으로 실제 로그인한다(서버가 비밀번호를 확인한다).
-   공모전 시연이라 매번 타이핑하지 않아도 되게 만든 것이고, 인증 자체는 생략하지 않는다. */
 const PICK=[
   {acc:'delegator',id:'mother',  pw:'carepass1',nm:'이순자',rl:'어머니',label:'위임자',
    desc:'한도를 정하고 위임장에 서명합니다. 평소와 다른 결제를 승인·거부합니다.',icon:'user'},
@@ -1469,7 +1433,6 @@ async function appPick(i){
   await appSignIn(a.id,a.pw);
 }
 function loginHTML(){
-  if(APP.manual)return loginFormHTML();
   return `<div class="login">
     <div>
       <div class="lg"><div class="lgi">iM</div>
@@ -1488,45 +1451,11 @@ function loginHTML(){
       버튼을 누르면 해당 계정으로 <b style="color:var(--ink-soft)">실제 로그인</b>합니다 — 권한은 서버가 검사합니다.</div>
   </div>`;
 }
-/* 아이디·비밀번호 직접 입력 (틀린 비밀번호가 거부되는 것도 보여줄 수 있다) */
-function loginFormHTML(){
-  return `<div class="login">
-    <div>
-      <div class="lg"><div class="lgi">iM</div>
-        <div><h2>iM뱅크 CarePass</h2><div class="lsub">아이디로 로그인</div></div></div>
-    </div>
-    <label class="fld2"><span>아이디</span>
-      <input id="lgId" type="text" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="아이디" value="${zesc(APP.lastId||'')}"></label>
-    <label class="fld2"><span>비밀번호</span>
-      <input id="lgPw" type="password" autocomplete="current-password" placeholder="비밀번호"
-        onkeydown="if(event.key==='Enter')appLogin()"></label>
-    <div class="err">${zesc(APP.err)}</div>
-    <button class="btn" ${APP.busy?'disabled style="opacity:.5"':''} onclick="appLogin()">${APP.busy?'확인 중…':'로그인'}</button>
-    <div class="hintbox">
-      ${PICK.map(a=>`<div class="hrow" onclick="appFill('${a.id}','${a.pw}')">
-        <span><b>${a.nm} · ${a.rl}</b></span><span>${a.id} / ${a.pw}</span></div>`).join('')}
-      <div style="font-size:11px;color:var(--ink-mute);font-weight:500;line-height:1.6;margin-top:6px">
-        공모전 시연용 계정입니다. 실제 iM뱅크 계정이 아니며 보호하는 자산이 없습니다.</div>
-    </div>
-    <div style="font-size:11.5px;color:var(--ink-mute);text-align:center;font-weight:600;cursor:pointer"
-      onclick="APP.manual=false;APP.err='';render()">← 사용자 선택으로 돌아가기</div>
-  </div>`;
-}
-function appFill(id,pw){APP.lastId=id;const a=document.getElementById('lgId'),b=document.getElementById('lgPw');
-  if(a)a.value=id; if(b)b.value=pw;}
-async function appLogin(){
-  const id=(document.getElementById('lgId')||{}).value||'';
-  const pw=(document.getElementById('lgPw')||{}).value||'';
-  APP.lastId=id; APP.err=''; APP.busy=true; render();
-  await appSignIn(id.trim(),pw);
-}
 async function appSignIn(id,pw){
   try{
     const r=await apiFetch('/api/session',{method:'POST',body:JSON.stringify({id,password:pw})});
     if(r.status===200&&r.json&&r.json.signedIn){
       API.session=r.json; S.role=r.json.role;
-      /* 바로 CarePass 로 떨어뜨리지 않는다. 실제 서비스처럼 iM뱅크 홈을 먼저 보여주고,
-         거기서 배너나 하단 메뉴로 CarePass 에 들어가게 한다 (데모 화면과 같은 동선) */
       S.screen=ROLE[S.role].home; S.app='imbank';
       APP.rev=-1; await appPull(true); appStartPoll();
     }else{APP.err=(r.json&&r.json.error)||'로그인에 실패했습니다';}
@@ -1536,14 +1465,11 @@ async function appSignIn(id,pw){
 async function appLogout(){
   if(APP.poll)clearInterval(APP.poll);
   await apiSignOut();
-  APP.rev=-1; S.requests=[]; S.alerts=[]; APP.manual=false; APP.err='';
+  APP.rev=-1; S.requests=[]; S.alerts=[]; APP.err='';
   render();
 }
-/* ============================ 백엔드 연동 (있으면 쓰고, 없으면 그대로 동작) ============================ */
 const API={on:false,storage:null,session:null,saved:0,persistent:false,busy:false};
 async function apiFetch(path,opt){
-  /* 403·409 같은 '서버가 거부한' 응답도 본문에 사유가 들어 있다. 예외로 던지면 그 사유를 못 보여준다.
-     그래서 여기서는 네트워크 실패만 예외로 올리고, HTTP 상태는 호출한 쪽이 판단한다. */
   const r=await fetch(path,Object.assign({cache:'no-store',headers:{'content-type':'application/json'}},opt||{}));
   return {status:r.status,ok:r.ok,json:await r.json().catch(()=>null)};
 }
@@ -1560,9 +1486,6 @@ async function apiProbe(){
       if(APPMODE){S.screen=ROLE[S.role].home;S.app='imbank';await appPull(true);appStartPoll();}
     }
     await apiAuditCount();
-    /* 기관 마스터 읽기 — 하루 1회 크론(api/registry-cron.js)이 갱신해 둔 결과를 받아온다.
-       **아무도 버튼을 누르지 않아도** 폐업이 반영되는 경로가 이것이다.
-       읽기는 심평원을 부르지 않아 공짜이고, 로그인돼 있을 때만 의미가 있다. */
     if(API.session)registryCheck(false).catch(()=>{});
   }catch(e){API.on=false;}
   render();
@@ -1747,8 +1670,6 @@ async function ackAlert(id){
 function requestRaise(catKey,newLimit){
   const a=S.alloc[catKey];
   if(APPMODE){
-    /* 로컬 타이머로 한도를 바꾸면 다음 폴링에 서버 값으로 되돌아간다.
-       그래서 앱모드에서는 서버에 상향을 요청하고, 냉각기간 종료도 서버가 판정한다. */
     appAct('raise',{cat:catKey,to:newLimit}).then(okSent=>{
       if(okSent)toast(ic('bell'),'한도 상향 요청',`냉각기간 60초 · 그 사이 취소할 수 있고 보호자에게 통지됩니다`);
     });
@@ -1819,7 +1740,6 @@ function renderApp(){
     document.body.classList.add('pickmode');
     $('appbar').innerHTML=''; $('nav').innerHTML=''; $('zeroRoot').innerHTML='';
     $('view').innerHTML=loginHTML();
-    const f=document.getElementById('lgId'); if(f&&!f.value)setTimeout(()=>f.focus(),0);
     return;
   }
   document.body.classList.remove('pickmode');
@@ -2077,8 +1997,6 @@ const SCREENS={
   /* 위임자 : 승인 */
   approvals(){
     const pend=S.requests.filter(r=>r.status==='pending'||r.status==='hold');
-    /* 처리할 요청이 없을 때: 방금 승인/거부한 결과를 폰 안에 남긴다.
-       예전엔 곧장 빈 화면이 돼서 "승인했는데 아무 일도 안 일어난" 것처럼 보였다. */
     if(!pend.length&&S.lastDone){const d=S.lastDone;
       return `<div class="sect" style="margin-top:8px"><div class="sect-t">처리 완료</div>
       <div class="c pad" style="text-align:center;${d.ok?'':'background:var(--crit-wash);border-color:color-mix(in srgb,var(--crit) 32%,transparent)'}">
@@ -2218,13 +2136,6 @@ let MCH_HITS=[];
 function mchBoxHTML(q){
   const src=`<div class="mchsrc">출처: ${Medical.source()} (공공누리 제1유형)</div>`;
   if(!normName(q)){
-    /* 위임자가 등록해 둔 곳을 대리인 결제 화면에 바로 띄운다 — 매번 병원 이름을 검색하지 않게.
-       ⚠ 라벨에 "확인 없이 결제됩니다" 라고 쓰지 않는다. 이 화면은 대리인(감시 대상)이 보는 곳이라
-       어디가 마찰이 가장 낮은지 광고하는 셈이 된다. 편의만 주고 우회 힌트는 주지 않는다. */
-    /* 자동 승인이 해지된 곳(조회 안 됨·확인 만료)도 **보여주되 고를 수 없게** 한다.
-       숨기면 대리인은 "어제 있던 병원이 왜 없지"가 되고, 그냥 두면 고른 뒤에야 막힌다.
-       버튼은 그 자리에 두고 비활성으로, 사유는 적지 않는다 — 이 화면은 감시 대상이 보는 곳이라
-       어디가 막혔는지 상세히 알려 줄 이유가 없다. */
     const list=S.trusted.length?S.trusted.map(t=>[t.name,trustInactive(t)])
       :[['대구의료원',false],['경북대학교병원',false]];
     const lab=S.trusted.length?`<div class="mchlab">${ic('check')} 어머니가 등록한 자주 가는 곳</div>`:'';
@@ -2249,8 +2160,6 @@ function onMch(v){
   const box=document.getElementById('mchBox');if(box)box.innerHTML=mchBoxHTML(v);
   onAmt(S._amt);
 }
-/* 신뢰 기관 추가 — 결제처 검색과 같은 공공데이터(심평원 요양기관 목록)에서만 고를 수 있다.
-   목록에 없는 이름을 손으로 넣게 하면 가짜 병원을 신뢰 목록에 올릴 수 있다. */
 let TRUST_HITS=[];
 function trustBoxHTML(q){
   if(!normName(q))return '';
@@ -2263,9 +2172,6 @@ function trustBoxHTML(q){
     : `<button type="button" onclick="trustAdd(${JSON.stringify(r[0]).replace(/"/g,'&quot;')})"><b>${zesc(r[0])}</b><span>${Medical.label(r)}</span></button>`).join('')}</div>`;
 }
 function onTrustQ(v){S._trustQ=v;const b=document.getElementById('trustBox');if(b)b.innerHTML=trustBoxHTML(v);}
-/* 심평원 Open API 조회 — **기관을 등록할 때만** 부른다. 결제 판정 경로에서는 절대 부르지 않는다.
-   실패하면 null 을 돌려주고 호출부는 내장 스냅샷으로 그대로 진행한다(폴백).
-   그래서 심사장에서 네트워크가 막히거나 공공 API 가 점검 중이어도 아무 일도 일어나지 않는다. */
 const Hira={on:null,last:null};
 async function hiraLookup(name){
   if(location.protocol==='file:'||Hira.on===false)return null;   /* 파일로 열었거나 키가 없는 배포 */
@@ -2336,9 +2242,6 @@ async function registryCheck(force){
     toast(ic('warn'),'점검하지 못했습니다',`${why} · 신뢰 목록은 그대로 두었습니다`);
     return;
   }
-  /* 폐업이 확인된 기관은 **지우지 않고 비활성으로 표시**한다. 목록에서 사라지면 위임자가
-     왜 없어졌는지 알 수 없고, 되돌릴 기회도 없다. 자동 승인만 끊고 삭제는 위임자가 결정한다.
-     'unknown'(조회 실패)은 건드리지 않는다 — API 장애를 폐업으로 읽으면 안 된다. */
   const closed=(j.closed||[]).filter(nm=>{const t=trustRec(nm);return t&&!t.closed;});
   for(const nm of closed){
     const t=trustRec(nm);
@@ -2346,9 +2249,6 @@ async function registryCheck(force){
     await logChain('trustedMerchantSuspended',{merchant:nm,cat:'hospital',amount:0},
       `기관 마스터 점검 — 심평원 조회 결과에 없어 자동 승인 해지 · 목록에는 비활성으로 남김`);
   }
-  /* 살아 있음이 확인된 기관은 확인 시각을 갱신한다 — 유효기간이 다시 90일.
-     '지금'이 아니라 **마스터가 실제로 확인한 시각**(rr.at)을 쓴다. 읽기 모드로 어제 크론이
-     확인한 결과를 받아온 것이라면, 그 신선도는 어제여야지 오늘로 당겨 적으면 안 된다. */
   let live=0,back=0;
   for(const t of S.trusted){
     const rr=j.results&&j.results[t.name];
@@ -2494,11 +2394,6 @@ function speak(text){try{if(!('speechSynthesis'in window))return;speechSynthesis
   const u=new SpeechSynthesisUtterance(voiceText(text));u.lang='ko-KR';u.rate=.96;speechSynthesis.speak(u);}catch(e){}}
 /* 폰(사용자 화면)용 — z-score·μ 등 기술 지표 제거. 인스펙터(심사용)에는 원문 유지 */
 /* 반사실 설명 한 줄 — "무엇이 달랐으면 통과였는가". 통과 가능한 건에는 띄우지 않는다 */
-/* 폰(사용자) 화면용 반사실 — **임계값을 숫자로 알려주지 않는다.**
-   "₩185,578 이하였으면 통과됐습니다" 는 결제 요청 화면(= 대리인이 보는 곳)에 찍히는 순간
-   탐지를 피하는 최적 금액이 된다. 실제로 그 금액 바로 아래는 z(2σ)도, 구조화(한도 0.9)도,
-   한도도 걸리지 않는 구간이라 경고 없이 반복 인출이 가능하다.
-   기준의 '이름'만 말하고 숫자는 인스펙터(심사용)에만 둔다 — 심사에서는 역산 과정을 보여야 한다. */
 function cfLine(v){
   if(!v||!v.cf)return '';
   const parts=[];
@@ -2516,9 +2411,6 @@ function userSay(s){
 }
 function userReason(t){
   return String(t)
-    /* 탐지 파라미터(근접률·윈도 일수·횟수·누적액)를 사용자 화면에서 지운다.
-       이 화면은 **대리인이 보는 곳**이다. "한도의 97%가 7일 내 4회" 를 그대로 알려주면
-       "한도의 85%로 8일 간격" 이라는 우회 금액·주기를 앱이 직접 계산해 주는 셈이 된다. */
     .replace(/분할 결제\(구조화\) 의심 —.*$/,'분할 결제(구조화) 의심 — 짧은 기간에 한도에 가까운 금액이 반복되고 있습니다')
     .replace(/한도 근접 결제 반복 —.*$/,'한도 근접 결제 반복 — 한도에 가까운 금액이 다시 요청됐습니다')
     .replace(/\(?\s*z\s*=\s*-?\d+(?:\.\d+)?(?:\s*,\s*μ\s*=\s*[^)]*)?\)?/gi,'') // (z=.., μ=..) / z=..
