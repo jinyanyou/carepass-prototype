@@ -3,7 +3,8 @@
 2026-10-07 · 합성 데이터 기준 **자체 평가**이며 실거래 성능이 아니다.
 
 재현: `python gen_dataset.py && python evaluate.py && python make_chart.py`
-산출물: `eval_set.json`(평가셋) · `results.json`(전체 수치) · `eval.png`(발표용 1장) · `run.txt`(실행 로그)
+산출물: `eval_set.json`(평가셋) · `results.json`(전체 수치) · `run.txt`(실행 로그)
+`make_chart.py` 는 발표용 차트 `eval.png` 를 만듭니다 — 재생성되는 그림이라 제출본에는 넣지 않았습니다.
 
 ---
 

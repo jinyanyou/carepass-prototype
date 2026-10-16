@@ -48,5 +48,11 @@
       "source": "/app/",
       "destination": "/"
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/registry-cron",
+      "schedule": "0 0 * * *"
+    }
   ]
 }
