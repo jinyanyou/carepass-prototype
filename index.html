@@ -232,6 +232,7 @@ input.in:focus,select.in:focus{outline:2px solid var(--primary);outline-offset:1
 .st.pending{background:var(--warn-wash);color:var(--warn)} .st.approved{background:var(--good-wash);color:var(--good)}
 .st.rejected{background:var(--crit-wash);color:var(--crit)} .st.hold{background:var(--crit-wash);color:var(--crit)}
 .st.cooling{background:var(--primary-wash);color:var(--primary-deep)}
+.st.disputed{background:var(--crit-wash);color:var(--crit)}
 
 .tl{position:relative;padding-left:26px}
 .tl:before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
@@ -1740,11 +1741,19 @@ function renderApp(){
     document.body.classList.add('pickmode');
     $('appbar').innerHTML=''; $('nav').innerHTML=''; $('zeroRoot').innerHTML='';
     $('view').innerHTML=loginHTML();
+    S._viewKey='login';$('view').scrollTop=0;
     return;
   }
   document.body.classList.remove('pickmode');
-  if(S.app==='imbank'){ renderImbank(); return; }
-  renderCarePassApp();
+  if(S.app==='imbank'){ renderImbank(); } else { renderCarePassApp(); }
+  topOnScreenChange();
+}
+/* 화면이 바뀌면 맨 위에서 시작한다 — 같은 화면 안에서 다시 그릴 때는 스크롤을 건드리지 않는다 */
+function topOnScreenChange(){
+  const key=S.app+'/'+S.screen;
+  if(S._viewKey===key)return;
+  S._viewKey=key;
+  const v=$('view'); if(v)v.scrollTop=0;
 }
 /* ---- iM뱅크 앱 홈 (CarePass를 내장 기능으로 노출) ---- */
 function renderImbank(){
@@ -2110,7 +2119,7 @@ function coolingBanner(){const left=Math.max(0,Math.ceil((S.cooling.until-now())
       ${S.alloc[c.cat].nm} 건당 ${won(c.from)} → <b>${won(c.to)}</b> · <span class="count">${mm}:${ss}</span> 후 발효
       <div style="margin-top:8px"><button class="btn ghost sm" style="padding:7px 12px;width:auto" onclick="cancelRaise()">지금 취소</button></div>
     </div></div></div>`;}
-function stName(s){return{pending:'확인 대기',approved:'승인됨',rejected:'거부됨',hold:'AI 보류',cooling:'냉각기간'}[s]||s;}
+function stName(s){return{pending:'확인 대기',approved:'승인됨',rejected:'거부됨',hold:'AI 보류',cooling:'냉각기간',disputed:'분쟁 접수'}[s]||s;}
 function emptyView(t,s){return `<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h12"/></svg><div style="font-weight:700;color:var(--ink-soft)">${t}</div>${s?`<div style="margin-top:4px">${s}</div>`:''}</div>`;}
 
 /* setup mutators */
